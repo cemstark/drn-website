@@ -107,26 +107,51 @@ filterBtns.forEach(btn => {
 });
 
 // --- Form Submission ---
+document.querySelectorAll('form[data-form] [type="submit"]').forEach(btn => {
+  btn.dataset.original = btn.innerHTML;
+});
+
 document.querySelectorAll('form[data-form]').forEach(form => {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('[type="submit"]');
     const successEl = form.nextElementSibling;
-    if (btn) { btn.disabled = true; btn.textContent = 'Gönderiliyor...'; }
-    setTimeout(() => {
-      form.reset();
-      if (btn) { btn.disabled = false; btn.innerHTML = btn.dataset.original || 'Gönder'; }
-      if (successEl && successEl.classList.contains('form-success')) {
-        successEl.classList.add('show');
-        setTimeout(() => successEl.classList.remove('show'), 6000);
-      }
-    }, 1000);
-  });
-});
+    const formType = form.dataset.form;
 
-// Store original button text
-document.querySelectorAll('form[data-form] [type="submit"]').forEach(btn => {
-  btn.dataset.original = btn.innerHTML;
+    if (btn) { btn.disabled = true; btn.textContent = 'Gönderiliyor...'; }
+
+    const inputs = form.querySelectorAll('input, select, textarea');
+    const data = new FormData();
+
+    if (formType === 'appointment') {
+      data.append('type', 'randevu');
+      const fields = ['ad_soyad','telefon','eposta','marka','model','yil','plaka','hizmet','tarih','saat','notlar'];
+      inputs.forEach((el, i) => { if (fields[i] !== undefined) data.append(fields[i], el.value); });
+    } else if (formType === 'contact') {
+      data.append('type', 'iletisim');
+      const fields = ['ad_soyad','telefon','eposta','konu','mesaj'];
+      inputs.forEach((el, i) => { if (fields[i] !== undefined) data.append(fields[i], el.value); });
+    }
+
+    try {
+      const res = await fetch('mail.php', { method: 'POST', body: data });
+      const json = await res.json();
+
+      if (json.success) {
+        form.reset();
+        if (successEl && successEl.classList.contains('form-success')) {
+          successEl.classList.add('show');
+          setTimeout(() => successEl.classList.remove('show'), 6000);
+        }
+      } else {
+        alert(json.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+      }
+    } catch {
+      alert('Bağlantı hatası. Lütfen tekrar deneyin.');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = btn.dataset.original || 'Gönder'; }
+    }
+  });
 });
 
 // --- Smooth Active Nav Link ---
