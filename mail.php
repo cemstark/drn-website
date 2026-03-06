@@ -1,7 +1,13 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'phpmailer/Exception.php';
+require 'phpmailer/PHPMailer.php';
+require 'phpmailer/SMTP.php';
+
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -9,15 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$to      = 'ekin@drnekinotoizmit.com';
-$type    = isset($_POST['type']) ? trim($_POST['type']) : '';
-
 function clean($val) {
     return htmlspecialchars(strip_tags(trim($val)), ENT_QUOTES, 'UTF-8');
 }
 
-if ($type === 'randevu') {
+$type = isset($_POST['type']) ? trim($_POST['type']) : '';
 
+if ($type === 'randevu') {
     $ad_soyad = clean($_POST['ad_soyad'] ?? '');
     $telefon  = clean($_POST['telefon'] ?? '');
     $eposta   = clean($_POST['eposta'] ?? '');
@@ -36,22 +40,24 @@ if ($type === 'randevu') {
     }
 
     $subject = "Yeni Randevu Talebi – $ad_soyad";
-    $body    = "YENİ RANDEVU TALEBİ\n";
-    $body   .= str_repeat("=", 40) . "\n\n";
-    $body   .= "Ad Soyad   : $ad_soyad\n";
-    $body   .= "Telefon    : $telefon\n";
-    $body   .= "E-Posta    : $eposta\n\n";
-    $body   .= "Araç Marka : $marka\n";
-    $body   .= "Araç Model : $model\n";
-    $body   .= "Model Yılı : $yil\n";
-    $body   .= "Plaka      : $plaka\n\n";
-    $body   .= "İstenen Hizmet : $hizmet\n";
-    $body   .= "Tercih Tarih   : $tarih\n";
-    $body   .= "Tercih Saat    : $saat\n\n";
-    $body   .= "Ek Notlar  :\n$notlar\n";
+    $body = "
+    <h2 style='color:#c0392b;'>Yeni Randevu Talebi</h2>
+    <table style='border-collapse:collapse; width:100%; font-family:Arial,sans-serif;'>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Ad Soyad</strong></td><td style='padding:8px; border:1px solid #ddd;'>$ad_soyad</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Telefon</strong></td><td style='padding:8px; border:1px solid #ddd;'>$telefon</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>E-Posta</strong></td><td style='padding:8px; border:1px solid #ddd;'>$eposta</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Araç Marka</strong></td><td style='padding:8px; border:1px solid #ddd;'>$marka</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Araç Model</strong></td><td style='padding:8px; border:1px solid #ddd;'>$model</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Model Yılı</strong></td><td style='padding:8px; border:1px solid #ddd;'>$yil</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Plaka</strong></td><td style='padding:8px; border:1px solid #ddd;'>$plaka</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>İstenen Hizmet</strong></td><td style='padding:8px; border:1px solid #ddd;'>$hizmet</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Tercih Tarih</strong></td><td style='padding:8px; border:1px solid #ddd;'>$tarih</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Tercih Saat</strong></td><td style='padding:8px; border:1px solid #ddd;'>$saat</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Ek Notlar</strong></td><td style='padding:8px; border:1px solid #ddd;'>$notlar</td></tr>
+    </table>
+    ";
 
 } elseif ($type === 'iletisim') {
-
     $ad_soyad = clean($_POST['ad_soyad'] ?? '');
     $telefon  = clean($_POST['telefon'] ?? '');
     $eposta   = clean($_POST['eposta'] ?? '');
@@ -64,31 +70,45 @@ if ($type === 'randevu') {
     }
 
     $subject = "Yeni Mesaj – $konu ($ad_soyad)";
-    $body    = "YENİ İLETİŞİM MESAJI\n";
-    $body   .= str_repeat("=", 40) . "\n\n";
-    $body   .= "Ad Soyad : $ad_soyad\n";
-    $body   .= "Telefon  : $telefon\n";
-    $body   .= "E-Posta  : $eposta\n";
-    $body   .= "Konu     : $konu\n\n";
-    $body   .= "Mesaj    :\n$mesaj\n";
+    $body = "
+    <h2 style='color:#c0392b;'>Yeni İletişim Mesajı</h2>
+    <table style='border-collapse:collapse; width:100%; font-family:Arial,sans-serif;'>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Ad Soyad</strong></td><td style='padding:8px; border:1px solid #ddd;'>$ad_soyad</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Telefon</strong></td><td style='padding:8px; border:1px solid #ddd;'>$telefon</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>E-Posta</strong></td><td style='padding:8px; border:1px solid #ddd;'>$eposta</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Konu</strong></td><td style='padding:8px; border:1px solid #ddd;'>$konu</td></tr>
+      <tr><td style='padding:8px; border:1px solid #ddd; background:#f9f9f9;'><strong>Mesaj</strong></td><td style='padding:8px; border:1px solid #ddd;'>$mesaj</td></tr>
+    </table>
+    ";
 
 } else {
     echo json_encode(['success' => false, 'message' => 'Geçersiz form tipi.']);
     exit;
 }
 
-$headers  = "MIME-Version: 1.0\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-$headers .= "From: noreply@drnekinotoizmit.com\r\n";
-$headers .= "Reply-To: $eposta\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion();
+$mail = new PHPMailer(true);
+try {
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.hostinger.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'ekin@drnekinotoizmit.com';
+    $mail->Password   = 'Qwe123xyzww*';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+    $mail->CharSet    = 'UTF-8';
 
-$sent = mail($to, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers);
+    $mail->setFrom('ekin@drnekinotoizmit.com', 'DRN.EKİN OTO');
+    $mail->addAddress('ekin@drnekinotoizmit.com', 'DRN.EKİN OTO');
+    if (!empty($eposta)) $mail->addReplyTo($eposta, $ad_soyad);
 
-if ($sent) {
+    $mail->isHTML(true);
+    $mail->Subject = $subject;
+    $mail->Body    = $body;
+
+    $mail->send();
     echo json_encode(['success' => true]);
-} else {
+} catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Mail gönderilemedi. Lütfen tekrar deneyin.']);
+    echo json_encode(['success' => false, 'message' => 'Mail gönderilemedi: ' . $mail->ErrorInfo]);
 }
 ?>
