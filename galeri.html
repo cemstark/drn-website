@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DRN.EKİN OTO galeri - Servisimizden kareler, bakım ve onarım çalışmalarımız.">
+  <title>Galeri | DRN.EKİN OTO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .gallery-item[data-color="1"] .gallery-inner { background: linear-gradient(135deg, #1a0a0a 0%, #3d1010 100%); }
+    .gallery-item[data-color="2"] .gallery-inner { background: linear-gradient(135deg, #0a0a1a 0%, #101035 100%); }
+    .gallery-item[data-color="3"] .gallery-inner { background: linear-gradient(135deg, #0a1a0a 0%, #102510 100%); }
+    .gallery-item[data-color="4"] .gallery-inner { background: linear-gradient(135deg, #1a1400 0%, #3d3000 100%); }
+    .gallery-item[data-color="5"] .gallery-inner { background: linear-gradient(135deg, #1a0a14 0%, #3d1030 100%); }
+    .gallery-item[data-color="6"] .gallery-inner { background: linear-gradient(135deg, #0a1414 0%, #103535 100%); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP INFO BAR -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-left">
+        <span class="topbar-item"><i class="fa-solid fa-location-dot"></i> Sanayi Mah. D130 Karayolu Cad. No:123, Kocaeli / İzmit</span>
+        <span class="topbar-divider"></span>
+        <span class="topbar-item"><i class="fa-solid fa-clock"></i> Hf. İçi: 08:30–18:00 &nbsp;|&nbsp; Hf. Sonu: 08:30–16:00</span>
+      </div>
+      <div class="topbar-right">
+        <a href="tel:+905304115022" class="topbar-phone"><i class="fa-solid fa-phone"></i> +90 530 411 50 22</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-logo">
+        <div class="text-logo">
+          <span class="tl-brand">DRN.EKİN</span>
+          <span class="tl-sep"></span>
+          <span class="tl-oto">OTO</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Ana Sayfa</a></li>
+        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+        <li><a href="hizmetler.html">Hizmetler</a></li>
+        <li><a href="galeri.html" class="active">Galeri</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="sss.html">S.S.S.</a></li>
+        <li><a href="iletisim.html">İletişim</a></li>
+      </ul>
+      <div class="nav-cta-wrapper">
+        <a href="randevu.html" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Randevu Al</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="index.html">Ana Sayfa</a></li>
+        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+        <li><a href="hizmetler.html">Hizmetler</a></li>
+        <li><a href="galeri.html">Galeri</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="sss.html">S.S.S.</a></li>
+        <li><a href="iletisim.html">İletişim</a></li>
+      </ul>
+      <div class="mobile-nav-cta">
+        <a href="randevu.html" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Randevu Al</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="page-header-content">
+      <h1>Galeri</h1>
+      <div class="breadcrumb">
+        <a href="index.html">Ana Sayfa</a>
+        <span class="sep"><i class="fa-solid fa-chevron-right"></i></span>
+        <span class="current">Galeri</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERİ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Çalışmalarımız</span>
+        <h2 class="section-title">Servisimizden <span class="text-red">Kareler</span></h2>
+        <p class="section-desc">Gerçekleştirdiğimiz bakım ve onarım çalışmalarından seçmeler. Fotoğraflar yakında eklenecektir.</p>
+      </div>
+
+      <div class="gallery-filter reveal">
+        <button class="filter-btn active" data-filter="all">Tümü</button>
+        <button class="filter-btn" data-filter="bakim">Bakım</button>
+        <button class="filter-btn" data-filter="tamir">Tamir</button>
+        <button class="filter-btn" data-filter="boya">Kaporta &amp; Boya</button>
+        <button class="filter-btn" data-filter="lastik">Lastik</button>
+        <button class="filter-btn" data-filter="servis">Servis</button>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item" data-cat="bakim" data-color="1">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-oil-can"></i>
+            <span class="gallery-inner-label">Yağ Değişimi</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Yağ Değişimi</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="lastik" data-color="2">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-circle-dot"></i>
+            <span class="gallery-inner-label">Lastik Montaj</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Lastik Montaj</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="tamir" data-color="3">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-gears"></i>
+            <span class="gallery-inner-label">Motor Tamiri</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Motor Tamiri</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="boya" data-color="4">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-paintbrush"></i>
+            <span class="gallery-inner-label">Kaporta Onarım</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Kaporta Onarım</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="tamir" data-color="5">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-bolt"></i>
+            <span class="gallery-inner-label">Elektrik Sistemi</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Elektrik Sistemi</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="bakim" data-color="6">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-snowflake"></i>
+            <span class="gallery-inner-label">Klima Servisi</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Klima Servisi</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="tamir" data-color="1">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-hand-holding-hand"></i>
+            <span class="gallery-inner-label">Fren Tamiri</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Fren Tamiri</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="boya" data-color="2">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-car-side"></i>
+            <span class="gallery-inner-label">Boya Yenileme</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Boya Yenileme</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="servis" data-color="3">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span class="gallery-inner-label">Servis Alanı</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Servis Alanı</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="bakim" data-color="4">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-clipboard-check"></i>
+            <span class="gallery-inner-label">Genel Muayene</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Genel Muayene</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="lastik" data-color="5">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-circle-dot"></i>
+            <span class="gallery-inner-label">Balans Ayarı</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Balans Ayarı</span>
+          </div>
+        </div>
+        <div class="gallery-item" data-cat="servis" data-color="6">
+          <div class="gallery-inner">
+            <i class="fa-solid fa-car"></i>
+            <span class="gallery-inner-label">Araç Teslimi</span>
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Araç Teslimi</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center" style="margin-top:40px; color: var(--gray); font-size:0.9rem;">
+        <i class="fa-solid fa-camera" style="color:var(--red); margin-right:8px;"></i>
+        Gerçek fotoğraflar yakında eklenecektir. Daha fazla bilgi için bizi arayın.
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="reveal">Randevunuzu Alın</h2>
+      <p class="reveal">Aracınızın bakımı için hemen randevu oluşturun.</p>
+      <div class="cta-btns reveal">
+        <a href="randevu.html" class="btn btn-dark btn-lg"><i class="fa-solid fa-calendar-check"></i> Online Randevu</a>
+        <a href="tel:+905304115022" class="btn btn-outline btn-lg"><i class="fa-solid fa-phone"></i> +90 530 411 50 22</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-text-logo">
+            <span class="tl-brand">DRN.EKİN</span>
+            <span class="tl-sep"></span>
+          <span class="tl-oto">OTO</span>
+          </div>
+          <p>Kocaeli İzmit'de profesyonel otomotiv bakım ve onarım hizmetleri.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Sayfalar</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Ana Sayfa</a></li>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="hizmetler.html">Hizmetler</a></li>
+            <li><a href="galeri.html">Galeri</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="sss.html">S.S.S.</a></li>
+            <li><a href="iletisim.html">İletişim</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Hizmetler</h4>
+          <ul class="footer-links">
+            <li><a href="hizmetler.html">Yağ Değişimi</a></li>
+            <li><a href="hizmetler.html">Lastik Servisi</a></li>
+            <li><a href="hizmetler.html">Fren Tamiri</a></li>
+            <li><a href="hizmetler.html">Motor Tamiri</a></li>
+            <li><a href="hizmetler.html">Klima Servisi</a></li>
+            <li><a href="hizmetler.html">Kaporta &amp; Boya</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>İletişim</h4>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div><strong>Adres</strong>Sanayi Mah. D130 Karayolu Cad. No:123<br>Kocaeli / İzmit</div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-phone"></i>
+            <div><strong>Telefon</strong><a href="tel:+905304115022">+90 530 411 50 22</a></div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-clock"></i>
+            <div><strong>Çalışma Saatleri</strong>Hf. İçi: 08:30–18:00 | Hf. Sonu: 08:30–16:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 DRN.EKİN OTO. Tüm hakları saklıdır.</p>
+        <p>Kocaeli / İzmit</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
