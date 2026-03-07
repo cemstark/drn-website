@@ -9,6 +9,7 @@ require 'phpmailer/SMTP.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Geçersiz istek.']);
@@ -98,7 +99,7 @@ try {
     $mail->CharSet    = 'UTF-8';
 
     $mail->setFrom('ekin@drnekinotoizmit.com', 'DRN.EKİN OTO');
-    $mail->addAddress('cemy695@gmail.com', 'Test');
+    $mail->addAddress('ekin@drnekinotoizmit.com', 'DRN.EKİN OTO');
     if (!empty($eposta)) $mail->addReplyTo($eposta, $ad_soyad);
 
     $mail->isHTML(true);
