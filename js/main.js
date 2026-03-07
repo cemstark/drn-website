@@ -6,15 +6,30 @@
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobileNav');
 if (hamburger && mobileNav) {
+  function openNav() {
+    hamburger.classList.add('active');
+    mobileNav.style.display = 'block';
+    mobileNav.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    hamburger.classList.remove('active');
+    mobileNav.style.display = '';
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    mobileNav.classList.toggle('open');
+    mobileNav.classList.contains('open') ? closeNav() : openNav();
   });
   document.querySelectorAll('.mobile-nav a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      mobileNav.classList.remove('open');
-    });
+    link.addEventListener('click', closeNav);
+  });
+  document.addEventListener('click', (e) => {
+    if (mobileNav.classList.contains('open') &&
+        !mobileNav.contains(e.target) &&
+        !hamburger.contains(e.target)) {
+      closeNav();
+    }
   });
 }
 
