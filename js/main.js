@@ -8,23 +8,25 @@
   var nav = document.getElementById('mobileNav');
   if (!btn || !nav) return;
   var isOpen = false;
-  function open() {
+
+  function navOpen() {
     isOpen = true;
     btn.classList.add('active');
     nav.style.cssText = 'display:block!important;';
     document.body.style.overflow = 'hidden';
   }
-  function close() {
+  function navClose() {
     isOpen = false;
     btn.classList.remove('active');
     nav.style.cssText = 'display:none!important;';
     document.body.style.overflow = '';
   }
-  close();
-  btn.addEventListener('click', function(e) { e.stopPropagation(); isOpen ? close() : open(); });
-  nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', close); });
+
+  navClose();
+  btn.addEventListener('click', function(e) { e.stopPropagation(); isOpen ? navClose() : navOpen(); });
+  nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', navClose); });
   document.addEventListener('click', function(e) {
-    if (isOpen && !nav.contains(e.target) && !btn.contains(e.target)) close();
+    if (isOpen && !nav.contains(e.target) && !btn.contains(e.target)) navClose();
   });
 })();
 
@@ -197,7 +199,7 @@ document.querySelectorAll('form[data-form]').forEach(form => {
     for (let i = 0; i <= getMaxIndex(); i++) {
       const d = document.createElement('button');
       d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      d.addEventListener('click', () => { stopAuto(); goTo(i); startAuto(); });
+      d.addEventListener('click', () => goTo(i));
       dotsWrap.appendChild(d);
     }
   }
