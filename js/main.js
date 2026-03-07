@@ -154,6 +154,61 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   });
 });
 
+// --- Reviews Carousel ---
+(function() {
+  const track = document.getElementById('reviewsTrack');
+  const dotsWrap = document.getElementById('carouselDots');
+  if (!track) return;
+
+  const cards = track.querySelectorAll('.testimonial-card');
+  const total = cards.length;
+  let perView = window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+  let current = 0;
+  const maxIndex = total - perView;
+  let autoTimer;
+
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    const dotCount = maxIndex + 1;
+    for (let i = 0; i <= maxIndex; i++) {
+      const d = document.createElement('button');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, maxIndex));
+    const cardWidth = cards[0].offsetWidth + 24;
+    track.style.transform = `translateX(-${current * cardWidth}px)`;
+    updateDots();
+  }
+
+  function next() { goTo(current >= maxIndex ? 0 : current + 1); }
+  function prev() { goTo(current <= 0 ? maxIndex : current - 1); }
+
+  function startAuto() { autoTimer = setInterval(next, 4500); }
+  function stopAuto() { clearInterval(autoTimer); }
+
+  document.querySelector('.carousel-prev')?.addEventListener('click', () => { stopAuto(); prev(); startAuto(); });
+  document.querySelector('.carousel-next')?.addEventListener('click', () => { stopAuto(); next(); startAuto(); });
+
+  buildDots();
+  startAuto();
+
+  window.addEventListener('resize', () => {
+    const newPer = window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+    if (newPer !== perView) { perView = newPer; buildDots(); goTo(0); }
+  });
+})();
+
 // --- Smooth Active Nav Link ---
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-links a, .mobile-nav a').forEach(link => {

@@ -1064,6 +1064,146 @@ select.form-control {
 .quick-call a { display: flex; align-items: center; gap: 10px; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; }
 .quick-call a i { color: var(--red-light); }
 
+/* 22a. Guarantee Badge (Hero) */
+.guarantee-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.35);
+  border-radius: var(--radius);
+  padding: 14px 22px;
+  margin-top: 24px;
+}
+.guarantee-badge i {
+  font-size: 2rem;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+.guarantee-badge strong {
+  display: block;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.guarantee-badge span {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+}
+
+/* 22b. Guarantee Banner (Features Section) */
+.guarantee-banner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: linear-gradient(135deg, #0f1e3d 0%, #1e3a8a 100%);
+  border: 1px solid rgba(59,130,246,0.3);
+  border-radius: var(--radius-lg);
+  padding: 32px 40px;
+  margin-top: 56px;
+  flex-wrap: wrap;
+}
+.gb-icon {
+  width: 72px; height: 72px;
+  background: rgba(59,130,246,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+.gb-content { flex: 1; min-width: 200px; }
+.gb-content h3 { color: #fff; font-size: 1.3rem; margin-bottom: 8px; }
+.gb-content p { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.65; }
+.gb-content p strong { color: #3b82f6; }
+
+/* 22c. Google Rating Badge */
+.google-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 22px;
+  margin-top: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.google-rating-badge .fa-google { color: #4285F4; font-size: 1.1rem; }
+.gr-score { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--black); }
+.gr-stars { color: #f59e0b; font-size: 0.82rem; }
+.gr-count { color: var(--gray); font-size: 0.82rem; }
+
+/* 22d. Reviews Carousel */
+.reviews-carousel-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.reviews-carousel {
+  overflow: hidden;
+  flex: 1;
+}
+.reviews-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.5s ease;
+}
+.reviews-track .testimonial-card {
+  min-width: calc(33.333% - 16px);
+  flex-shrink: 0;
+}
+.tc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.tc-google { color: #4285F4; font-size: 1.1rem; }
+.carousel-btn {
+  width: 44px; height: 44px;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--gray-dark);
+  font-size: 0.9rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+  z-index: 2;
+}
+.carousel-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.carousel-dot {
+  width: 8px; height: 8px;
+  background: var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  padding: 0;
+}
+.carousel-dot.active { background: var(--red); width: 24px; border-radius: 4px; }
+
+@media (max-width: 900px) {
+  .reviews-track .testimonial-card { min-width: calc(50% - 12px); }
+  .guarantee-banner { padding: 24px 28px; }
+}
+@media (max-width: 640px) {
+  .reviews-track .testimonial-card { min-width: 100%; }
+  .guarantee-banner { flex-direction: column; text-align: center; padding: 24px 20px; }
+  .gb-icon { margin: 0 auto; }
+  .guarantee-badge { flex-direction: column; text-align: center; }
+}
+
 /* 22. Reveal Animations */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.revealed { opacity: 1; transform: translateY(0); }
