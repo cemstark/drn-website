@@ -13,13 +13,11 @@
     isOpen = true;
     btn.classList.add('active');
     nav.style.cssText = 'display:block!important;';
-    document.body.style.overflow = 'hidden';
   }
   function navClose() {
     isOpen = false;
     btn.classList.remove('active');
     nav.style.cssText = 'display:none!important;';
-    document.body.style.overflow = '';
   }
 
   navClose();

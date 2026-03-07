@@ -1338,17 +1338,16 @@ select.form-control {
   .hamburger { padding: 8px; margin-right: -8px; }
   .hamburger span { width: 22px; height: 2px; }
 
-  /* Mobile nav dropdown */
+  /* Mobile nav dropdown — kompakt, sayfayı kapatmaz */
   .mobile-nav {
     position: absolute;
     top: 100%;
     left: 0; right: 0;
-    max-height: calc(100vh - 88px);
-    overflow-y: auto;
+    height: auto;
     z-index: 999;
-    background: #0a1836;
+    background: rgba(10, 24, 54, 0.97);
     border-top: 1px solid rgba(59,130,246,0.25);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
   }
   .mobile-nav ul { padding: 0; margin: 0; }
   .mobile-nav ul li a {
