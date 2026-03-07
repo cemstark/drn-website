@@ -98,7 +98,7 @@ try {
     $mail->CharSet    = 'UTF-8';
 
     $mail->setFrom('ekin@drnekinotoizmit.com', 'DRN.EKİN OTO');
-    $mail->addAddress('ekin@drnekinotoizmit.com', 'DRN.EKİN OTO');
+    $mail->addAddress('cemy695@gmail.com', 'Test');
     if (!empty($eposta)) $mail->addReplyTo($eposta, $ad_soyad);
 
     $mail->isHTML(true);
