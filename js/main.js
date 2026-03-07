@@ -154,6 +154,17 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   });
 });
 
+// --- Mobile Action Bar ---
+(function() {
+  const bar = document.createElement('div');
+  bar.className = 'mobile-action-bar';
+  bar.innerHTML = `
+    <a href="tel:+905304115022" class="mab-call"><i class="fa-solid fa-phone"></i> Hemen Ara</a>
+    <a href="randevu.html" class="mab-randevu"><i class="fa-solid fa-calendar-check"></i> Randevu Al</a>
+  `;
+  document.body.appendChild(bar);
+})();
+
 // --- Reviews Carousel ---
 (function() {
   const track = document.getElementById('reviewsTrack');
@@ -164,41 +175,59 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   const total = cards.length;
   let perView = window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
   let current = 0;
-  const maxIndex = total - perView;
   let autoTimer;
 
+  function getMaxIndex() { return Math.max(0, total - perView); }
+
   function buildDots() {
+    if (!dotsWrap) return;
     dotsWrap.innerHTML = '';
-    const dotCount = maxIndex + 1;
-    for (let i = 0; i <= maxIndex; i++) {
+    for (let i = 0; i <= getMaxIndex(); i++) {
       const d = document.createElement('button');
       d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      d.addEventListener('click', () => goTo(i));
+      d.addEventListener('click', () => { stopAuto(); goTo(i); startAuto(); });
       dotsWrap.appendChild(d);
     }
   }
 
   function updateDots() {
+    if (!dotsWrap) return;
     dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => {
       d.classList.toggle('active', i === current);
     });
   }
 
   function goTo(idx) {
-    current = Math.max(0, Math.min(idx, maxIndex));
-    const cardWidth = cards[0].offsetWidth + 24;
+    const max = getMaxIndex();
+    current = Math.max(0, Math.min(idx, max));
+    const gap = 24;
+    const cardWidth = cards[0].offsetWidth + gap;
     track.style.transform = `translateX(-${current * cardWidth}px)`;
     updateDots();
   }
 
-  function next() { goTo(current >= maxIndex ? 0 : current + 1); }
-  function prev() { goTo(current <= 0 ? maxIndex : current - 1); }
+  function next() { goTo(current >= getMaxIndex() ? 0 : current + 1); }
+  function prev() { goTo(current <= 0 ? getMaxIndex() : current - 1); }
 
   function startAuto() { autoTimer = setInterval(next, 4500); }
   function stopAuto() { clearInterval(autoTimer); }
 
   document.querySelector('.carousel-prev')?.addEventListener('click', () => { stopAuto(); prev(); startAuto(); });
   document.querySelector('.carousel-next')?.addEventListener('click', () => { stopAuto(); next(); startAuto(); });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  let touchEndX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      stopAuto();
+      diff > 0 ? next() : prev();
+      startAuto();
+    }
+  }, { passive: true });
 
   buildDots();
   startAuto();
