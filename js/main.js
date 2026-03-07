@@ -171,13 +171,15 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   const dotsWrap = document.getElementById('carouselDots');
   if (!track) return;
 
-  const cards = track.querySelectorAll('.testimonial-card');
+  const cards = Array.from(track.querySelectorAll('.testimonial-card'));
   const total = cards.length;
-  let perView = window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
   let current = 0;
   let autoTimer;
 
-  function getMaxIndex() { return Math.max(0, total - perView); }
+  function getPerView() {
+    return window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+  }
+  function getMaxIndex() { return Math.max(0, total - getPerView()); }
 
   function buildDots() {
     if (!dotsWrap) return;
@@ -198,43 +200,39 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   }
 
   function goTo(idx) {
-    const max = getMaxIndex();
-    current = Math.max(0, Math.min(idx, max));
-    const gap = 24;
-    const cardWidth = cards[0].offsetWidth + gap;
-    track.style.transform = `translateX(-${current * cardWidth}px)`;
+    current = Math.max(0, Math.min(idx, getMaxIndex()));
+    // Calculate offset based on actual rendered card width
+    const cardEl = cards[0];
+    const style = window.getComputedStyle(track);
+    const gap = parseFloat(style.gap) || 24;
+    const offset = current * (cardEl.offsetWidth + gap);
+    track.style.transform = `translateX(-${offset}px)`;
     updateDots();
   }
 
   function next() { goTo(current >= getMaxIndex() ? 0 : current + 1); }
   function prev() { goTo(current <= 0 ? getMaxIndex() : current - 1); }
-
   function startAuto() { autoTimer = setInterval(next, 4500); }
   function stopAuto() { clearInterval(autoTimer); }
 
   document.querySelector('.carousel-prev')?.addEventListener('click', () => { stopAuto(); prev(); startAuto(); });
   document.querySelector('.carousel-next')?.addEventListener('click', () => { stopAuto(); next(); startAuto(); });
 
-  // Touch/swipe support
-  let touchStartX = 0;
-  let touchEndX = 0;
-  track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  // Touch/swipe
+  let tx = 0;
+  track.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 50) {
-      stopAuto();
-      diff > 0 ? next() : prev();
-      startAuto();
-    }
+    const diff = tx - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { stopAuto(); diff > 0 ? next() : prev(); startAuto(); }
   }, { passive: true });
 
   buildDots();
   startAuto();
 
+  let resizeTimer;
   window.addEventListener('resize', () => {
-    const newPer = window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
-    if (newPer !== perView) { perView = newPer; buildDots(); goTo(0); }
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { buildDots(); goTo(0); }, 200);
   });
 })();
 
