@@ -3,35 +3,30 @@
    ============================================= */
 
 // --- Hamburger / Mobile Nav ---
-const hamburger = document.getElementById('hamburger');
-const mobileNav = document.getElementById('mobileNav');
-if (hamburger && mobileNav) {
-  function openNav() {
-    hamburger.classList.add('active');
-    mobileNav.style.display = 'block';
-    mobileNav.classList.add('open');
+(function() {
+  var btn = document.getElementById('hamburger');
+  var nav = document.getElementById('mobileNav');
+  if (!btn || !nav) return;
+  var isOpen = false;
+  function open() {
+    isOpen = true;
+    btn.classList.add('active');
+    nav.style.cssText = 'display:block!important;';
     document.body.style.overflow = 'hidden';
   }
-  function closeNav() {
-    hamburger.classList.remove('active');
-    mobileNav.style.display = '';
-    mobileNav.classList.remove('open');
+  function close() {
+    isOpen = false;
+    btn.classList.remove('active');
+    nav.style.cssText = 'display:none!important;';
     document.body.style.overflow = '';
   }
-  hamburger.addEventListener('click', () => {
-    mobileNav.classList.contains('open') ? closeNav() : openNav();
+  close();
+  btn.addEventListener('click', function(e) { e.stopPropagation(); isOpen ? close() : open(); });
+  nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', close); });
+  document.addEventListener('click', function(e) {
+    if (isOpen && !nav.contains(e.target) && !btn.contains(e.target)) close();
   });
-  document.querySelectorAll('.mobile-nav a').forEach(link => {
-    link.addEventListener('click', closeNav);
-  });
-  document.addEventListener('click', (e) => {
-    if (mobileNav.classList.contains('open') &&
-        !mobileNav.contains(e.target) &&
-        !hamburger.contains(e.target)) {
-      closeNav();
-    }
-  });
-}
+})();
 
 // --- Sticky Navbar ---
 const navbar = document.getElementById('navbar');
@@ -227,22 +222,20 @@ document.querySelectorAll('form[data-form]').forEach(form => {
 
   function next() { goTo(current >= getMaxIndex() ? 0 : current + 1); }
   function prev() { goTo(current <= 0 ? getMaxIndex() : current - 1); }
-  function startAuto() { autoTimer = setInterval(next, 4500); }
-  function stopAuto() { clearInterval(autoTimer); }
 
-  document.querySelector('.carousel-prev')?.addEventListener('click', () => { stopAuto(); prev(); startAuto(); });
-  document.querySelector('.carousel-next')?.addEventListener('click', () => { stopAuto(); next(); startAuto(); });
+  document.querySelector('.carousel-prev')?.addEventListener('click', prev);
+  document.querySelector('.carousel-next')?.addEventListener('click', next);
 
   // Touch/swipe
   let tx = 0;
   track.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', e => {
     const diff = tx - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { stopAuto(); diff > 0 ? next() : prev(); startAuto(); }
+    if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
   }, { passive: true });
 
   buildDots();
-  startAuto();
+  // Auto-scroll kapalı — kullanıcı manuel kaydırır
 
   let resizeTimer;
   window.addEventListener('resize', () => {
