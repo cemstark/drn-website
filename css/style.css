@@ -1327,30 +1327,27 @@ select.form-control {
   .navbar { top: 36px; }
   .navbar .container { height: 60px; }
 
-  /* Mobile nav improvements */
+  /* Mobile nav */
   .mobile-nav {
     position: fixed;
     top: 96px; left: 0; right: 0;
-    bottom: 0;
+    bottom: 72px;
     overflow-y: auto;
     z-index: 998;
+    background: #0a1836;
   }
-  .mobile-nav.open {
-    display: block;
-    animation: mobileNavIn 0.25s ease;
-  }
-  @keyframes mobileNavIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .mobile-nav ul { padding: 8px 20px; }
+  .mobile-nav ul { padding: 4px 0; }
   .mobile-nav ul li a {
-    padding: 16px 0;
-    font-size: 1rem;
+    padding: 18px 24px;
+    font-size: 0.95rem;
     border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.85);
   }
-  .mobile-nav-cta { padding: 20px 20px 100px; }
-  .mobile-nav-cta .btn { width: 100%; justify-content: center; padding: 16px; font-size: 1rem; }
+  .mobile-nav ul li a:hover, .mobile-nav ul li a.active { color: #3b82f6; background: rgba(59,130,246,0.08); }
+  .mobile-nav-cta { padding: 16px 24px 24px; }
+  .mobile-nav-cta .btn { width: 100%; justify-content: center; padding: 16px; font-size: 0.95rem; }
 
   /* Hero */
   .hero { padding-top: 96px; min-height: auto; padding-bottom: 48px; }
@@ -1405,15 +1402,36 @@ select.form-control {
   .guarantee-cta-card { max-width: 100%; padding: 24px 20px; }
   .gcta-num { font-size: 3.5rem; }
 
-  /* Reviews carousel */
-  .reviews-track .testimonial-card {
-    min-width: 100%;
-    padding: 18px 16px;
-    font-size: 0.88rem;
+  /* Reviews carousel — scroll snap on mobile */
+  .reviews-carousel-wrap { display: block; position: relative; }
+  .reviews-carousel {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  .reviews-track .testimonial-text { font-size: 0.85rem; line-height: 1.6; }
-  .reviews-track .author-name { font-size: 0.82rem; }
-  .reviews-track .testimonial-avatar { width: 36px; height: 36px; font-size: 0.85rem; }
+  .reviews-carousel::-webkit-scrollbar { display: none; }
+  .reviews-track {
+    display: flex;
+    gap: 14px;
+    padding: 4px 16px 8px;
+    width: max-content;
+    transform: none !important;
+  }
+  .reviews-track .testimonial-card {
+    min-width: 82vw;
+    max-width: 82vw;
+    scroll-snap-align: start;
+    padding: 16px;
+    font-size: 0.86rem;
+    flex-shrink: 0;
+  }
+  .reviews-track .testimonial-text { font-size: 0.84rem; line-height: 1.55; margin-bottom: 14px; }
+  .reviews-track .author-name { font-size: 0.8rem; }
+  .reviews-track .testimonial-avatar { width: 34px; height: 34px; font-size: 0.8rem; }
+  .carousel-btn { display: none; }
+  .carousel-dots { margin-top: 16px; }
   .google-rating-badge { flex-wrap: wrap; justify-content: center; gap: 6px; padding: 10px 16px; }
 
   /* CTA section */
