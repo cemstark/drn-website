@@ -185,6 +185,7 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255,255,255,0.07);
   transition: var(--transition);
+  overflow: visible;
 }
 .navbar.scrolled {
   background: #0a1836;
@@ -1327,14 +1328,17 @@ select.form-control {
   .navbar { top: 36px; }
   .navbar .container { height: 60px; }
 
-  /* Mobile nav */
+  /* Mobile nav — absolute içinde navbar, fixed yerine */
   .mobile-nav {
-    position: fixed;
-    top: 96px; left: 0; right: 0;
-    bottom: 72px;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    max-height: calc(100vh - 96px);
     overflow-y: auto;
-    z-index: 998;
+    z-index: 999;
     background: #0a1836;
+    border-top: 2px solid rgba(59,130,246,0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
   .mobile-nav ul { padding: 4px 0; }
   .mobile-nav ul li a {
