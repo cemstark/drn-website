@@ -1346,6 +1346,7 @@ select.form-control {
     left: auto;
     width: 220px;
     height: auto;
+    overflow: visible;
     z-index: 999;
     background: rgba(10, 24, 54, 0.88);
     backdrop-filter: blur(20px);
@@ -1354,7 +1355,6 @@ select.form-control {
     border-top: 2px solid #3b82f6;
     border-radius: 12px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    overflow: hidden;
   }
   .mobile-nav ul { padding: 8px 0; margin: 0; }
   .mobile-nav ul li a {
