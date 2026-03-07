@@ -1324,38 +1324,58 @@ select.form-control {
   body { padding-bottom: 72px; }
 
   /* Header */
-  .topbar { height: 36px; }
-  .navbar { top: 36px; }
-  .navbar .container { height: 60px; }
+  .topbar { height: 34px; }
+  .topbar-item { font-size: 0.7rem; }
+  .topbar-phone { font-size: 0.75rem; }
+  .navbar { top: 34px; }
+  .navbar .container { height: 54px; padding: 0 16px; }
 
-  /* Mobile nav — absolute içinde navbar, fixed yerine */
+  /* Logo küçültme */
+  .tl-brand, .tl-oto { font-size: 1.25rem; letter-spacing: 1.5px; }
+  .tl-sep { height: 20px; }
+
+  /* Hamburger */
+  .hamburger { padding: 8px; margin-right: -8px; }
+  .hamburger span { width: 22px; height: 2px; }
+
+  /* Mobile nav dropdown */
   .mobile-nav {
     position: absolute;
     top: 100%;
     left: 0; right: 0;
-    max-height: calc(100vh - 96px);
+    max-height: calc(100vh - 88px);
     overflow-y: auto;
     z-index: 999;
     background: #0a1836;
-    border-top: 2px solid rgba(59,130,246,0.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border-top: 1px solid rgba(59,130,246,0.25);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
   }
-  .mobile-nav ul { padding: 4px 0; }
+  .mobile-nav ul { padding: 0; margin: 0; }
   .mobile-nav ul li a {
-    padding: 18px 24px;
-    font-size: 0.95rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 15px 20px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     display: flex;
     align-items: center;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.8);
+    min-height: 50px;
   }
-  .mobile-nav ul li a:hover, .mobile-nav ul li a.active { color: #3b82f6; background: rgba(59,130,246,0.08); }
-  .mobile-nav-cta { padding: 16px 24px 24px; }
-  .mobile-nav-cta .btn { width: 100%; justify-content: center; padding: 16px; font-size: 0.95rem; }
+  .mobile-nav ul li a:active { background: rgba(59,130,246,0.12); color: #3b82f6; }
+  .mobile-nav ul li:last-child a { border-bottom: none; }
+  .mobile-nav-cta { padding: 12px 20px 20px; background: rgba(0,0,0,0.2); }
+  .mobile-nav-cta .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 0.88rem;
+  }
 
-  /* Hero */
-  .hero { padding-top: 96px; min-height: auto; padding-bottom: 48px; }
-  .hero-container { padding: 40px 20px 40px; }
+  /* Hero — navbar 34+54=88px */
+  .hero { padding-top: 88px; min-height: auto; padding-bottom: 48px; }
+  .hero-container { padding: 36px 16px 36px; }
   .hero h1 { font-size: clamp(1.9rem, 7vw, 2.4rem); margin-bottom: 16px; }
   .hero-subtitle { font-size: 0.95rem; margin-bottom: 28px; }
   .hero-badge { font-size: 0.7rem; padding: 7px 14px; margin-bottom: 20px; }
@@ -1366,8 +1386,8 @@ select.form-control {
   .scroll-indicator { display: none; }
 
   /* Page header */
-  .page-header { padding: 120px 0 44px; }
-  .page-header h1 { font-size: 1.8rem; }
+  .page-header { padding: 108px 0 40px; }
+  .page-header h1 { font-size: 1.7rem; }
 
   /* Sections */
   .section { padding: 48px 0; }
