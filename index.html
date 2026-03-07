@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
@@ -90,13 +90,6 @@
         <a href="hizmetler.html" class="btn btn-outline btn-lg">
           <i class="fa-solid fa-wrench"></i> Hizmetlerimiz
         </a>
-      </div>
-      <div class="guarantee-badge">
-        <i class="fa-solid fa-shield-halved"></i>
-        <div>
-          <strong>1 Yıl Onarım Garantisi</strong>
-          <span>Tüm kaporta ve boya işlemlerinde</span>
-        </div>
       </div>
       <div class="hero-info">
         <div class="hero-info-item">
@@ -221,19 +214,43 @@
           <p>Kaliteli hizmeti herkesin ulaşabileceği fiyatlarla sunuyoruz.</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- GARANTİ BANNER -->
-      <div class="guarantee-banner reveal">
-        <div class="gb-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="gb-content">
-          <h3>1 Yıl Onarım Garantisi</h3>
-          <p>Tüm kaporta, boya ve hasar onarım hizmetlerimizde <strong>1 yıl işçilik garantisi</strong> sunuyoruz. İşimizin arkasındayız.</p>
+  <!-- GARANTİ BÖLÜMÜ -->
+  <section class="guarantee-section">
+    <div class="container">
+      <div class="guarantee-inner reveal">
+        <div class="guarantee-left">
+          <div class="guarantee-icon-wrap">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="guarantee-text">
+            <span class="guarantee-tag">Güvenceniz</span>
+            <h2>1 Yıl Onarım <span>Garantisi</span></h2>
+            <p>Tüm kaporta, boya ve hasar onarım işlemlerimizde <strong>1 yıl işçilik garantisi</strong> sunuyoruz. İşimizin kalitesine güveniyoruz ve bu güveni size yansıtıyoruz.</p>
+            <ul class="guarantee-list">
+              <li><i class="fa-solid fa-circle-check"></i> Kaporta onarım garantisi</li>
+              <li><i class="fa-solid fa-circle-check"></i> Boya kalite garantisi</li>
+              <li><i class="fa-solid fa-circle-check"></i> Hasar onarım garantisi</li>
+              <li><i class="fa-solid fa-circle-check"></i> İşçilik hatalarında ücretsiz düzeltme</li>
+            </ul>
+          </div>
         </div>
-        <a href="randevu.html" class="btn btn-primary">
-          <i class="fa-solid fa-calendar-check"></i> Randevu Al
-        </a>
+        <div class="guarantee-right">
+          <div class="guarantee-cta-card">
+            <div class="gcta-num">1</div>
+            <div class="gcta-label">Yıl</div>
+            <div class="gcta-desc">Tam Onarım<br>Garantisi</div>
+            <a href="randevu.html" class="btn btn-primary" style="margin-top:24px; width:100%; justify-content:center;">
+              <i class="fa-solid fa-calendar-check"></i> Randevu Al
+            </a>
+            <a href="tel:+905304115022" class="btn btn-outline" style="margin-top:10px; width:100%; justify-content:center;">
+              <i class="fa-solid fa-phone"></i> Bizi Arayın
+            </a>
+          </div>
+        </div>
       </div>
-
     </div>
   </section>
 
@@ -291,12 +308,6 @@
 
             <div class="testimonial-card">
               <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Aracımın boyası çok profesyonelce yapıldı. Renk uyumu mükemmel, boya kalitesi de çok iyi. Kesinlikle tavsiye ederim."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">AY</div><div><div class="author-name">Ayşe Y.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
               <p class="testimonial-text">"Kaza sonrası aracımı getirdim. Hem fiyat hem kalite hem hız açısından çok memnun kaldım. Ustalık gerektiren işleri başarıyla yaptılar."</p>
               <div class="testimonial-author"><div class="testimonial-avatar">HÖ</div><div><div class="author-name">Hasan Ö.</div><div class="author-vehicle">Google Yorumu</div></div></div>
             </div>
@@ -309,98 +320,14 @@
 
             <div class="testimonial-card">
               <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Arka tampon değişimi yaptırdım. Hem uygun fiyatlı hem de kaliteli işçilik. Usta arkadaşlar çok ilgili ve samimi. Teşekkürler."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">KD</div><div><div class="author-name">Kemal D.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Çok güzel bir servis yeri. Aracımı görmelerini istediğimde detaylı inceleme yaptılar. Dürüst ve güvenilir bir yer, rahatlıkla tavsiye edebilirim."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">NŞ</div><div><div class="author-name">Nilüfer Ş.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Aracımın ön kaputu ezilmişti, sanki hiç kaza geçirmemiş gibi oldu. İş çıktısı gerçekten etkileyici. Mutlaka tavsiye ederim."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">ET</div><div><div class="author-name">Emre T.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"İzmit'te en güvendiğim servis burası. Her gelişimde aynı kalite ve ilgiyi görüyorum. Fiyatlar piyasaya göre makul, işçilik kusursuz."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">SB</div><div><div class="author-name">Serkan B.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Sigortalı hasar tamiri yaptırdım. Süreç boyunca beni bilgilendirdiler, hiçbir sürpriz çıkmadı. Sonuç mükemmeldi, teşekkürler."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">GÇ</div><div><div class="author-name">Gülay Ç.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Boya işi için başka yerler gezdim ama burası hem en uygun fiyat hem de en kaliteli işçilik sundu. Çok memnunum."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">OK</div><div><div class="author-name">Okan K.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Kapı göbeğine çarpmıştım, boya ve onarım yaptırdım. Renk tutturmaları mükemmel, belli bile olmuyor. Emeği geçen herkese teşekkürler."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">ZA</div><div><div class="author-name">Zeynep A.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
               <p class="testimonial-text">"Arkadaşın tavsiyesiyle geldim, yanılmamışım. Gerçekten dürüst, güvenilir ve kaliteli bir servis. Kocaeli'de arayanlar için kesinlikle tavsiye."</p>
               <div class="testimonial-author"><div class="testimonial-avatar">BÜ</div><div><div class="author-name">Burak Ü.</div><div class="author-vehicle">Google Yorumu</div></div></div>
             </div>
 
             <div class="testimonial-card">
               <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Tampon tamiri ve boya işi yaptırdım. Sonuç beklediğimden çok daha iyi oldu. Usta çok titiz ve özenli çalışıyor. Kesinlikle tekrar gelirim."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">LD</div><div><div class="author-name">Leyla D.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Aracımın sol tarafı hasar görmüştü. Çok özenli ve kaliteli tamir yaptılar, aracım yeni gibi oldu. Fiyat da gayet uygundu."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">TY</div><div><div class="author-name">Taner Y.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Çok hızlı ve kaliteli hizmet aldım. Özellikle renk uyumu konusunda gerçekten başarılılar. Aracımı teslim aldığımda çok mutlu oldum."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">PC</div><div><div class="author-name">Pınar C.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Aracımın ön tamponunu tamir ettirdim, hem uygun fiyat hem de mükemmel işçilik. Başka hiçbir yere gitmeyeceğim artık. Teşekkürler."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">ÜS</div><div><div class="author-name">Ümit S.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"İşin uzmanı gerçek bir ekip. Detaylara verdikleri özen, müşteriye karşı saygılı tutumları ile fark yaratıyorlar. Her zaman buraya geleceğim."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">RK</div><div><div class="author-name">Rıdvan K.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Arka tampon ve far çevresindeki boya işini yaptırdım. Gayet başarılı bir iş çıkardılar. Fiyat performans dengesi çok iyi. Tavsiye ederim."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">İB</div><div><div class="author-name">İlker B.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Çok profesyonel bir ekip. Sigortayla ilgili tüm süreçte bana yardımcı oldular. Sonuç mükemmel, aracım yeni araç gibi oldu."</p>
+              <p class="testimonial-text">"Çok profesyonel bir ekip. Sigortayla ilgili tüm süreçte bana yardımcı oldular. Sonuç mükemmel, aracım yeni araç gibi oldu. Kesinlikle tavsiye ederim."</p>
               <div class="testimonial-author"><div class="testimonial-avatar">DC</div><div><div class="author-name">Deniz C.</div><div class="author-vehicle">Google Yorumu</div></div></div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Kaza hasarı tamiri için geldim. İşi çok özenli yaptılar, söz verdikleri tarihte teslim ettiler. Fiyat konusunda da dürüst davrandılar. Teşekkürler."</p>
-              <div class="testimonial-author"><div class="testimonial-avatar">VG</div><div><div class="author-name">Volkan G.</div><div class="author-vehicle">Google Yorumu</div></div></div>
             </div>
 
           </div>
@@ -411,7 +338,7 @@
       <div class="carousel-dots" id="carouselDots"></div>
 
       <div class="text-center" style="margin-top:32px;">
-        <a href="https://www.google.com/maps/place/DRNEK%C4%B0N+OTO+%C4%B0ZM%C4%B0T+HASAR+ONARIM+MERKEZi/@40.7448384,29.9506304,17z" target="_blank" rel="noopener" class="btn btn-outline-red">
+        <a href="https://www.google.com/maps/place/DRNEK%C4%B0N+OTO+%C4%B0ZM%C4%B0T+HASAR+ONARIM+MERKEZi/@40.7448384,29.9529264,17z/data=!3m1!4b1!4m6!3m5!1s0x14cb4542cc97ee03:0xe83d51010c4446cb!8m2!3d40.7448344!4d29.9555013!16s%2Fg%2F11c76n_frp?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn btn-outline-red">
           <i class="fa-brands fa-google"></i> Google'da Tüm Yorumları Gör
         </a>
       </div>

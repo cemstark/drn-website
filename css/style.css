@@ -1064,59 +1064,91 @@ select.form-control {
 .quick-call a { display: flex; align-items: center; gap: 10px; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; }
 .quick-call a i { color: var(--red-light); }
 
-/* 22a. Guarantee Badge (Hero) */
-.guarantee-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.35);
-  border-radius: var(--radius);
-  padding: 14px 22px;
-  margin-top: 24px;
-}
-.guarantee-badge i {
-  font-size: 2rem;
-  color: #3b82f6;
-  flex-shrink: 0;
-}
-.guarantee-badge strong {
-  display: block;
-  color: #fff;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-.guarantee-badge span {
-  color: rgba(255,255,255,0.6);
-  font-size: 0.8rem;
-}
 
-/* 22b. Guarantee Banner (Features Section) */
-.guarantee-banner {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  background: linear-gradient(135deg, #0f1e3d 0%, #1e3a8a 100%);
-  border: 1px solid rgba(59,130,246,0.3);
-  border-radius: var(--radius-lg);
-  padding: 32px 40px;
-  margin-top: 56px;
-  flex-wrap: wrap;
+/* 22b. Guarantee Section */
+.guarantee-section {
+  background: linear-gradient(135deg, #0a1836 0%, #0f1e3d 60%, #1e3a8a 100%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
 }
-.gb-icon {
-  width: 72px; height: 72px;
+.guarantee-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(59,130,246,0.15) 0%, transparent 55%);
+}
+.guarantee-inner {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.guarantee-left { display: flex; gap: 32px; align-items: flex-start; }
+.guarantee-icon-wrap {
+  width: 90px; height: 90px;
   background: rgba(59,130,246,0.15);
+  border: 2px solid rgba(59,130,246,0.3);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #3b82f6;
   flex-shrink: 0;
 }
-.gb-content { flex: 1; min-width: 200px; }
-.gb-content h3 { color: #fff; font-size: 1.3rem; margin-bottom: 8px; }
-.gb-content p { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.65; }
-.gb-content p strong { color: #3b82f6; }
+.guarantee-text { flex: 1; }
+.guarantee-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+}
+.guarantee-text h2 { color: #fff; font-size: 2rem; margin-bottom: 16px; line-height: 1.2; }
+.guarantee-text h2 span { color: #3b82f6; }
+.guarantee-text > p { color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.75; margin-bottom: 24px; }
+.guarantee-text > p strong { color: #fff; }
+.guarantee-list { display: flex; flex-direction: column; gap: 10px; }
+.guarantee-list li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.8); font-size: 0.9rem; }
+.guarantee-list li i { color: #3b82f6; font-size: 0.85rem; flex-shrink: 0; }
+.guarantee-cta-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+.gcta-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 5rem;
+  font-weight: 800;
+  color: #3b82f6;
+  line-height: 1;
+}
+.gcta-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.gcta-desc {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+@media (max-width: 900px) {
+  .guarantee-inner { grid-template-columns: 1fr; gap: 36px; }
+  .guarantee-cta-card { max-width: 320px; margin: 0 auto; }
+}
+@media (max-width: 640px) {
+  .guarantee-left { flex-direction: column; gap: 20px; }
+  .guarantee-icon-wrap { margin: 0 auto; }
+  .guarantee-text h2 { font-size: 1.6rem; }
+}
 
 /* 22c. Google Rating Badge */
 .google-rating-badge {
