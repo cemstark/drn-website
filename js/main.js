@@ -187,7 +187,7 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   let autoTimer;
 
   function getPerView() {
-    return window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+    return window.innerWidth <= 640 ? 1 : window.innerWidth <= 1100 ? 2 : 3;
   }
   function getMaxIndex() { return Math.max(0, total - getPerView()); }
 
