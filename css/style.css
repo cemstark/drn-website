@@ -201,7 +201,28 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   text-decoration: none;
+  padding: 4px 0;
 }
+
+/* ---- Image Logo ---- */
+.logo-img {
+  max-height: 48px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.navbar-logo:hover .logo-img {
+  transform: scale(1.03);
+}
+.footer-logo-img {
+  max-height: 80px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 20px;
+}
+
 
 /* ---- Text Logo ---- */
 .text-logo {
