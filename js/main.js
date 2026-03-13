@@ -244,6 +244,17 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   });
 })();
 
+// --- Blog Toggle ---
+function toggleBlog(el) {
+  var detail = el.closest('.blog-card-body').querySelector('.blog-detail');
+  if (!detail) return;
+  var isOpen = detail.style.display !== 'none';
+  detail.style.display = isOpen ? 'none' : 'block';
+  el.innerHTML = isOpen
+    ? 'Devamını Oku <i class="fa-solid fa-arrow-right"></i>'
+    : 'Yazıyı Kapat <i class="fa-solid fa-arrow-up"></i>';
+}
+
 // --- Smooth Active Nav Link ---
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-links a, .mobile-nav a').forEach(link => {

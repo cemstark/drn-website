@@ -897,6 +897,19 @@ h1, h2, h3, h4, h5, h6 {
 .blog-card-body h3:hover { color: var(--red); cursor: pointer; }
 .blog-card-body p { font-size: 0.86rem; color: var(--gray); line-height: 1.7; flex: 1; margin-bottom: 20px; }
 .blog-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.blog-detail {
+  padding: 16px 0 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+}
+.blog-detail p {
+  font-size: 0.88rem;
+  color: var(--gray-dark);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.blog-detail p:last-child { margin-bottom: 0; }
+.blog-detail strong { color: var(--black); }
 .read-more {
   color: var(--red);
   font-family: 'Montserrat', sans-serif;
