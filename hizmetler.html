@@ -1,18 +1,37 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr" data-tablet-nav="balanced">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DRNEKİN OTO hizmetleri: Yağ değişimi, lastik servisi, fren tamiri, motor tamiri, elektrik, kaporta, klima, muayene ve egzoz.">
+  <meta name="description" content="DRNEKİN OTO hizmetleri: Bakım, kaporta, boya fırını, elektrik, PDR, rot-balance, ekspertiz, pasta cila ve mekanik hizmetleri.">
   <title>Hizmetler | DRNEKİN OTO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<<<<<<< Updated upstream
-  <link rel="stylesheet" href="css/style.css?v=17">
-=======
-  <link rel="stylesheet" href="css/style.css?v=17"></head>
+  <link rel="stylesheet" href="css/style.css?v=18">
+  <style>
+    /* Service cards with image */
+    .service-detail-card {
+      overflow: hidden;
+    }
+    .service-detail-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px 12px 0 0;
+      transition: transform 0.4s ease;
+    }
+    .service-detail-card:hover .service-detail-img {
+      transform: scale(1.05);
+    }
+    .service-detail-img-wrap {
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+    }
+  </style>
+</head>
 <body>
 
   <!-- TOP INFO BAR -->
@@ -85,74 +104,74 @@
       </div>
       <div class="services-detail-grid">
 
+        <!-- 1. BAKIM -->
         <div class="service-detail-card reveal reveal-d1">
+          <div class="service-detail-img-wrap">
+            <img src="images/bakim.png" alt="Araç Bakım" class="service-detail-img">
+          </div>
           <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-oil-can"></i></div>
-            <h3>Yağ Değişimi</h3>
+            <div class="service-detail-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <h3>Bakım</h3>
           </div>
           <div class="service-detail-body">
-            <p>Motor yağı, aracınızın kalbinin sağlıklı çalışması için hayati önem taşır. Periyodik yağ değişimi ile motor ömrünü uzatıyor, yakıt tasarrufu sağlıyoruz.</p>
+            <p>Aracınızın uzun ömürlü ve güvenli çalışması için periyodik bakım hizmetleri sunuyoruz. Motor yağı, filtreler ve genel araç kontrolü ile aracınızı her zaman zirvede tutun.</p>
             <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Motor yağı değişimi (tam sentetik / yarı sentetik)</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Yağ filtresi değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Hava filtresi kontrolü ve değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Motor genel kontrolü</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Motor yağı ve filtre değişimi</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Hava filtresi ve karbonlu bakım</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Periyodik bakım paketi</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Genel araç kontrolü</li>
             </ul>
           </div>
         </div>
 
+        <!-- 2. KAPORTA -->
         <div class="service-detail-card reveal reveal-d2">
+          <div class="service-detail-img-wrap">
+            <img src="images/boya.jpg" alt="Kaporta" class="service-detail-img">
+          </div>
           <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-circle-dot"></i></div>
-            <h3>Lastik Servisi</h3>
+            <div class="service-detail-icon"><i class="fa-solid fa-car-burst"></i></div>
+            <h3>Kaporta</h3>
           </div>
           <div class="service-detail-body">
-            <p>Doğru lastik seçimi ve düzenli bakım sürüş güvenliğinizi doğrudan etkiler. Tüm marka lastikler için profesyonel montaj ve ayar hizmetleri.</p>
+            <p>Trafik kazası veya çarpma hasarı sonrası aracınızın kaportasını orijinal haline getiriyoruz. Çekme, düzeltme ve şekillendirme işlemlerinde uzman ekibimiz yanınızda.</p>
             <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Lastik montaj ve söküm</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Balans ayarı</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Rot ve rotil ayarı</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Lastik tamir ve şişirme</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Kaza hasarı kaporta onarımı</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Çekme ve şekillendirme</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Panel değişimi ve kaynak</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Hasar tespiti ve ekspertiz</li>
             </ul>
           </div>
         </div>
 
+        <!-- 3. BOYA FIRINI -->
         <div class="service-detail-card reveal reveal-d3">
+          <div class="service-detail-img-wrap">
+            <img src="images/boya_firini.png" alt="Boya Fırını" class="service-detail-img">
+          </div>
           <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-hand-holding-hand"></i></div>
-            <h3>Fren Tamiri</h3>
+            <div class="service-detail-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+            <h3>Boya Fırını</h3>
           </div>
           <div class="service-detail-body">
-            <p>Fren sistemi güvenliğinizin can sigortasıdır. Yıpranmış balataları zamanında değiştirerek frenleme mesafenizi kısaltın, kazaları önleyin.</p>
+            <p>Modern boya fırınımızla fabrikasyon kalitesinde boya hizmeti sunuyoruz. Tam renk eşleştirme ve UV dayanımlı boyalar ile aracınız ilk günkü parlaklığına kavuşur.</p>
             <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Fren balatası değişimi (ön/arka)</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Fren diski değişimi ve tornalama</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Fren hidroliği değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> ABS sistemi kontrolü</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Fırın boya uygulaması</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Renk eşleştirme ve harmanlama</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Parça ve tam araç boyama</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> 1 yıl boya garantisi</li>
             </ul>
           </div>
         </div>
 
+        <!-- 4. ELEKTRİK -->
         <div class="service-detail-card reveal reveal-d1">
-          <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-gears"></i></div>
-            <h3>Motor Tamiri</h3>
+          <div class="service-detail-img-wrap">
+            <img src="images/elektrik.jpg" alt="Elektrik" class="service-detail-img">
           </div>
-          <div class="service-detail-body">
-            <p>Modern teşhis cihazlarımızla motor arızanızı hızla tespit eder, ekonomik çözümler sunarak aracınızı en kısa sürede yola hazırlarız.</p>
-            <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Elektronik arıza tespit (OBD)</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Triger seti değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Karbüratör / enjektör temizliği</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Motor revizyonu</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="service-detail-card reveal reveal-d2">
           <div class="service-detail-header">
             <div class="service-detail-icon"><i class="fa-solid fa-bolt"></i></div>
-            <h3>Elektrik Sistemi</h3>
+            <h3>Elektrik</h3>
           </div>
           <div class="service-detail-body">
             <p>Modern araçların elektrik sistemleri giderek karmaşıklaşmaktadır. Uzman elektriker kadromuzla tüm elektrik arızalarınızı güvenle çözüyoruz.</p>
@@ -165,66 +184,102 @@
           </div>
         </div>
 
-        <div class="service-detail-card reveal reveal-d3">
-          <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-paintbrush"></i></div>
-            <h3>Kaporta &amp; Boya</h3>
-          </div>
-          <div class="service-detail-body">
-            <p>Trafik kazası veya çarpma hasarı sonrası aracınızı orijinal görünümüne kavuşturuyoruz. Renk eşleştirme konusunda uzman ekibimiz hizmetinizde.</p>
-            <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Kaza hasarı onarımı</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Göçük düzeltme (boyasız / boyalı)</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Parça boyama ve renk eşleştirme</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Tam araç boya yenileme</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="service-detail-card reveal reveal-d1">
-          <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-snowflake"></i></div>
-            <h3>Klima Servisi</h3>
-          </div>
-          <div class="service-detail-body">
-            <p>Sıcak yaz günlerinde ve soğuk kış aylarında konforlu sürüş için klima sisteminizi düzenli olarak bakımdan geçirin.</p>
-            <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Klima gazı dolumu (R134a / R1234yf)</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Kompresör bakımı ve değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Polen filtresi değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Kabin dezenfeksiyonu</li>
-            </ul>
-          </div>
-        </div>
-
+        <!-- 5. PDR (Boyasız Göçük Düzeltme) -->
         <div class="service-detail-card reveal reveal-d2">
+          <div class="service-detail-img-wrap">
+            <img src="images/pdr.jpg" alt="PDR Boyasız Göçük Düzeltme" class="service-detail-img">
+          </div>
           <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-            <h3>Genel Muayene</h3>
+            <div class="service-detail-icon"><i class="fa-solid fa-compress"></i></div>
+            <h3>PDR – Boyasız Göçük Düzeltme</h3>
           </div>
           <div class="service-detail-body">
-            <p>Kapsamlı araç kontrolümüzle olası arızaları önceden tespit eder, büyük masrafların önüne geçeriz. Düzenli kontrol aracınızın ömrünü uzatır.</p>
+            <p>Dolu hasarı, küçük çarpma ve göçükleri boyasız göçük düzeltme tekniğiyle orijinal boyayı koruyarak gideriyoruz. Hızlı, ekonomik ve boyasız çözüm.</p>
             <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Elektronik arıza tarama</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Sıvı seviyeleri kontrolü</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Süspansiyon ve direksiyon kontrolü</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Egzoz emisyon ölçümü</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Dolu ve doluç hasarı onarımı</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Küçük ve orta göçük düzeltme</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Orijinal boya korunur</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Araç değer kaybını önler</li>
             </ul>
           </div>
         </div>
 
+        <!-- 6. ROT-BALANCE -->
         <div class="service-detail-card reveal reveal-d3">
+          <div class="service-detail-img-wrap">
+            <img src="images/balance.png" alt="Rot Balance" class="service-detail-img">
+          </div>
           <div class="service-detail-header">
-            <div class="service-detail-icon"><i class="fa-solid fa-wind"></i></div>
-            <h3>Egzoz Sistemi</h3>
+            <div class="service-detail-icon"><i class="fa-solid fa-rotate"></i></div>
+            <h3>Rot – Balance</h3>
           </div>
           <div class="service-detail-body">
-            <p>Arızalı egzoz sistemi hem çevre kirliliğine hem de yakıt tüketimine yol açar. Uzman ekibimizle egzoz sisteminizi hızla onarıyoruz.</p>
+            <p>Sürüş güvenliğiniz ve konforunuz için rot ve balans ayarını ihmal etmeyin. Titreşim ve düzensiz lastik aşınması sorunlarını kökten çözüyoruz.</p>
             <ul class="service-feature-list">
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Egzoz borusu onarım ve değişim</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Susturucu değişimi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Katalitik konvertör servisi</li>
-              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Emisyon testi ve ayarı</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Balans (denge) ayarı</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Rot ve rotil ayarı</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Direksiyon hizalama</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Süspansiyon kontrolü</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 7. EKSPERTİZ -->
+        <div class="service-detail-card reveal reveal-d1">
+          <div class="service-detail-img-wrap">
+            <img src="images/ekspertiz.png" alt="Ekspertiz" class="service-detail-img">
+          </div>
+          <div class="service-detail-header">
+            <div class="service-detail-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <h3>Ekspertiz</h3>
+          </div>
+          <div class="service-detail-body">
+            <p>İkinci el araç alımında veya sigorta hasarında doğru kararı vermeniz için kapsamlı araç ekspertiz hizmeti sunuyoruz. Boya taraması, şasi kontrolü ve detaylı rapor.</p>
+            <ul class="service-feature-list">
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Boya kalınlık ölçümü</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Şasi ve kaporta kontrolü</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Elektronik sistem taraması</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Sigorta hasar tespiti</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 8. PASTA CİLA -->
+        <div class="service-detail-card reveal reveal-d2">
+          <div class="service-detail-img-wrap">
+            <img src="images/pasta_cila.png" alt="Pasta Cila" class="service-detail-img">
+          </div>
+          <div class="service-detail-header">
+            <div class="service-detail-icon"><i class="fa-solid fa-spray-can-sparkles"></i></div>
+            <h3>Pasta Cila</h3>
+          </div>
+          <div class="service-detail-body">
+            <p>Aracınızın boyasındaki mat görünüm, ince çizikler ve leke izlerini pasta-cila işlemiyle gidererek showroom parlaklığına kavuşturuyoruz. Boya koruma garantisi.</p>
+            <ul class="service-feature-list">
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Makine cilası (pasta)</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> El cilası ve wax uygulaması</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> İnce çizik giderme</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Seramik kaplama</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 9. MEKANİK -->
+        <div class="service-detail-card reveal reveal-d3">
+          <div class="service-detail-img-wrap">
+            <img src="images/yağ.jpg" alt="Mekanik" class="service-detail-img">
+          </div>
+          <div class="service-detail-header">
+            <div class="service-detail-icon"><i class="fa-solid fa-gears"></i></div>
+            <h3>Mekanik</h3>
+          </div>
+          <div class="service-detail-body">
+            <p>Motor, şanzıman, süspansiyon ve fren sistemleri dahil tüm mekanik arızalarınızı modern teşhis cihazlarımız ve deneyimli ekibimizle hızla çözüyoruz.</p>
+            <ul class="service-feature-list">
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Elektronik arıza tespit (OBD)</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Triger, kayış ve zincir seti</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Fren sistemi bakımı</li>
+              <li class="service-feature-item"><i class="fa-solid fa-check"></i> Motor ve şanzıman revizyonu</li>
             </ul>
           </div>
         </div>
@@ -273,12 +328,15 @@
         <div class="footer-col">
           <h4>Hizmetler</h4>
           <ul class="footer-links">
-            <li><a href="hizmetler.html">Yağ Değişimi</a></li>
-            <li><a href="hizmetler.html">Lastik Servisi</a></li>
-            <li><a href="hizmetler.html">Fren Tamiri</a></li>
-            <li><a href="hizmetler.html">Motor Tamiri</a></li>
-            <li><a href="hizmetler.html">Klima Servisi</a></li>
-            <li><a href="hizmetler.html">Kaporta &amp; Boya</a></li>
+            <li><a href="hizmetler.html">Bakım</a></li>
+            <li><a href="hizmetler.html">Kaporta</a></li>
+            <li><a href="hizmetler.html">Boya Fırını</a></li>
+            <li><a href="hizmetler.html">Elektrik</a></li>
+            <li><a href="hizmetler.html">PDR</a></li>
+            <li><a href="hizmetler.html">Rot – Balance</a></li>
+            <li><a href="hizmetler.html">Ekspertiz</a></li>
+            <li><a href="hizmetler.html">Pasta Cila</a></li>
+            <li><a href="hizmetler.html">Mekanik</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -298,7 +356,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 DRNEKİN OTO. Tüm hakları saklıdır.</p>
+        <p>© 2026 DRNEKİN OTO. Tüm hakları saklıdır.</p>
         <p>Kocaeli / İzmit</p>
       </div>
     </div>
@@ -307,5 +365,3 @@
   <script src="js/main.js?v=10"></script>
 </body>
 </html>
-
-

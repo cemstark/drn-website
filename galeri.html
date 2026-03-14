@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr" data-tablet-nav="balanced">
 <head>
   <meta charset="UTF-8">
@@ -9,16 +9,31 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<<<<<<< Updated upstream
-  <link rel="stylesheet" href="css/style.css?v=17">
-=======
-  <link rel="stylesheet" href="css/style.css?v=17">  <style>
-    .gallery-item[data-color="1"] .gallery-inner { background: linear-gradient(135deg, #1a0a0a 0%, #3d1010 100%); }
-    .gallery-item[data-color="2"] .gallery-inner { background: linear-gradient(135deg, #0a0a1a 0%, #101035 100%); }
-    .gallery-item[data-color="3"] .gallery-inner { background: linear-gradient(135deg, #0a1a0a 0%, #102510 100%); }
-    .gallery-item[data-color="4"] .gallery-inner { background: linear-gradient(135deg, #1a1400 0%, #3d3000 100%); }
-    .gallery-item[data-color="5"] .gallery-inner { background: linear-gradient(135deg, #1a0a14 0%, #3d1030 100%); }
-    .gallery-item[data-color="6"] .gallery-inner { background: linear-gradient(135deg, #0a1414 0%, #103535 100%); }
+  <link rel="stylesheet" href="css/style.css?v=18">
+  <style>
+    /* Photo gallery items */
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gallery-inner.has-photo {
+      background: none !important;
+      padding: 0;
+      display: block;
+      height: 100%;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.08);
+    }
+    .gallery-item {
+      position: relative;
+    }
+    .gallery-inner-label-photo {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -89,145 +104,121 @@
       <div class="section-header reveal">
         <span class="section-tag">Çalışmalarımız</span>
         <h2 class="section-title">Servisimizden <span class="text-red">Kareler</span></h2>
-        <p class="section-desc">Gerçekleştirdiğimiz bakım ve onarım çalışmalarından seçmeler. Fotoğraflar yakında eklenecektir.</p>
+        <p class="section-desc">Gerçekleştirdiğimiz bakım ve onarım çalışmalarından seçmeler.</p>
       </div>
 
       <div class="gallery-filter reveal">
         <button class="filter-btn active" data-filter="all">Tümü</button>
         <button class="filter-btn" data-filter="bakim">Bakım</button>
-        <button class="filter-btn" data-filter="tamir">Tamir</button>
-        <button class="filter-btn" data-filter="boya">Kaporta &amp; Boya</button>
-        <button class="filter-btn" data-filter="lastik">Lastik</button>
-        <button class="filter-btn" data-filter="servis">Servis</button>
+        <button class="filter-btn" data-filter="kaporta">Kaporta &amp; Boya</button>
+        <button class="filter-btn" data-filter="elektrik">Elektrik</button>
+        <button class="filter-btn" data-filter="pdr">PDR</button>
+        <button class="filter-btn" data-filter="diger">Diğer</button>
       </div>
 
       <div class="gallery-grid">
-        <div class="gallery-item" data-cat="bakim" data-color="1">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-oil-can"></i>
-            <span class="gallery-inner-label">Yağ Değişimi</span>
+
+        <!-- BAKIM -->
+        <div class="gallery-item" data-cat="bakim">
+          <div class="gallery-inner has-photo">
+            <img src="images/bakim.png" alt="Araç Bakım">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Yağ Değişimi</span>
+            <span>Bakım</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="lastik" data-color="2">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-circle-dot"></i>
-            <span class="gallery-inner-label">Lastik Montaj</span>
-          </div>
-          <div class="gallery-overlay">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Lastik Montaj</span>
-          </div>
-        </div>
-        <div class="gallery-item" data-cat="tamir" data-color="3">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-gears"></i>
-            <span class="gallery-inner-label">Motor Tamiri</span>
-          </div>
-          <div class="gallery-overlay">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Motor Tamiri</span>
-          </div>
-        </div>
-        <div class="gallery-item" data-cat="boya" data-color="4">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-paintbrush"></i>
-            <span class="gallery-inner-label">Kaporta Onarım</span>
+
+        <!-- KAPORTA (boya.jpg) -->
+        <div class="gallery-item" data-cat="kaporta">
+          <div class="gallery-inner has-photo">
+            <img src="images/boya.jpg" alt="Kaporta Onarım">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
             <span>Kaporta Onarım</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="tamir" data-color="5">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-bolt"></i>
-            <span class="gallery-inner-label">Elektrik Sistemi</span>
+
+        <!-- BOYA FIRINI -->
+        <div class="gallery-item" data-cat="kaporta">
+          <div class="gallery-inner has-photo">
+            <img src="images/boya_firini.png" alt="Boya Fırını">
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Boya Fırını</span>
+          </div>
+        </div>
+
+        <!-- ELEKTRİK -->
+        <div class="gallery-item" data-cat="elektrik">
+          <div class="gallery-inner has-photo">
+            <img src="images/elektrik.jpg" alt="Elektrik Sistemi">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
             <span>Elektrik Sistemi</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="bakim" data-color="6">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-snowflake"></i>
-            <span class="gallery-inner-label">Klima Servisi</span>
+
+        <!-- PDR -->
+        <div class="gallery-item" data-cat="pdr">
+          <div class="gallery-inner has-photo">
+            <img src="images/pdr.jpg" alt="PDR Boyasız Göçük Düzeltme">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Klima Servisi</span>
+            <span>PDR – Boyasız Göçük</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="tamir" data-color="1">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-hand-holding-hand"></i>
-            <span class="gallery-inner-label">Fren Tamiri</span>
+
+        <!-- ROT-BALANCE -->
+        <div class="gallery-item" data-cat="bakim">
+          <div class="gallery-inner has-photo">
+            <img src="images/balance.png" alt="Rot Balance">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Fren Tamiri</span>
+            <span>Rot – Balance</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="boya" data-color="2">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-car-side"></i>
-            <span class="gallery-inner-label">Boya Yenileme</span>
+
+        <!-- EKSPERTİZ -->
+        <div class="gallery-item" data-cat="diger">
+          <div class="gallery-inner has-photo">
+            <img src="images/ekspertiz.png" alt="Ekspertiz">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Boya Yenileme</span>
+            <span>Ekspertiz</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="servis" data-color="3">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-screwdriver-wrench"></i>
-            <span class="gallery-inner-label">Servis Alanı</span>
+
+        <!-- PASTA CİLA -->
+        <div class="gallery-item" data-cat="diger">
+          <div class="gallery-inner has-photo">
+            <img src="images/pasta_cila.png" alt="Pasta Cila">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Servis Alanı</span>
+            <span>Pasta Cila</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="bakim" data-color="4">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-clipboard-check"></i>
-            <span class="gallery-inner-label">Genel Muayene</span>
+
+        <!-- MEKANİK -->
+        <div class="gallery-item" data-cat="bakim">
+          <div class="gallery-inner has-photo">
+            <img src="images/yağ.jpg" alt="Mekanik">
           </div>
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Genel Muayene</span>
+            <span>Mekanik</span>
           </div>
         </div>
-        <div class="gallery-item" data-cat="lastik" data-color="5">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-circle-dot"></i>
-            <span class="gallery-inner-label">Balans Ayarı</span>
-          </div>
-          <div class="gallery-overlay">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Balans Ayarı</span>
-          </div>
-        </div>
-        <div class="gallery-item" data-cat="servis" data-color="6">
-          <div class="gallery-inner">
-            <i class="fa-solid fa-car"></i>
-            <span class="gallery-inner-label">Araç Teslimi</span>
-          </div>
-          <div class="gallery-overlay">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
-            <span>Araç Teslimi</span>
-          </div>
-        </div>
+
       </div>
 
-      <div class="text-center" style="margin-top:40px; color: var(--gray); font-size:0.9rem;">
-        <i class="fa-solid fa-camera" style="color:var(--red); margin-right:8px;"></i>
-        Gerçek fotoğraflar yakında eklenecektir. Daha fazla bilgi için bizi arayın.
-      </div>
     </div>
   </section>
 
@@ -271,12 +262,15 @@
         <div class="footer-col">
           <h4>Hizmetler</h4>
           <ul class="footer-links">
-            <li><a href="hizmetler.html">Yağ Değişimi</a></li>
-            <li><a href="hizmetler.html">Lastik Servisi</a></li>
-            <li><a href="hizmetler.html">Fren Tamiri</a></li>
-            <li><a href="hizmetler.html">Motor Tamiri</a></li>
-            <li><a href="hizmetler.html">Klima Servisi</a></li>
-            <li><a href="hizmetler.html">Kaporta &amp; Boya</a></li>
+            <li><a href="hizmetler.html">Bakım</a></li>
+            <li><a href="hizmetler.html">Kaporta</a></li>
+            <li><a href="hizmetler.html">Boya Fırını</a></li>
+            <li><a href="hizmetler.html">Elektrik</a></li>
+            <li><a href="hizmetler.html">PDR</a></li>
+            <li><a href="hizmetler.html">Rot – Balance</a></li>
+            <li><a href="hizmetler.html">Ekspertiz</a></li>
+            <li><a href="hizmetler.html">Pasta Cila</a></li>
+            <li><a href="hizmetler.html">Mekanik</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -296,7 +290,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 DRNEKİN OTO. Tüm hakları saklıdır.</p>
+        <p>© 2026 DRNEKİN OTO. Tüm hakları saklıdır.</p>
         <p>Kocaeli / İzmit</p>
       </div>
     </div>
@@ -305,5 +299,3 @@
   <script src="js/main.js?v=10"></script>
 </body>
 </html>
-
-
