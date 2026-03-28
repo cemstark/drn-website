@@ -1439,9 +1439,11 @@ select.form-control {
   .blog-card-img { height: 190px; }
   .services-detail-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 
-  /* Carousel: swipe on mobile, hide arrows */
-  .carousel-btn { display: none; }
-  .reviews-carousel-wrap { gap: 0; }
+  /* Carousel: enable swipe and keep arrows on mobile */
+  .reviews-carousel-wrap { gap: 8px; }
+  .carousel-btn { display: flex; position: absolute; top: 50%; transform: translateY(-50%); }
+  .carousel-prev { left: 8px; }
+  .carousel-next { right: 8px; }
 }
 
 /* =====================
@@ -1608,7 +1610,9 @@ select.form-control {
   .reviews-track .testimonial-text { font-size: 0.84rem; line-height: 1.55; margin-bottom: 14px; }
   .reviews-track .author-name { font-size: 0.8rem; }
   .reviews-track .testimonial-avatar { width: 34px; height: 34px; font-size: 0.8rem; }
-  .carousel-btn { display: none; }
+  .carousel-btn { display: flex; position: absolute; top: 50%; transform: translateY(-50%); }
+  .carousel-prev { left: 8px; }
+  .carousel-next { right: 8px; }
   .carousel-dots { margin-top: 16px; }
   .google-rating-badge { flex-wrap: wrap; justify-content: center; gap: 6px; padding: 10px 16px; }
 
