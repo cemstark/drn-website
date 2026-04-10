@@ -3,13 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DRNEKİN OTO blog - Araç bakımı ve otomotiv hakkında faydalı yazılar.">
-  <title>Blog | DRNEKİN OTO</title>
+  <meta name="description" content="EKİN OTO blog - Araç bakımı ve otomotiv hakkında faydalı yazılar.">
+  <title>Blog | EKİN OTO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css?v=18">
+
+  <link rel="icon" type="image/png" href="images/logo-small.png">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1234567890"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1234567890');
+  </script>
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    "name": "EKİN OTO SERVİS",
+    "image": "https://drnekinoto.com/images/logo-big.png",
+    "@id": "https://drnekinoto.com",
+    "url": "https://drnekinoto.com",
+    "telephone": "+905448500802",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Sanayi Mah. D130 Karayolu Cad. No:123",
+      "addressLocality": "İzmit",
+      "addressRegion": "Kocaeli",
+      "addressCountry": "TR"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -31,11 +60,7 @@
   <nav class="navbar" id="navbar">
     <div class="container">
       <a href="index.html" class="navbar-logo">
-        <div class="text-logo">
-          <span class="tl-brand">DRNEKİN</span>
-          <span class="tl-sep"></span>
-          <span class="tl-oto">OTO</span>
-        </div>
+        <img src="images/logo-medium.png" alt="EKİN OTO SERVİS" class="logo-img">
       </a>
       <ul class="nav-links">
         <li><a href="index.html">Ana Sayfa</a></li>
@@ -100,11 +125,11 @@
               <div class="blog-detail" style="display:none;">
                 <p>Eskiden mineral bazlı motor yağları kullanılıyordu ve bu yağlar gerçekten de 5.000 km gibi kısa sürelerde özelliğini yitiriyordu. Günümüzde tam sentetik ve yarı sentetik motor yağları, normal kullanım şartlarında <strong>10.000 – 15.000 km</strong> arasında güvenle kullanılabilir.</p>
                 <p>Dikkat etmeniz gereken istisnalar: Aracınızı sadece kısa mesafelerde (motor tam ısınmadan dur-kalk yaparak) kullanıyorsanız veya çok tozlu ortamlarda bulunuyorsanız, kilometre dolmadan da yağ kalitesinde bozulmalar yaşanabilir.</p>
-                <p><strong>DRNEKİN OTO tavsiyesi:</strong> Senede bir kez kilometre dolmasa dahi yağın vizkozite değerlerinin kontrol edilmesini öneriyoruz.</p>
+                <p><strong>EKİN OTO tavsiyesi:</strong> Senede bir kez kilometre dolmasa dahi yağın vizkozite değerlerinin kontrol edilmesini öneriyoruz.</p>
               </div>
               <div class="blog-card-footer">
                 <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
+                <span style="font-size:0.78rem; color:var(--gray-light);">EKİN OTO</span>
               </div>
             </div>
           </div>
@@ -128,7 +153,7 @@
               </div>
               <div class="blog-card-footer">
                 <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
+                <span style="font-size:0.78rem; color:var(--gray-light);">EKİN OTO</span>
               </div>
             </div>
           </div>
@@ -152,7 +177,7 @@
               </div>
               <div class="blog-card-footer">
                 <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
+                <span style="font-size:0.78rem; color:var(--gray-light);">EKİN OTO</span>
               </div>
             </div>
           </div>
@@ -176,7 +201,7 @@
               </div>
               <div class="blog-card-footer">
                 <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
+                <span style="font-size:0.78rem; color:var(--gray-light);">EKİN OTO</span>
               </div>
             </div>
           </div>
@@ -236,15 +261,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-text-logo">
-            <span class="tl-brand">DRNEKİN</span>
-            <span class="tl-sep"></span>
-            <span class="tl-oto">OTO</span>
-          </div>
+          <img src="images/logo-big.png" alt="EKİN OTO SERVİS" class="footer-logo-img">
           <p>Kocaeli İzmit'de profesyonel otomotiv bakım ve onarım hizmetleri.</p>
           <div class="social-links">
-            <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://wa.me/905448500802" target="_blank" rel="noopener" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
           </div>
         </div>
@@ -288,7 +309,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 DRNEKİN OTO. Tüm hakları saklıdır.</p>
+        <p>© <script>document.write(new Date().getFullYear())</script> EKİN OTO. Tüm hakları saklıdır.</p>
         <p>Kocaeli / İzmit</p>
       </div>
     </div>

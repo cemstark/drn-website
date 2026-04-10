@@ -1681,3 +1681,33 @@ select.form-control {
   .hamburger { padding: 10px; }
   .form-control { font-size: 16px; }
 }
+
+/* Reviews Carousel Missing CSS */
+.reviews-carousel-wrap { position: relative; max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+.reviews-carousel { overflow: hidden; position: relative; }
+.reviews-track { display: flex; gap: 24px; transition: transform 0.4s ease; width: 100%; }
+.reviews-track .testimonial-card { flex: 0 0 calc(33.333% - 16px); }
+@media (max-width: 1100px) {
+  .reviews-track .testimonial-card { flex: 0 0 calc(50% - 12px); }
+  .reviews-carousel-wrap { max-width: 700px; }
+}
+@media (max-width: 640px) {
+  .reviews-track .testimonial-card { flex: 0 0 100%; }
+  .reviews-carousel-wrap { max-width: 400px; padding: 0 30px; }
+}
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px;
+  background: var(--red); color: #fff;
+  border: none; border-radius: 50%;
+  cursor: pointer; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.3s ease;
+}
+.carousel-btn:hover { background: var(--red-dark); }
+.carousel-prev { left: -10px; }
+.carousel-next { right: -10px; }
+.carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+.carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(30,58,138,0.2); border: none; cursor: pointer; padding: 0; transition: background 0.3s ease; }
+.carousel-dot.active { background: var(--red); transform: scale(1.2); }
+.tc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
