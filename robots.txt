@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://drnekinoto.com/sitemap.xml
+Sitemap: https://drnekinotoizmit.com/sitemap.xml
