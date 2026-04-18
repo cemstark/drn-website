@@ -21,7 +21,7 @@
   }
 
   navClose();
-  btn.addEventListener('click', function(e) { e.stopPropagation(); isOpen  navClose() : navOpen(); });
+  btn.addEventListener('click', function(e) { e.stopPropagation(); isOpen ? navClose() : navOpen(); });
   nav.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', navClose); });
   document.addEventListener('click', function(e) {
     if (isOpen && !nav.contains(e.target) && !btn.contains(e.target)) navClose();
@@ -117,7 +117,7 @@ function initImgSlider(el) {
   if (dotsWrap) {
     slides.forEach((_, i) => {
       const d = document.createElement('button');
-      d.className = 'img-slider-dot' + (i === 0  ' active' : '');
+      d.className = 'img-slider-dot' + (i === 0 ? ' active' : '');
       d.setAttribute('aria-label', `Görsel ${i + 1}`);
       d.addEventListener('click', () => goTo(i));
       dotsWrap.appendChild(d);
@@ -141,7 +141,7 @@ function initImgSlider(el) {
   track.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', e => {
     const diff = tx - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) goTo(diff > 0  current + 1 : current - 1);
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   }, { passive: true });
 
   if (document.readyState === 'complete') {
@@ -210,7 +210,7 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
     if (maxPage < 1) return;
     for (let i = 0; i <= maxPage; i++) {
       const d = document.createElement('button');
-      d.className = 'gallery-car-dot' + (i === currentPage  ' active' : '');
+      d.className = 'gallery-car-dot' + (i === currentPage ? ' active' : '');
       d.setAttribute('aria-label', `Sayfa ${i + 1}`);
       d.addEventListener('click', () => { currentPage = i; render(true); });
       dotsWrap.appendChild(d);
@@ -220,14 +220,14 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
   function prevPage() {
     const pv = getPerView();
     const maxPage = Math.max(0, Math.ceil(getFiltered().length / pv) - 1);
-    currentPage = currentPage <= 0  maxPage : currentPage - 1;
+    currentPage = currentPage <= 0 ? maxPage : currentPage - 1;
     render(true);
   }
 
   function nextPage() {
     const pv = getPerView();
     const maxPage = Math.max(0, Math.ceil(getFiltered().length / pv) - 1);
-    currentPage = currentPage >= maxPage  0 : currentPage + 1;
+    currentPage = currentPage >= maxPage ? 0 : currentPage + 1;
     render(true);
   }
 
@@ -248,7 +248,7 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
   track.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', e => {
     const diff = tx - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { diff > 0  nextPage() : prevPage(); }
+    if (Math.abs(diff) > 40) { diff > 0 ? nextPage() : prevPage(); }
   }, { passive: true });
 
   let resizeTimer;
@@ -331,7 +331,7 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   let autoTimer;
 
   function getPerView() {
-    return window.innerWidth <= 640  1 : window.innerWidth <= 1100  2 : 3;
+    return window.innerWidth <= 640 ? 1 : window.innerWidth <= 1100 ? 2 : 3;
   }
   function getMaxIndex() { return Math.max(0, total - getPerView()); }
 
@@ -340,7 +340,7 @@ document.querySelectorAll('form[data-form]').forEach(form => {
     dotsWrap.innerHTML = '';
     for (let i = 0; i <= getMaxIndex(); i++) {
       const d = document.createElement('button');
-      d.className = 'carousel-dot' + (i === 0  ' active' : '');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
       d.addEventListener('click', () => goTo(i));
       dotsWrap.appendChild(d);
     }
@@ -364,8 +364,8 @@ document.querySelectorAll('form[data-form]').forEach(form => {
     updateDots();
   }
 
-  function next() { goTo(current >= getMaxIndex()  0 : current + 1); }
-  function prev() { goTo(current <= 0  getMaxIndex() : current - 1); }
+  function next() { goTo(current >= getMaxIndex() ? 0 : current + 1); }
+  function prev() { goTo(current <= 0 ? getMaxIndex() : current - 1); }
 
   document.querySelector('.carousel-prev').addEventListener('click', prev);
   document.querySelector('.carousel-next').addEventListener('click', next);
@@ -375,7 +375,7 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   track.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', e => {
     const diff = tx - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { diff > 0  next() : prev(); }
+    if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
   }, { passive: true });
 
   buildDots();
@@ -393,9 +393,9 @@ function toggleBlog(el) {
   var detail = el.closest('.blog-card-body').querySelector('.blog-detail');
   if (!detail) return;
   var isOpen = detail.style.display !== 'none';
-  detail.style.display = isOpen  'none' : 'block';
+  detail.style.display = isOpen ? 'none' : 'block';
   el.innerHTML = isOpen
-     'Devamını Oku <i class="fa-solid fa-arrow-right"></i>'
+    ? 'Devamını Oku <i class="fa-solid fa-arrow-right"></i>'
     : 'Yazıyı Kapat <i class="fa-solid fa-arrow-up"></i>';
 }
 
