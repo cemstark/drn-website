@@ -978,22 +978,19 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 .img-slider-track {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  height: 100%;
   transition: transform 0.45s ease;
   will-change: transform;
 }
 .img-slider-slide {
   flex-shrink: 0;
+  width: 100%;
   height: 200px;
   object-fit: cover;
   display: block;
-  /* width set in px by JS */
 }
 .img-slider-btn {
   position: absolute;
