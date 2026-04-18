@@ -1891,3 +1891,176 @@ select.form-control {
 .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(30,58,138,0.2); border: none; cursor: pointer; padding: 0; transition: background 0.3s ease; }
 .carousel-dot.active { background: var(--red); transform: scale(1.2); }
 .tc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+
+/* =============================================
+   18. Image Mini Carousel (service cards)
+   ============================================= */
+.img-carousel {
+  position: relative;
+  overflow: hidden;
+}
+.img-carousel-track {
+  display: flex;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  cursor: pointer;
+}
+.img-carousel-track img {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+/* Disable the card hover-scale when inside a carousel */
+.service-detail-card:hover .img-carousel .service-detail-img { transform: none; }
+.img-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+  font-size: 0.7rem;
+  padding: 0;
+  line-height: 1;
+}
+.img-carousel:hover .img-carousel-btn { opacity: 1; }
+.img-carousel-btn:hover { background: rgba(0,0,0,0.72); }
+.img-carousel-prev { left: 7px; }
+.img-carousel-next { right: 7px; }
+.img-carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 3;
+  pointer-events: none;
+}
+.img-carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  transition: background 0.2s, transform 0.2s;
+  border: none;
+  padding: 0;
+  pointer-events: all;
+  cursor: pointer;
+}
+.img-carousel-dot.active {
+  background: #fff;
+  transform: scale(1.35);
+}
+/* On touch devices always show arrows */
+@media (hover: none) and (pointer: coarse) {
+  .img-carousel-btn { opacity: 0.8; }
+}
+
+/* =============================================
+   19. Gallery Lightbox
+   ============================================= */
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.93);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.gallery-lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.gallery-lightbox-inner {
+  position: relative;
+  max-width: min(90vw, 900px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 60px;
+}
+.gallery-lightbox-inner img {
+  max-height: 78vh;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  user-select: none;
+  cursor: pointer;
+}
+.gallery-lightbox-caption {
+  color: rgba(255,255,255,0.72);
+  font-size: 0.8rem;
+  margin-top: 12px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.gallery-lightbox-close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.gallery-lightbox-close:hover { opacity: 1; }
+.gallery-lightbox-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.25);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  font-size: 0.95rem;
+  padding: 0;
+}
+.gallery-lightbox-btn:hover { background: rgba(255,255,255,0.25); }
+.gallery-lightbox-prev { left: 0; }
+.gallery-lightbox-next { right: 0; }
+.gallery-lightbox-count {
+  position: absolute;
+  top: -44px;
+  left: 0;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+@media (max-width: 640px) {
+  .gallery-lightbox-inner { padding: 0 52px; }
+  .gallery-lightbox-inner img { max-height: 68vh; }
+  .gallery-lightbox-close { top: -38px; }
+  .gallery-lightbox-count { top: -38px; }
+  .gallery-lightbox-btn { width: 36px; height: 36px; font-size: 0.8rem; }
+}
