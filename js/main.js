@@ -105,6 +105,15 @@ function initImgSlider(el) {
   const dotsWrap = el.querySelector('.img-slider-dots');
   let current = 0;
 
+  function setWidths() {
+    const w = el.offsetWidth;
+    slides.forEach(s => { s.style.width = w + 'px'; });
+    // Re-apply current position without animation
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-${current * el.offsetWidth}px)`;
+    requestAnimationFrame(() => { track.style.transition = ''; });
+  }
+
   if (dotsWrap) {
     slides.forEach((_, i) => {
       const d = document.createElement('button');
@@ -117,7 +126,7 @@ function initImgSlider(el) {
 
   function goTo(idx) {
     current = ((idx % slides.length) + slides.length) % slides.length;
-    track.style.transform = `translateX(-${current * 100}%)`;
+    track.style.transform = `translateX(-${current * el.offsetWidth}px)`;
     if (dotsWrap) {
       dotsWrap.querySelectorAll('.img-slider-dot').forEach((d, i) =>
         d.classList.toggle('active', i === current)
@@ -134,6 +143,9 @@ function initImgSlider(el) {
     const diff = tx - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   }, { passive: true });
+
+  setWidths();
+  window.addEventListener('resize', setWidths);
 }
 document.querySelectorAll('[data-slider]').forEach(initImgSlider);
 
