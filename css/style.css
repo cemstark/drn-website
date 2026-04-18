@@ -931,7 +931,117 @@ h1, h2, h3, h4, h5, h6 {
 .gallery-overlay i { font-size: 2rem; color: #fff; }
 .gallery-overlay span { color: rgba(255,255,255,0.85); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* 17. Blog */
+/* 17. Reusable Image Slider */
+.img-slider {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+  width: 100%;
+}
+.img-slider-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+.img-slider-slide {
+  min-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+.img-slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.42);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  z-index: 3;
+  transition: background 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+.img-slider-btn:hover { background: var(--red, #e63946); }
+.img-slider-prev { left: 7px; }
+.img-slider-next { right: 7px; }
+.img-slider-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 3;
+}
+.img-slider-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+}
+.img-slider-dot.active { background: #fff; width: 16px; border-radius: 3px; }
+
+/* 17b. Gallery Carousel */
+.gallery-carousel-wrap {
+  position: relative;
+  padding: 0 24px;
+}
+.gallery-car-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: 2px solid var(--border);
+  color: var(--gray);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  z-index: 2;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+.gallery-car-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+.gallery-car-prev { left: -4px; }
+.gallery-car-next { right: -4px; }
+.gallery-car-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.gallery-car-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+}
+.gallery-car-dot.active { background: var(--red); width: 24px; border-radius: 4px; }
+
+/* 18. Blog */
 .blog-layout { display: grid; grid-template-columns: 1fr 310px; gap: 40px; align-items: start; }
 .blog-list { display: flex; flex-direction: column; gap: 28px; }
 .blog-card {

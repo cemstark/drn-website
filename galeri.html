@@ -145,7 +145,9 @@
         <button class="filter-btn" data-filter="diger">Diğer</button>
       </div>
 
-      <div class="gallery-grid">
+      <div class="gallery-carousel-wrap">
+        <button class="gallery-car-btn gallery-car-prev" aria-label="Önceki"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="gallery-grid" id="galleryTrack">
 
         <!-- BAKIM -->
         <div class="gallery-item" data-cat="bakim">
@@ -177,6 +179,39 @@
           <div class="gallery-overlay">
             <i class="fa-solid fa-magnifying-glass-plus"></i>
             <span>Boya Fırını & Uygulama</span>
+          </div>
+        </div>
+
+        <!-- BOYA FIRINI 2 -->
+        <div class="gallery-item" data-cat="kaporta">
+          <div class="gallery-inner has-photo">
+            <img src="images/drn-boya-firini2.jpeg?v=20260418" alt="Boya Fırını İç" loading="lazy">
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>Boya Fırını – İç Görünüm</span>
+          </div>
+        </div>
+
+        <!-- BOYA FIRINI 3 -->
+        <div class="gallery-item" data-cat="kaporta">
+          <div class="gallery-inner has-photo">
+            <img src="images/drn-boya-firini3.jpeg?v=20260418" alt="SAICO Boya Fırını Açık" loading="lazy">
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>SAICO Boya Fırını</span>
+          </div>
+        </div>
+
+        <!-- BOYA FIRINI 4 -->
+        <div class="gallery-item" data-cat="kaporta">
+          <div class="gallery-inner has-photo">
+            <img src="images/drn-boya-firini4.jpeg?v=20260418" alt="SAICO Boya Fırını Dış" loading="lazy">
+          </div>
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            <span>SAICO Boya Fırını – Dış</span>
           </div>
         </div>
 
@@ -290,7 +325,10 @@
           </div>
         </div>
 
+        </div>
+        <button class="gallery-car-btn gallery-car-next" aria-label="Sonraki"><i class="fa-solid fa-chevron-right"></i></button>
       </div>
+      <div class="gallery-car-dots" id="galleryDots"></div>
 
     </div>
   </section>
