@@ -137,13 +137,15 @@ function initImgSlider(el) {
 }
 document.querySelectorAll('[data-slider]').forEach(initImgSlider);
 
-// --- Gallery Carousel ---
+// --- Gallery Carousel (transform-based sliding) ---
 (function() {
   const track = document.getElementById('galleryTrack');
   if (!track) return;
+  const overflow = track.parentElement; // .gallery-carousel-overflow
   const dotsWrap = document.getElementById('galleryDots');
   const filterBtns = document.querySelectorAll('.filter-btn');
   const allItems = Array.from(track.querySelectorAll('.gallery-item'));
+  const GAP = 18;
   let activeFilter = 'all';
   let currentPage = 0;
 
@@ -157,17 +159,32 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
     return allItems.filter(item => activeFilter === 'all' || item.dataset.cat === activeFilter);
   }
 
-  function render() {
+  function render(animate) {
     const pv = getPerView();
     const filtered = getFiltered();
     const maxPage = Math.max(0, Math.ceil(filtered.length / pv) - 1);
     currentPage = Math.min(currentPage, maxPage);
-    allItems.forEach(item => { item.style.display = 'none'; });
-    const start = currentPage * pv;
-    filtered.slice(start, start + pv).forEach(item => {
-      item.style.display = 'block';
-      item.style.animation = 'fadeIn 0.35s ease';
+
+    // Item width fills exactly perView items in the overflow container
+    const containerW = overflow.offsetWidth;
+    const itemW = (containerW - (pv - 1) * GAP) / pv;
+
+    // Hide non-matching, show matching with correct width
+    allItems.forEach(item => {
+      item.style.display = 'none';
+      item.style.width = '';
     });
+    filtered.forEach(item => {
+      item.style.display = 'block';
+      item.style.width = itemW + 'px';
+    });
+
+    // Slide: offset by currentPage * perView items
+    if (!animate) track.style.transition = 'none';
+    const offset = currentPage * pv * (itemW + GAP);
+    track.style.transform = `translateX(-${offset}px)`;
+    if (!animate) requestAnimationFrame(() => { track.style.transition = ''; });
+
     buildDots(filtered.length, pv, maxPage);
   }
 
@@ -179,7 +196,7 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
       const d = document.createElement('button');
       d.className = 'gallery-car-dot' + (i === currentPage ? ' active' : '');
       d.setAttribute('aria-label', `Sayfa ${i + 1}`);
-      d.addEventListener('click', () => { currentPage = i; render(); });
+      d.addEventListener('click', () => { currentPage = i; render(true); });
       dotsWrap.appendChild(d);
     }
   }
@@ -188,14 +205,14 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
     const pv = getPerView();
     const maxPage = Math.max(0, Math.ceil(getFiltered().length / pv) - 1);
     currentPage = currentPage <= 0 ? maxPage : currentPage - 1;
-    render();
+    render(true);
   }
 
   function nextPage() {
     const pv = getPerView();
     const maxPage = Math.max(0, Math.ceil(getFiltered().length / pv) - 1);
     currentPage = currentPage >= maxPage ? 0 : currentPage + 1;
-    render();
+    render(true);
   }
 
   filterBtns.forEach(btn => {
@@ -204,7 +221,7 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
       btn.classList.add('active');
       activeFilter = btn.dataset.filter;
       currentPage = 0;
-      render();
+      render(false);
     });
   });
 
@@ -221,10 +238,10 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { currentPage = 0; render(); }, 200);
+    resizeTimer = setTimeout(() => { currentPage = 0; render(false); }, 150);
   });
 
-  render();
+  render(false);
 })();
 
 // --- Form Submission ---
