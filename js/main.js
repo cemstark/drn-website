@@ -107,10 +107,10 @@ function initImgSlider(el) {
 
   function setWidths() {
     const w = el.offsetWidth;
+    if (!w) return;
     slides.forEach(s => { s.style.width = w + 'px'; });
-    // Re-apply current position without animation
     track.style.transition = 'none';
-    track.style.transform = `translateX(-${current * el.offsetWidth}px)`;
+    track.style.transform = `translateX(-${current * w}px)`;
     requestAnimationFrame(() => { track.style.transition = ''; });
   }
 
@@ -144,7 +144,11 @@ function initImgSlider(el) {
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   }, { passive: true });
 
-  setWidths();
+  if (document.readyState === 'complete') {
+    setWidths();
+  } else {
+    window.addEventListener('load', setWidths, { once: true });
+  }
   window.addEventListener('resize', setWidths);
 }
 document.querySelectorAll('[data-slider]').forEach(initImgSlider);
