@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">DRNEKİN OTO logo</title>
+  <desc id="desc">Black and gold oval DRNEKİN OTO automotive service logo with transparent outer background.</desc>
+  <defs>
+    <style>
+      .gold{fill:#f2c35a}.stroke{stroke:#f2c35a;stroke-linecap:round;stroke-linejoin:round}.dark{fill:#071014}.serif{font-family:Georgia,'Times New Roman',serif;font-weight:900}.script{font-family:'Brush Script MT','Segoe Script','Lucida Handwriting',cursive;font-style:italic;font-weight:700}
+    </style>
+    <clipPath id="ovalClip"><ellipse cx="600" cy="215" rx="590" ry="202"/></clipPath>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="0.45" stop-color="#f2c35a"/><stop offset="1" stop-color="#c98d24"/></linearGradient>
+  </defs>
+  <g clip-path="url(#ovalClip)">
+    <ellipse cx="600" cy="215" rx="590" ry="202" class="dark"/>
+    <path d="M70 146h470M205 106h328M668 106h365M682 146h320M73 284h1000M170 322h860M285 358h640M70 184h417M682 184h320M87 222h410M682 222h320M91 254h420M682 254h322" class="stroke" stroke-width="4" opacity=".9"/>
+    <ellipse cx="600" cy="215" rx="581" ry="193" fill="none" stroke="url(#goldGrad)" stroke-width="12"/>
+    <ellipse cx="600" cy="215" rx="555" ry="171" fill="none" class="stroke" stroke-width="4" opacity=".95"/>
+  </g>
+  <g>
+    <circle cx="602" cy="88" r="54" fill="#fff8e6" stroke="#f2c35a" stroke-width="8"/>
+    <circle cx="602" cy="88" r="42" fill="none" class="stroke" stroke-width="4"/>
+    <path d="M568 70c22 11 44 31 66 58M584 51c19 16 40 38 64 68M610 46c14 20 29 43 45 69M638 61c-30 12-57 29-82 51M651 85c-26 11-51 26-75 45M630 48c-27 12-52 29-75 51M563 91c31-5 61-6 91-3M570 113c27-5 53-5 79 0" class="stroke" stroke-width="3.6" fill="none" opacity=".9"/>
+  </g>
+  <text x="76" y="278" class="serif" font-size="146" letter-spacing="5" fill="url(#goldGrad)">DRNEKİN</text>
+  <text x="690" y="275" class="script" font-size="178" letter-spacing="7" fill="url(#goldGrad)">OTO</text>
+</svg>
