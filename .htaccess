@@ -1,9 +1,25 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Route every legacy logo filename to the cleaned transparent SVG logo.
+  RewriteRule ^images/(logo-wide|logo-medium|logo-small|logo-big|drn-logo)\.png$ images/drn-logo.svg [L]
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+</IfModule>
+
 <IfModule mod_headers.c>
   # HTML should not be cached aggressively
   <FilesMatch "\.(html?)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
     Header set Pragma "no-cache"
     Header set Expires "0"
+  </FilesMatch>
+
+  # Keep SVG logo fresh while the logo change propagates
+  <FilesMatch "^(drn-logo\.svg)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
   </FilesMatch>
 
   # Cache static assets aggressively (we use versioned URLs)
