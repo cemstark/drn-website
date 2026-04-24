@@ -1,12 +1,13 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Route every legacy logo filename to the cleaned transparent SVG logo.
-  RewriteRule ^images/(logo-wide|logo-medium|logo-small|logo-big|drn-logo)\.png$ images/drn-logo.svg [L]
+  # Keep legacy logo URLs working after consolidating to logo1.
+  RewriteRule ^images/(logo-wide|logo-medium|logo-small|logo-big|drn-logo)\.png$ images/logo1.png [L]
 </IfModule>
 
 <IfModule mod_mime.c>
   AddType image/svg+xml .svg
+  AddType image/webp .webp
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -22,12 +23,6 @@
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 
-  # Keep the new SVG logo fresh while the logo change propagates.
-  <Files "drn-logo.svg">
-    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
-    Header set Pragma "no-cache"
-    Header set Expires "0"
-  </Files>
 
   Header append Vary "Accept-Encoding"
 </IfModule>
@@ -35,8 +30,8 @@
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/html "access"
-  ExpiresByType text/css "access plus 7 days"
-  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/jpg "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
@@ -44,6 +39,7 @@
   ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 
 <IfModule mod_deflate.c>

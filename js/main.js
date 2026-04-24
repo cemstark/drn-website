@@ -472,7 +472,7 @@ document.querySelectorAll('.img-carousel').forEach(function(carousel) {
     var item = visibleItems[current];
     var img  = item.querySelector('img');
     var cap  = item.querySelector('.gallery-overlay span');
-    lbImg.src = img ? img.getAttribute('src').replace(/\?.*/, '') : '';
+    lbImg.src = img ? (img.getAttribute('data-full') || img.getAttribute('src')).replace(/\?.*/, '') : '';
     lbImg.alt = img ? img.alt : '';
     lbCaption.textContent = cap ? cap.textContent : '';
     lbCount.textContent = (current + 1) + ' / ' + visibleItems.length;
