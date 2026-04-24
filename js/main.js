@@ -303,21 +303,86 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   document.body.appendChild(bar);
 })();
 
-// --- Reviews Carousel ---
+// --- Google Reviews + Reviews Carousel ---
 (function() {
   const track = document.getElementById('reviewsTrack');
   const dotsWrap = document.getElementById('carouselDots');
   if (!track) return;
 
-  const cards = Array.from(track.querySelectorAll('.testimonial-card'));
-  const total = cards.length;
+  const scoreEl = document.querySelector('.gr-score');
+  const countEl = document.querySelector('.gr-count');
+  const starsEl = document.querySelector('.gr-stars');
+  const prevBtn = document.querySelector('.carousel-prev');
+  const nextBtn = document.querySelector('.carousel-next');
   let current = 0;
-  let autoTimer;
 
   function getPerView() {
     return window.innerWidth <= 640 ? 1 : window.innerWidth <= 1100 ? 2 : 3;
   }
-  function getMaxIndex() { return Math.max(0, total - getPerView()); }
+
+  function getCards() {
+    return Array.from(track.querySelectorAll('.testimonial-card'));
+  }
+
+  function getMaxIndex() {
+    return Math.max(0, getCards().length - getPerView());
+  }
+
+  function starsHtml(rating) {
+    const value = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+    return Array.from({ length: 5 }, (_, i) =>
+      '<i class="fa-solid ' + (i < value ? 'fa-star' : 'fa-star" style="opacity:0.22') + '"></i>'
+    ).join('');
+  }
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[ch];
+    });
+  }
+
+  function avatarColor(name) {
+    const colors = ['#1a73e8', '#e8710a', '#0d652d', '#a142f4', '#e91e63', '#0f766e'];
+    let sum = 0;
+    String(name || '').split('').forEach(ch => { sum += ch.charCodeAt(0); });
+    return colors[sum % colors.length];
+  }
+
+  function reviewCard(review) {
+    const name = escapeHtml(review.name || 'Google kullanıcısı');
+    const initial = escapeHtml(review.initial || name.charAt(0) || 'G');
+    const time = escapeHtml(review.relative_time || '');
+    const text = escapeHtml(review.text || '');
+    const rating = Number(review.rating) || 0;
+    const photo = review.profile_photo_url ? escapeHtml(review.profile_photo_url) : '';
+    const avatar = photo
+      ? '<img src="' + photo + '" alt="" loading="lazy" decoding="async">'
+      : initial;
+
+    return (
+      '<div class="testimonial-card">' +
+        '<div class="tc-top">' +
+          '<div class="tc-google"><i class="fa-brands fa-google" style="color:#4285F4;"></i></div>' +
+          '<div class="testimonial-stars">' + starsHtml(rating) + '</div>' +
+        '</div>' +
+        '<p class="testimonial-text">"' + text + '"</p>' +
+        '<div class="testimonial-author">' +
+          '<div class="testimonial-avatar" style="background:' + avatarColor(name) + ';">' + avatar + '</div>' +
+          '<div><div class="author-name">' + name + '</div><div class="author-vehicle"><i class="fa-brands fa-google" style="color:#4285F4; font-size:0.65rem;"></i> ' + time + '</div></div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderReviews(data) {
+    if (!data || !Array.isArray(data.reviews) || data.reviews.length === 0) return false;
+
+    track.innerHTML = data.reviews.map(reviewCard).join('');
+    if (scoreEl && data.average_rating) scoreEl.textContent = Number(data.average_rating).toFixed(1);
+    if (countEl && data.total_review_count) countEl.textContent = data.total_review_count + ' Google Yorumu';
+    if (starsEl && data.average_rating) starsEl.innerHTML = starsHtml(Math.round(Number(data.average_rating)));
+    return true;
+  }
 
   function buildDots() {
     if (!dotsWrap) return;
@@ -340,7 +405,8 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   function goTo(idx) {
     current = Math.max(0, Math.min(idx, getMaxIndex()));
     // Calculate offset based on actual rendered card width
-    const cardEl = cards[0];
+    const cardEl = getCards()[0];
+    if (!cardEl) return;
     const style = window.getComputedStyle(track);
     const gap = parseFloat(style.gap) || 24;
     const offset = current * (cardEl.offsetWidth + gap);
@@ -351,8 +417,8 @@ document.querySelectorAll('form[data-form]').forEach(form => {
   function next() { goTo(current >= getMaxIndex() ? 0 : current + 1); }
   function prev() { goTo(current <= 0 ? getMaxIndex() : current - 1); }
 
-  document.querySelector('.carousel-prev').addEventListener('click', prev);
-  document.querySelector('.carousel-next').addEventListener('click', next);
+  if (prevBtn) prevBtn.addEventListener('click', prev);
+  if (nextBtn) nextBtn.addEventListener('click', next);
 
   // Touch/swipe
   let tx = 0;
@@ -362,14 +428,22 @@ document.querySelectorAll('form[data-form]').forEach(form => {
     if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
   }, { passive: true });
 
-  buildDots();
-  // Auto-scroll kapalı — kullanıcı manuel kaydırır
+  function initCarousel() {
+    current = 0;
+    buildDots();
+    goTo(0);
+  }
 
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => { buildDots(); goTo(0); }, 200);
   });
+
+  fetch('api/google-reviews.php?limit=8', { cache: 'no-store' })
+    .then(response => response.ok ? response.json() : Promise.reject(response))
+    .then(data => { renderReviews(data); initCarousel(); })
+    .catch(() => { initCarousel(); });
 })();
 
 // --- Image Mini Carousels ---
