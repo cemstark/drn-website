@@ -1,8 +1,11 @@
 /* DRN.EKİN OTO — Değer Kaybı Hesaplama Widget'ı (Form + State + Mount)
  * Bağımlılıklar: DKTables, DKCore, DKOutput, WidgetBase (sırayla yüklenmeli).
+ * Opsiyonel: DKStorage (kayıt CRUD), DKPanel (refresh).
  *
- * Açılış:
- *   document.querySelector('#dk-launcher').addEventListener('click', () => DKWidget.launch());
+ * Public API:
+ *   DKWidget.launch()              → mevcut state ile aç (taslak veya boş)
+ *   DKWidget.launchNew()           → boş state ile aç
+ *   DKWidget.launchEdit(recordId)  → kaydı yükle ve aç
  */
 (function (root) {
   'use strict';
@@ -18,10 +21,11 @@
   }
 
   let widget = null;
-  const STATE_KEY = 'drnDKState';
+  const DRAFT_KEY = 'drnDKDraft';
 
   function defaultState() {
     return {
+      id: null, // dolu ise edit mode
       group: 'A',
       price: 0,
       damage: 0,
@@ -33,20 +37,25 @@
     };
   }
 
-  function loadState() {
-    try { return Object.assign(defaultState(), JSON.parse(sessionStorage.getItem(STATE_KEY)) || {}); }
+  function loadDraft() {
+    try { return Object.assign(defaultState(), JSON.parse(sessionStorage.getItem(DRAFT_KEY)) || {}); }
     catch { return defaultState(); }
   }
-  function saveState(s) {
-    try { sessionStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch {}
+  function saveDraft(s) {
+    try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify(s)); } catch {}
+  }
+  function clearDraft() {
+    try { sessionStorage.removeItem(DRAFT_KEY); } catch {}
   }
 
-  let state = loadState();
+  let state = loadDraft();
 
   function buildHtml() {
     const parts = T.PARTS[state.group] || [];
+    const isEdit = !!state.id;
     return `
       <div class="dk-widget-content">
+        ${isEdit ? `<div class="dk-edit-banner">✏️ Mevcut kayıt düzenleniyor</div>` : ''}
         <div class="dk-tabs" role="tablist">
           <button class="dk-tab active" data-tab="form" role="tab">📋 Bilgiler</button>
           <button class="dk-tab" data-tab="parts" role="tab">🔧 Parçalar</button>
@@ -120,10 +129,10 @@
 
           <!-- META -->
           <div class="dk-tab-panel" data-panel="meta">
-            <p class="dk-help">PDF/yazdır çıktısında görünecek araç ve rapor bilgileri.</p>
-            <div class="dk-field"><label>Plaka</label><input type="text" data-meta="plate" value="${state.meta.plate}"></div>
-            <div class="dk-field"><label>Marka / Tip</label><input type="text" data-meta="brand" value="${state.meta.brand}"></div>
-            <div class="dk-field"><label>Model Yılı</label><input type="text" data-meta="modelYear" value="${state.meta.modelYear}"></div>
+            <p class="dk-help">PDF/yazdır çıktısında ve kayıt listesinde görünecek araç ve rapor bilgileri.</p>
+            <div class="dk-field"><label>Plaka</label><input type="text" data-meta="plate" value="${state.meta.plate}" placeholder="Örn. 41 ABC 123"></div>
+            <div class="dk-field"><label>Marka / Tip</label><input type="text" data-meta="brand" value="${state.meta.brand}" placeholder="Örn. Volkswagen Passat"></div>
+            <div class="dk-field"><label>Model Yılı</label><input type="text" data-meta="modelYear" value="${state.meta.modelYear}" placeholder="Örn. 2020"></div>
             <div class="dk-field"><label>Şasi No</label><input type="text" data-meta="chassisNo" value="${state.meta.chassisNo}"></div>
             <div class="dk-field"><label>Rapor No</label><input type="text" data-meta="reportNo" value="${state.meta.reportNo}"></div>
           </div>
@@ -132,9 +141,10 @@
           <div class="dk-tab-panel" data-panel="result">
             <div class="dk-result-area">${O.renderScreen(state, C.calculate(state))}</div>
             <div class="dk-actions">
-              <button class="dk-btn dk-btn-primary" data-action="recalc">🔄 Yeniden Hesapla</button>
+              <button class="dk-btn dk-btn-primary" data-action="save">💾 ${state.id ? 'Güncelle' : 'Kaydet'}</button>
+              <button class="dk-btn" data-action="recalc">🔄 Yeniden Hesapla</button>
               <button class="dk-btn" data-action="print">🖨 Yazdır</button>
-              <button class="dk-btn" data-action="pdf">📄 PDF İndir</button>
+              <button class="dk-btn" data-action="pdf">📄 PDF</button>
               <button class="dk-btn dk-btn-ghost" data-action="reset">⟲ Sıfırla</button>
             </div>
           </div>
@@ -144,7 +154,6 @@
   }
 
   function bind(body) {
-    // Tab switch
     body.querySelectorAll('.dk-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         body.querySelectorAll('.dk-tab').forEach(t => t.classList.remove('active'));
@@ -155,27 +164,24 @@
       });
     });
 
-    // Form fields
     body.querySelectorAll('[data-field]').forEach(input => {
       input.addEventListener('change', () => {
         const f = input.dataset.field;
         if (input.type === 'checkbox') state[f] = input.checked;
         else if (input.type === 'number') state[f] = parseFloat(input.value) || 0;
         else state[f] = input.value;
-        saveState(state);
+        saveDraft(state);
         if (f === 'group') rebuild();
       });
     });
 
-    // Meta fields
     body.querySelectorAll('[data-meta]').forEach(input => {
       input.addEventListener('input', () => {
         state.meta[input.dataset.meta] = input.value;
-        saveState(state);
+        saveDraft(state);
       });
     });
 
-    // Part selections
     body.querySelectorAll('[data-part-mode]').forEach(sel => {
       const partId = sel.dataset.partMode;
       const existing = state.partSelections.find(s => s.partId === partId);
@@ -183,11 +189,10 @@
       sel.addEventListener('change', () => {
         state.partSelections = state.partSelections.filter(s => s.partId !== partId);
         if (sel.value) state.partSelections.push({ partId, mode: sel.value });
-        saveState(state);
+        saveDraft(state);
       });
     });
 
-    // Actions
     body.querySelector('[data-action="recalc"]').addEventListener('click', () => refreshResult(body));
     body.querySelector('[data-action="print"]').addEventListener('click', () => {
       const r = C.calculate(state);
@@ -202,10 +207,43 @@
     body.querySelector('[data-action="reset"]').addEventListener('click', () => {
       if (confirm('Tüm girişler silinsin mi?')) {
         state = defaultState();
-        saveState(state);
+        saveDraft(state);
         rebuild();
       }
     });
+    body.querySelector('[data-action="save"]').addEventListener('click', () => saveRecord());
+  }
+
+  function saveRecord() {
+    if (!root.DKStorage) { alert('Storage modülü yüklenmedi.'); return; }
+    if (!state.meta.plate.trim()) {
+      alert('Lütfen önce "Rapor" sekmesinde Plaka bilgisini girin.');
+      return;
+    }
+    const result = C.calculate(state);
+    if (!result.ok) { alert(result.error); return; }
+
+    const record = {
+      ...state,
+      calculatedTotal: result.total
+    };
+    const id = root.DKStorage.save(record);
+    state.id = id;
+    saveDraft(state);
+
+    if (root.DKPanel) root.DKPanel.refresh();
+
+    // Visual feedback
+    const btn = widget?.element?.querySelector('[data-action="save"]');
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Kaydedildi';
+      btn.classList.add('dk-btn-success');
+      setTimeout(() => {
+        btn.textContent = '💾 Güncelle';
+        btn.classList.remove('dk-btn-success');
+      }, 1800);
+    }
   }
 
   function refreshResult(body) {
@@ -220,19 +258,39 @@
     bind(body);
   }
 
-  function launch() {
-    if (widget && widget.element) { widget.open(); return; }
+  function ensureWidget(title) {
+    if (widget && widget.element) {
+      widget.setTitle(title);
+      rebuild();
+      widget.open();
+      return;
+    }
     widget = W.create({
       id: 'deger-kaybi',
-      title: '🧮 Değer Kaybı Hesaplama',
+      title,
       bodyHtml: buildHtml(),
-      width: 520,
-      height: 680,
+      width: 560,
+      height: 720,
       onOpen: (el) => bind(el.querySelector('.drn-widget-body')),
       onClose: () => { widget = null; }
     });
     widget.open();
   }
 
-  root.DKWidget = { launch };
+  function launch() { ensureWidget(state.id ? '✏️ Değer Kaybı (Düzenle)' : '🧮 Değer Kaybı Hesaplama'); }
+  function launchNew() {
+    state = defaultState();
+    clearDraft();
+    ensureWidget('🧮 Yeni Değer Kaybı Dosyası');
+  }
+  function launchEdit(id) {
+    if (!root.DKStorage) { alert('Storage modülü yüklenmedi.'); return; }
+    const rec = root.DKStorage.get(id);
+    if (!rec) { alert('Kayıt bulunamadı.'); return; }
+    state = Object.assign(defaultState(), rec);
+    saveDraft(state);
+    ensureWidget('✏️ Değer Kaybı Düzenle — ' + (rec.meta?.plate || ''));
+  }
+
+  root.DKWidget = { launch, launchNew, launchEdit };
 })(window);
