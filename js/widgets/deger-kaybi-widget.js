@@ -57,43 +57,68 @@
       <div class="dk-widget-content">
         ${isEdit ? `<div class="dk-edit-banner">✏️ Mevcut kayıt düzenleniyor</div>` : ''}
         <div class="dk-tabs" role="tablist">
-          <button class="dk-tab active" data-tab="form" role="tab">📋 Bilgiler</button>
+          <button class="dk-tab active" data-tab="form" role="tab">📋 Araç Bilgileri</button>
           <button class="dk-tab" data-tab="parts" role="tab">🔧 Parçalar</button>
-          <button class="dk-tab" data-tab="meta" role="tab">📄 Rapor</button>
+          <button class="dk-tab" data-tab="meta" role="tab">📄 Ek Bilgiler</button>
           <button class="dk-tab" data-tab="result" role="tab">✓ Sonuç</button>
         </div>
 
         <div class="dk-tab-panels">
-          <!-- FORM -->
+          <!-- FORM — Sıra tablo sütun başlıklarıyla eşleşir: Plaka → Marka/Model → Yıl → Grup → Rayiç → Hasar → KM -->
           <div class="dk-tab-panel active" data-panel="form">
+            <p class="dk-help">Aşağıdaki alanlar kayıt tablosunun sütun başlıklarıyla aynı sırada düzenlenmiştir.</p>
+
             <div class="dk-field">
-              <label>Araç Grubu</label>
+              <label>🚗 Plaka <span class="dk-required">*</span></label>
+              <input type="text" data-meta="plate" value="${state.meta.plate}" placeholder="Örn. 41 ABC 123" required>
+              <small>Kayıt için zorunlu — tablonun ilk sütunu</small>
+            </div>
+
+            <div class="dk-field">
+              <label>🏷️ Marka / Model</label>
+              <input type="text" data-meta="brand" value="${state.meta.brand}" placeholder="Örn. Volkswagen Passat 1.6 TDI">
+            </div>
+
+            <div class="dk-field">
+              <label>📅 Model Yılı</label>
+              <input type="text" data-meta="modelYear" value="${state.meta.modelYear}" placeholder="Örn. 2020" inputmode="numeric">
+            </div>
+
+            <div class="dk-field">
+              <label>🚙 Araç Grubu</label>
               <select data-field="group">
                 ${Object.entries(T.VEHICLE_GROUPS).map(([k, v]) =>
                   `<option value="${k}" ${state.group === k ? 'selected' : ''}${T.PARTS[k] ? '' : ' disabled'}>${k} — ${v}${T.PARTS[k] ? '' : ' (yakında)'}</option>`
                 ).join('')}
               </select>
             </div>
+
             <div class="dk-field">
-              <label>Rayiç Bedel (₺)</label>
+              <label>💰 Rayiç Bedel (₺)</label>
               <input type="number" data-field="price" value="${state.price}" min="0" placeholder="Örn. 750000">
+              <small>TSB Kasko Değer Listesi ikinci el piyasa değeri</small>
             </div>
+
             <div class="dk-field">
-              <label>Hasar Onarım Bedeli (₺) <small>(KDV hariç, iskontosuz)</small></label>
+              <label>🔧 Hasar Onarım Bedeli (₺)</label>
               <input type="number" data-field="damage" value="${state.damage}" min="0" placeholder="Örn. 45000">
+              <small>KDV hariç, iskontosuz (parça + işçilik)</small>
             </div>
+
             <div class="dk-field">
-              <label>Kilometre</label>
+              <label>🛣️ Kilometre</label>
               <input type="number" data-field="km" value="${state.km}" min="0" placeholder="Örn. 65000">
             </div>
+
             <div class="dk-field dk-field-row">
               <label class="dk-checkbox">
                 <input type="checkbox" data-field="isCommercial" ${state.isCommercial ? 'checked' : ''}>
-                <span>Ticari ya da kiralık araç</span>
+                <span>🚕 Ticari ya da kiralık araç</span>
               </label>
             </div>
+
             <div class="dk-field">
-              <label>SBM Geçmiş Hasar Adedi</label>
+              <label>📋 SBM Geçmiş Hasar Adedi</label>
               <input type="number" data-field="sbmCount" value="${state.sbmCount}" min="0" max="20" placeholder="0">
               <small>Her hasar -%3, maksimum -%15</small>
             </div>
@@ -127,14 +152,17 @@
             </div>
           </div>
 
-          <!-- META -->
+          <!-- META — Tabloda gözükmeyen ek rapor alanları -->
           <div class="dk-tab-panel" data-panel="meta">
-            <p class="dk-help">PDF/yazdır çıktısında ve kayıt listesinde görünecek araç ve rapor bilgileri.</p>
-            <div class="dk-field"><label>Plaka</label><input type="text" data-meta="plate" value="${state.meta.plate}" placeholder="Örn. 41 ABC 123"></div>
-            <div class="dk-field"><label>Marka / Tip</label><input type="text" data-meta="brand" value="${state.meta.brand}" placeholder="Örn. Volkswagen Passat"></div>
-            <div class="dk-field"><label>Model Yılı</label><input type="text" data-meta="modelYear" value="${state.meta.modelYear}" placeholder="Örn. 2020"></div>
-            <div class="dk-field"><label>Şasi No</label><input type="text" data-meta="chassisNo" value="${state.meta.chassisNo}"></div>
-            <div class="dk-field"><label>Rapor No</label><input type="text" data-meta="reportNo" value="${state.meta.reportNo}"></div>
+            <p class="dk-help">PDF/yazdır çıktısında görünecek ek bilgiler. Bu alanlar tabloda gözükmez.</p>
+            <div class="dk-field">
+              <label>🆔 Şasi No</label>
+              <input type="text" data-meta="chassisNo" value="${state.meta.chassisNo}" placeholder="17 hane VIN">
+            </div>
+            <div class="dk-field">
+              <label>📄 Rapor No</label>
+              <input type="text" data-meta="reportNo" value="${state.meta.reportNo}" placeholder="DRN-2026-001">
+            </div>
           </div>
 
           <!-- RESULT -->

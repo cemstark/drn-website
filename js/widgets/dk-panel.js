@@ -73,7 +73,10 @@
               <th class="col-num">KM</th>
               <th class="col-parts">Parça</th>
               <th class="col-num col-total">Değer Kaybı</th>
-              <th class="col-actions col-sticky-right">İşlemler</th>
+              <th class="col-actions col-sticky-right">
+                <span>İşlemler</span>
+                <button class="dk-th-add-btn" data-action="new-record" type="button" title="Yeni dosya ekle" aria-label="Yeni dosya ekle">+</button>
+              </th>
             </tr>
           </thead>
           <tbody>

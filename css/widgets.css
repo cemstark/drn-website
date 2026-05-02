@@ -404,6 +404,46 @@
   filter: brightness(1.06);
 }
 .dk-cta-btn:active { transform: translateY(0); }
+
+/* Pulse animasyonu — header butonu ilk dikkat çekmek için */
+@keyframes dkPulse {
+  0%, 100% { box-shadow: 0 4px 14px rgba(230,57,70,.32), 0 0 0 0 rgba(230,57,70,.5); }
+  50%      { box-shadow: 0 4px 14px rgba(230,57,70,.32), 0 0 0 10px rgba(230,57,70,0); }
+}
+.dk-cta-btn-pulse { animation: dkPulse 2.4s ease-in-out infinite; }
+.dk-cta-btn-pulse:hover { animation: none; }
+
+/* Tablo th içindeki + ekle butonu */
+.dk-th-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  margin-left: 8px;
+  background: #e63946;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+  box-shadow: 0 2px 6px rgba(230,57,70,.4);
+  transition: transform .15s, background .15s;
+}
+.dk-th-add-btn:hover {
+  background: #fff;
+  color: #e63946;
+  transform: scale(1.12);
+}
+
+/* Form'da zorunlu alan işareti */
+.dk-required {
+  color: #e63946;
+  font-weight: 800;
+  margin-left: 2px;
+}
 .dk-cta-icon {
   display: inline-flex;
   align-items: center;
