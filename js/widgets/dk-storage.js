@@ -80,9 +80,35 @@
       damage: record.damage || 0,
       km: record.km || 0,
       total: record.calculatedTotal || 0,
-      partsCount: record.partSelections?.length || 0
+      partsCount: record.partSelections?.length || 0,
+      status: record.status || 'active' // 'active' | 'delivered'
     };
   }
 
-  root.DKStorage = { list, get, save, remove, clear, summarize };
+  /**
+   * Durum güncelle (aktif ↔ teslim).
+   */
+  function setStatus(id, status) {
+    const all = readAll();
+    const idx = all.findIndex(r => r.id === id);
+    if (idx < 0) return false;
+    all[idx].status = status;
+    all[idx].updatedAt = Date.now();
+    if (status === 'delivered') all[idx].deliveredAt = Date.now();
+    return writeAll(all);
+  }
+
+  /**
+   * Metric istatistikleri.
+   */
+  function stats() {
+    const all = readAll();
+    return {
+      total: all.length,
+      active: all.filter(r => (r.status || 'active') === 'active').length,
+      delivered: all.filter(r => r.status === 'delivered').length
+    };
+  }
+
+  root.DKStorage = { list, get, save, remove, clear, summarize, setStatus, stats };
 })(window);

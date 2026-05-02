@@ -86,7 +86,12 @@
                 <td class="col-date">${r.date}<br><small>${r.time}</small></td>
                 <td class="col-brand">${escape(r.brand)}</td>
                 <td class="col-year">${escape(r.modelYear)}</td>
-                <td class="col-group"><span class="dk-badge">${escape(r.group)}</span></td>
+                <td class="col-group">
+                  <span class="dk-badge">${escape(r.group)}</span>
+                  ${r.status === 'delivered'
+                    ? '<span class="dk-status-badge dk-status-delivered" title="Teslim edildi">✓</span>'
+                    : '<span class="dk-status-badge dk-status-active" title="Serviste aktif">●</span>'}
+                </td>
                 <td class="col-num">${CURR(r.price)}</td>
                 <td class="col-num">${CURR(r.damage)}</td>
                 <td class="col-num">${TRY(r.km)} km</td>
@@ -95,6 +100,10 @@
                 <td class="col-actions col-sticky-right">
                   <button class="dk-icon-btn" data-action="view" data-id="${r.id}" title="Detay görüntüle" type="button">👁</button>
                   <button class="dk-icon-btn" data-action="edit" data-id="${r.id}" title="Düzenle" type="button">✏️</button>
+                  ${r.status === 'delivered'
+                    ? `<button class="dk-icon-btn dk-icon-warning" data-action="reactivate" data-id="${r.id}" title="Tekrar Aktif Et" type="button">↻</button>`
+                    : `<button class="dk-icon-btn dk-icon-success" data-action="deliver" data-id="${r.id}" title="Teslim Et" type="button">✓</button>`
+                  }
                   <button class="dk-icon-btn dk-icon-danger" data-action="delete" data-id="${r.id}" title="Sil" type="button">🗑</button>
                 </td>
               </tr>
@@ -205,6 +214,14 @@
           case 'view':
             showDetail(id);
             break;
+          case 'deliver':
+            S.setStatus(id, 'delivered');
+            refresh();
+            break;
+          case 'reactivate':
+            S.setStatus(id, 'active');
+            refresh();
+            break;
           case 'delete':
             if (confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
               S.remove(id);
@@ -274,6 +291,7 @@
     if (!containerEl) return;
     containerEl.innerHTML = buildHtml();
     bind();
+    if (root.DKMetrics) root.DKMetrics.refresh();
   }
 
   root.DKPanel = { mount, refresh };

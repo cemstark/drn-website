@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/widgets.css?v=5">
+  <link rel="stylesheet" href="css/widgets.css?v=6">
   <style>body { margin: 0; font-family: 'Inter', system-ui, sans-serif; }</style>
 </head>
 <body class="admin-shell">
@@ -51,6 +51,9 @@
       </div>
     </section>
 
+    <!-- METRİKLER -->
+    <section class="metrics" id="dk-metrics-mount"></section>
+
     <!-- HESAPLAMA KAYITLARI PANELİ -->
     <div id="dk-panel-mount"></div>
   </main>
@@ -59,13 +62,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.min.js"></script>
 
   <!-- Widget bağımlılıkları (sıralama önemli) -->
-  <script src="js/widgets/widget-base.js?v=5"></script>
-  <script src="js/widgets/deger-kaybi-tables.js?v=5"></script>
-  <script src="js/widgets/deger-kaybi-core.js?v=5"></script>
-  <script src="js/widgets/deger-kaybi-output.js?v=5"></script>
-  <script src="js/widgets/dk-storage.js?v=5"></script>
-  <script src="js/widgets/deger-kaybi-widget.js?v=5"></script>
-  <script src="js/widgets/dk-panel.js?v=5"></script>
+  <script src="js/widgets/widget-base.js?v=6"></script>
+  <script src="js/widgets/deger-kaybi-tables.js?v=6"></script>
+  <script src="js/widgets/deger-kaybi-core.js?v=6"></script>
+  <script src="js/widgets/deger-kaybi-output.js?v=6"></script>
+  <script src="js/widgets/dk-storage.js?v=6"></script>
+  <script src="js/widgets/dk-metrics.js?v=6"></script>
+  <script src="js/widgets/deger-kaybi-widget.js?v=6"></script>
+  <script src="js/widgets/dk-panel.js?v=6"></script>
 
   <script>
     // Header "+ Yeni Dosya" butonu
@@ -73,7 +77,8 @@
       DKWidget.launchNew();
     });
 
-    // Panel mount
+    // Metrics + Panel mount
+    DKMetrics.mount('#dk-metrics-mount');
     DKPanel.mount('#dk-panel-mount');
 
     // Policy warning toggle
