@@ -812,7 +812,96 @@ main.admin-main {
 }
 .dk-empty-icon { font-size: 48px; margin-bottom: 14px; opacity: .7; }
 .dk-empty-state h3 { font-size: 15px; color: #1a1a2e; margin: 0 0 6px; }
-.dk-empty-state p { font-size: 13px; margin: 0; }
+.dk-empty-state p { font-size: 13px; margin: 0 0 20px; }
+.dk-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #e63946 0%, #c92a3a 100%);
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: .3px;
+  box-shadow: 0 8px 22px rgba(230,57,70,.35);
+  transition: transform .15s, box-shadow .15s, filter .15s;
+}
+.dk-empty-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(230,57,70,.5);
+  filter: brightness(1.08);
+}
+.dk-empty-cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,.22);
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* === FAB (Floating Action Button) — panel içi sağ alt === */
+.dk-fab {
+  position: sticky;
+  bottom: 24px;
+  margin-left: auto;
+  margin-right: 24px;
+  margin-top: -56px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, #e63946 0%, #c92a3a 100%);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(230,57,70,.45), 0 4px 8px rgba(0,0,0,.1);
+  transition: transform .18s ease, box-shadow .18s ease;
+  z-index: 6;
+  width: fit-content;
+  float: right;
+  clear: both;
+}
+.dk-fab:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 16px 36px rgba(230,57,70,.55), 0 6px 14px rgba(0,0,0,.12);
+}
+.dk-fab:active { transform: translateY(-1px) scale(1); }
+.dk-fab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  background: rgba(255,255,255,.25);
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+@media (max-width: 600px) {
+  .dk-fab {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    margin: 0;
+    padding: 14px 18px;
+    z-index: 50;
+  }
+  .dk-fab-label { display: none; }
+  .dk-fab-icon { width: 22px; height: 22px; font-size: 20px; }
+}
 
 /* === Modern Yatay Scroll (table-wrap) === */
 .table-wrap {

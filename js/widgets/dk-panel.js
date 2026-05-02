@@ -40,6 +40,12 @@
         </div>
 
         ${empty ? renderEmpty() : renderTable(summaries)}
+
+        <!-- Floating Action Button (her durumda görünür) -->
+        <button class="dk-fab" data-action="new-record" type="button" title="Yeni değer kaybı dosyası ekle" aria-label="Yeni dosya">
+          <span class="dk-fab-icon">+</span>
+          <span class="dk-fab-label">Yeni Dosya</span>
+        </button>
       </div>
     `;
   }
@@ -49,7 +55,11 @@
       <div class="dk-empty-state">
         <div class="dk-empty-icon">📋</div>
         <h3>Henüz Hesaplama Kaydı Yok</h3>
-        <p>Yukarıdaki "Yeni Dosya Ekle" butonu ile ilk değer kaybı dosyanızı oluşturun.</p>
+        <p>İlk değer kaybı dosyanızı oluşturmak için aşağıdaki butona tıklayın.</p>
+        <button class="dk-empty-cta" data-action="new-record" type="button">
+          <span class="dk-empty-cta-icon">+</span>
+          <span>Değer Kaybı Dosyası Oluştur</span>
+        </button>
       </div>
     `;
   }
