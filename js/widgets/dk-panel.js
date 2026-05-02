@@ -56,8 +56,10 @@
 
   function renderTable(rows) {
     return `
-      <div class="table-wrap" data-table="dk-records">
-        <div class="table-scroll-hint">← Sağa kaydır →</div>
+      <div class="table-wrap" data-table="dk-records" tabindex="0">
+        <div class="dk-scroll-progress"><div class="dk-scroll-progress-bar"></div></div>
+        <button class="dk-arrow-left hidden" aria-label="Sola kaydır" type="button">‹</button>
+        <button class="dk-arrow-right" aria-label="Sağa kaydır" type="button">›</button>
         <table class="dk-records-table">
           <thead>
             <tr>
@@ -105,8 +107,86 @@
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  function enhanceScroll(wrap) {
+    if (!wrap) return;
+    const arrowLeft  = wrap.querySelector('.dk-arrow-left');
+    const arrowRight = wrap.querySelector('.dk-arrow-right');
+    const progress   = wrap.querySelector('.dk-scroll-progress-bar');
+    if (!arrowLeft || !arrowRight || !progress) return;
+
+    function update() {
+      const max = wrap.scrollWidth - wrap.clientWidth;
+      const visible = wrap.clientWidth / wrap.scrollWidth;
+      const ratio = max > 0 ? wrap.scrollLeft / max : 0;
+      // Progress bar: scaleX kadar genişlik, başlangıç pozisyonu ratio'ya bağlı
+      progress.style.transform = `translateX(${ratio * (1 - visible) * 100}%) scaleX(${visible})`;
+      arrowLeft.classList.toggle('hidden', wrap.scrollLeft <= 4);
+      arrowRight.classList.toggle('hidden', wrap.scrollLeft >= max - 4);
+      wrap.classList.toggle('no-scroll', max <= 4);
+    }
+
+    arrowLeft.onclick  = (e) => { e.stopPropagation(); wrap.scrollBy({ left: -wrap.clientWidth * 0.6, behavior: 'smooth' }); };
+    arrowRight.onclick = (e) => { e.stopPropagation(); wrap.scrollBy({ left:  wrap.clientWidth * 0.6, behavior: 'smooth' }); };
+
+    // Wheel — dikey hareketi yatay scroll'a çevir
+    wrap.addEventListener('wheel', (e) => {
+      const max = wrap.scrollWidth - wrap.clientWidth;
+      if (max <= 0) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        // Sayfa scroll'una izin vermek için: kullanıcı kenara dayanmışsa propagate et
+        const atStart = wrap.scrollLeft <= 0 && e.deltaY < 0;
+        const atEnd   = wrap.scrollLeft >= max && e.deltaY > 0;
+        if (atStart || atEnd) return;
+        e.preventDefault();
+        wrap.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Drag-to-pan — sticky kolonlar ve interaktif öğeler dışında
+    let dragStart = null;
+    let didDrag = false;
+    wrap.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      if (e.target.closest('.col-sticky, .col-sticky-right, button, a, select, input, textarea')) return;
+      dragStart = { x: e.clientX, scroll: wrap.scrollLeft };
+      didDrag = false;
+      wrap.classList.add('dragging');
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!dragStart) return;
+      const dx = e.clientX - dragStart.x;
+      if (Math.abs(dx) > 3) didDrag = true;
+      wrap.scrollLeft = dragStart.scroll - dx;
+    });
+    document.addEventListener('mouseup', () => {
+      if (!dragStart) return;
+      dragStart = null;
+      wrap.classList.remove('dragging');
+      // Kısa bir delay sonra didDrag'i sıfırla — drag sonrası click event'i süzülür
+      if (didDrag) {
+        const blocker = (ev) => { ev.stopPropagation(); ev.preventDefault(); document.removeEventListener('click', blocker, true); };
+        document.addEventListener('click', blocker, true);
+      }
+    });
+
+    // Klavye: ← → tablo focus iken
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft')  { wrap.scrollBy({ left: -120, behavior: 'smooth' }); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { wrap.scrollBy({ left:  120, behavior: 'smooth' }); e.preventDefault(); }
+      if (e.key === 'Home')       { wrap.scrollTo({ left: 0, behavior: 'smooth' }); e.preventDefault(); }
+      if (e.key === 'End')        { wrap.scrollTo({ left: wrap.scrollWidth, behavior: 'smooth' }); e.preventDefault(); }
+    });
+
+    wrap.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    requestAnimationFrame(update);
+  }
+
   function bind() {
     if (!containerEl) return;
+
+    const wrap = containerEl.querySelector('.table-wrap');
+    if (wrap) enhanceScroll(wrap);
 
     containerEl.querySelectorAll('[data-action]').forEach(btn => {
       btn.addEventListener('click', (e) => {
