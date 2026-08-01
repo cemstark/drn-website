@@ -1,3 +1,8 @@
+# config/ holds the Google API key and data/ the cached reviews. Neither is
+# ever meant to be fetched over HTTP; if PHP were disabled the key would
+# otherwise be served as plain text.
+RedirectMatch 404 ^/(config|data)/
+
 <IfModule mod_mime.c>
   AddType image/svg+xml .svg
   AddType image/webp .webp

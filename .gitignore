@@ -4,3 +4,6 @@ data/google-reviews-cache.json
 
 # Logo source kit: only the exported files under images/ are deployed.
 drnekin logo/
+
+# Git Bash crash artefact, not part of the site.
+bash.exe.stackdump
