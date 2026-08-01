@@ -17,8 +17,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css?v=26">
 
-  <link rel="icon" type="image/png" href="images/logo1-icon.png?v=20260424">
-  <link rel="apple-touch-icon" href="images/logo1-icon.png?v=20260424">
+  <link rel="icon" href="favicon.ico?v=20260802" sizes="16x16">
+  <link rel="icon" href="images/favicon.svg?v=20260802" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=20260802">
+  <link rel="manifest" href="site.webmanifest?v=20260802">
+  <meta property="og:image" content="https://drnekinotoizmit.com/images/og-gorsel-1200x630.png?v=20260802">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="DRNEKİN OTO SERVİS — Kocaeli İzmit hasar onarım merkezi">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://drnekinotoizmit.com/images/og-gorsel-1200x630.png?v=20260802">
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1234567890"></script>
   <script>
@@ -33,10 +41,10 @@
     "@context": "https://schema.org",
     "@type": "AutoRepair",
     "name": "EKİN OTO SERVİS",
-    "image": "https://drnekinotoizmit.com/images/logo1.png?v=20260424",
+    "image": "https://drnekinotoizmit.com/images/og-gorsel-1200x630.png?v=20260802",
     "@id": "https://drnekinotoizmit.com",
     "url": "https://drnekinotoizmit.com",
-    "telephone": "+905448500802",
+    "telephone": ["+905448500802", "+905533034394"],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Sanayi Mah. D130 Karayolu Cad. No:123",
@@ -66,8 +74,9 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <a href="index.html" class="navbar-logo">
-        <img src="images/logo1-720.webp?v=20260424" alt="EKİN OTO SERVİS" class="logo-img" srcset="images/logo1-360.webp?v=20260424 360w, images/logo1-720.webp?v=20260424 720w" sizes="(max-width: 640px) 170px, 260px" decoding="async" fetchpriority="high">
+      <a href="index.html" class="navbar-logo" aria-label="DRNEKİN OTO SERVİS — ana sayfa">
+        <img src="images/logo-amblem-256.webp?v=20260802" alt="" class="logo-img" width="52" height="52" decoding="async" fetchpriority="high">
+        <span class="text-logo"><span class="tl-brand">DRNEKİN</span><span class="tl-sep"></span><span class="tl-oto">OTO SERVİS</span></span>
       </a>
       <ul class="nav-links">
         <li><a href="index.html" class="active">Ana Sayfa</a></li>
@@ -89,7 +98,7 @@
     </div>
     <div class="mobile-nav" id="mobileNav">
       <div class="mobile-nav-brand">
-        <img src="images/logo1-720.webp?v=20260424" alt="EKİN OTO SERVİS" class="mobile-nav-logo" srcset="images/logo1-360.webp?v=20260424 360w, images/logo1-720.webp?v=20260424 720w" sizes="(max-width: 640px) 170px, 260px" decoding="async">
+        <img src="images/logo-dikey-400.webp?v=20260802" alt="DRNEKİN OTO SERVİS" class="mobile-nav-logo" width="400" height="400" decoding="async">
       </div>
       <ul>
         <li><a href="index.html">Ana Sayfa</a></li>
@@ -106,7 +115,7 @@
   <section class="hero">
     <div class="hero-container">
       <div class="hero-brand">
-        <img src="images/logo1-720.webp?v=20260424" alt="EKİN OTO SERVİS" class="hero-logo" srcset="images/logo1-360.webp?v=20260424 360w, images/logo1-720.webp?v=20260424 720w" sizes="(max-width: 640px) 170px, 260px" decoding="async">
+        <img src="images/logo-dikey-800.webp?v=20260802" alt="DRNEKİN OTO SERVİS" class="hero-logo" width="800" height="800" decoding="async" fetchpriority="high">
       </div>
       <div class="hero-badge">
         <i class="fa-solid fa-shield-halved"></i> Kocaeli'nin Güvenilir Oto Servisi
@@ -437,79 +446,33 @@
     </div>
   </section>
 
-  <!-- MÜŞTERİ YORUMLARI -->
-  <section class="section">
+  <!-- MÜŞTERİ YORUMLARI — kart alanı ve puan rozeti js/main.js'te
+       gerçek Google verisi gelince açılır; başlık ve Google linki hep durur. -->
+  <section class="section" id="reviewsSection">
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">Google Yorumları</span>
         <h2 class="section-title">Müşterilerimiz <span class="text-red">Ne Diyor</span></h2>
         <p class="section-desc">Google Haritalar'da gerçek müşteri deneyimleri.</p>
-        <div class="google-rating-badge">
+        <div class="google-rating-badge" hidden>
           <i class="fa-brands fa-google" style="color:#4285F4;"></i>
-          <span class="gr-score">4.6</span>
-          <span class="gr-stars">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-          </span>
-          <span class="gr-count">56 Google Yorumu</span>
+          <span class="gr-score"></span>
+          <span class="gr-stars"></span>
+          <span class="gr-count"></span>
         </div>
       </div>
 
-      <div class="reviews-carousel-wrap">
+      <div class="reviews-carousel-wrap" hidden>
         <button class="carousel-btn carousel-prev" aria-label="Önceki"><i class="fa-solid fa-chevron-left"></i></button>
         <div class="reviews-carousel" id="reviewsCarousel">
-          <div class="reviews-track" id="reviewsTrack">
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google" style="color:#4285F4;"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Boyasız göçük düzeltme için getirdim aracımı. Sonuç mükemmel, hiçbir iz kalmadı. Fiyat konusunda da dürüst ve makul. Tavsiye ederim."</p>
-              <div class="testimonial-author">
-                <div class="testimonial-avatar" style="background:#1a73e8;">E</div>
-                <div><div class="author-name">Emrah Aydın</div><div class="author-vehicle"><i class="fa-brands fa-google" style="color:#4285F4; font-size:0.65rem;"></i> 2 ay önce</div></div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google" style="color:#4285F4;"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Kaporta boya işinde gerçekten ustalar. Aracımın ön tamponu ve kaputunu yaptırdım, fabrikasyon gibi oldu. İzmit'te hasar onarımı denince ilk akla gelen yer."</p>
-              <div class="testimonial-author">
-                <div class="testimonial-avatar" style="background:#e8710a;">S</div>
-                <div><div class="author-name">Serkan Özdemir</div><div class="author-vehicle"><i class="fa-brands fa-google" style="color:#4285F4; font-size:0.65rem;"></i> 3 ay önce</div></div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google" style="color:#4285F4;"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Sigorta hasar sürecimde çok yardımcı oldular. Ekspertiz ve evrak işlerini hallettiler, benim hiçbir şeyle uğraşmama gerek kalmadı. Aracım kusursuz teslim edildi."</p>
-              <div class="testimonial-author">
-                <div class="testimonial-avatar" style="background:#0d652d;">M</div>
-                <div><div class="author-name">Mehmet Kaya</div><div class="author-vehicle"><i class="fa-brands fa-google" style="color:#4285F4; font-size:0.65rem;"></i> 1 ay önce</div></div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google" style="color:#4285F4;"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"Arkadaşın tavsiyesiyle geldim, kesinlikle doğru tercih. Arka tampon ve bagaj kapağındaki hasarı mükemmel tamir ettiler. Renk uyumu birebir tuttu."</p>
-              <div class="testimonial-author">
-                <div class="testimonial-avatar" style="background:#a142f4;">B</div>
-                <div><div class="author-name">Burak Türkmen</div><div class="author-vehicle"><i class="fa-brands fa-google" style="color:#4285F4; font-size:0.65rem;"></i> 5 ay önce</div></div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="tc-top"><div class="tc-google"><i class="fa-brands fa-google" style="color:#4285F4;"></i></div><div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
-              <p class="testimonial-text">"İlgili, dürüst ve işinin ehli bir ekip. Gereksiz parça değişimi önermiyorlar, sadece gerekeni yapıyorlar. Fiyatlar piyasanın altında, kalite üstünde."</p>
-              <div class="testimonial-author">
-                <div class="testimonial-avatar" style="background:#e91e63;">F</div>
-                <div><div class="author-name">Fatma Arslan</div><div class="author-vehicle"><i class="fa-brands fa-google" style="color:#4285F4; font-size:0.65rem;"></i> 4 ay önce</div></div>
-              </div>
-            </div>
-
-          </div>
+          <!-- Cards are injected by js/main.js from api/google-reviews.php.
+               Left empty on purpose: no placeholder reviews are shown. -->
+          <div class="reviews-track" id="reviewsTrack"></div>
         </div>
         <button class="carousel-btn carousel-next" aria-label="Sonraki"><i class="fa-solid fa-chevron-right"></i></button>
       </div>
 
-      <div class="carousel-dots" id="carouselDots"></div>
+      <div class="carousel-dots" id="carouselDots" hidden></div>
 
       <div class="text-center" style="margin-top:32px;">
         <a href="https://www.google.com/maps/place/DRNEK%C4%B0N+OTO+%C4%B0ZM%C4%B0T+HASAR+ONARIM+MERKEZi/@40.7448384,29.9529264,17z/data=!3m1!4b1!4m6!3m5!1s0x14cb4542cc97ee03:0xe83d51010c4446cb!8m2!3d40.7448344!4d29.9555013!16s%2Fg%2F11c76n_frp?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn btn-outline-red">
@@ -540,7 +503,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img src="images/logo1-720.webp?v=20260424" alt="EKİN OTO SERVİS" class="footer-logo-img" srcset="images/logo1-360.webp?v=20260424 360w, images/logo1-720.webp?v=20260424 720w" sizes="(max-width: 640px) 170px, 260px" decoding="async" fetchpriority="high">
+          <div class="footer-text-logo"><img src="images/logo-amblem-256.webp?v=20260802" alt="" class="footer-logo-img" width="64" height="64" decoding="async"><span class="tl-brand">DRNEKİN</span><span class="tl-sep"></span><span class="tl-oto">OTO SERVİS</span></div>
           <p>Kocaeli İzmit'de profesyonel otomotiv bakım ve onarım hizmetleri. Aracınız güvenli ellerde.</p>
           <div class="social-links">
             <a href="https://instagram.com" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -583,7 +546,7 @@
           </div>
           <div class="footer-contact-item">
             <i class="fa-solid fa-phone"></i>
-            <div><strong>Telefon</strong><a href="tel:+905448500802">0544 850 08 02</a></div>
+            <div><strong>Telefon</strong><a href="tel:+905448500802">0544 850 08 02</a><br><a href="tel:+905533034394">0553 303 43 94</a></div>
           </div>
           <div class="footer-contact-item">
             <i class="fa-solid fa-clock"></i>

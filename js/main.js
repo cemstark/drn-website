@@ -440,10 +440,25 @@ document.querySelectorAll('form[data-form]').forEach(form => {
     resizeTimer = setTimeout(() => { buildDots(); goTo(0); }, 200);
   });
 
-  fetch('api/google-reviews.php?limit=8', { cache: 'no-store' })
+  // No invented reviews: the carousel and the rating badge stay hidden until
+  // real Google data arrives. The heading and the "see them on Google" link
+  // are left alone so the section still points somewhere useful on failure.
+  function revealReviews() {
+    const section = track.closest('section');
+    if (!section) return;
+    ['.reviews-carousel-wrap', '.carousel-dots', '.google-rating-badge']
+      .forEach(sel => {
+        const el = section.querySelector(sel);
+        if (el) el.hidden = false;
+      });
+  }
+
+  fetch('api/google-reviews.php?limit=5', { cache: 'no-store' })
     .then(response => response.ok ? response.json() : Promise.reject(response))
-    .then(data => { renderReviews(data); initCarousel(); })
-    .catch(() => { initCarousel(); });
+    .then(data => {
+      if (renderReviews(data)) { revealReviews(); initCarousel(); }
+    })
+    .catch(err => { console.warn('Google yorumları yüklenemedi:', err); });
 })();
 
 // --- Image Mini Carousels ---

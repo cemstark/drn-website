@@ -20,9 +20,15 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
           server-dir: /public_html/
           state-name: .sync-ftp-state.json
-          dangerous-clean-slate: true
+          # Was true: every deploy wiped the server first, which deleted
+          # config/google-reviews.php (git-ignored, lives only on the server)
+          # and broke the reviews endpoint until it was re-uploaded by hand.
+          dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
             .github/**
+            config/google-reviews.php
+            data/google-reviews-cache.json
+            drnekin logo/**

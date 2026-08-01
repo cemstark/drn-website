@@ -1,3 +1,6 @@
 config/google-reviews.php
 data/google-reviews-cache.json
 .claude/
+
+# Logo source kit: only the exported files under images/ are deployed.
+drnekin logo/

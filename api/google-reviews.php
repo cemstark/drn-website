@@ -9,6 +9,9 @@ $localConfig = $root . '/config/google-reviews.php';
 $cacheFile = $root . '/data/google-reviews-cache.json';
 
 $config = [
+    'places_api_key' => getenv('GOOGLE_PLACES_API_KEY') ?: '',
+    'place_id' => getenv('GOOGLE_PLACE_ID') ?: '',
+    'referrer' => getenv('GOOGLE_PLACES_REFERRER') ?: '',
     'client_id' => getenv('GOOGLE_REVIEWS_CLIENT_ID') ?: '',
     'client_secret' => getenv('GOOGLE_REVIEWS_CLIENT_SECRET') ?: '',
     'refresh_token' => getenv('GOOGLE_REVIEWS_REFRESH_TOKEN') ?: '',
@@ -25,12 +28,19 @@ if (is_file($localConfig)) {
     }
 }
 
-$limit = isset($_GET['limit']) ? max(1, min(20, (int)$_GET['limit'])) : $config['max_reviews'];
+// Clamp the configured value first: $limit falls back to it, so a bad config
+// value (string, negative) must never reach it unchecked.
 $config['max_reviews'] = max(1, min(50, (int)$config['max_reviews']));
 $config['cache_ttl'] = max(300, (int)$config['cache_ttl']);
+$limit = isset($_GET['limit']) ? max(1, min(20, (int)$_GET['limit'])) : $config['max_reviews'];
 
 function reviews_json(array $payload, int $status = 200): void
 {
+    // Errors must not sit in a shared cache for 15 minutes.
+    if ($status >= 400) {
+        header('Cache-Control: no-store');
+    }
+
     http_response_code($status);
     echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
@@ -287,6 +297,91 @@ function reviews_fetch_google(array $config, int $limit): array
     return reviews_normalize($response, $limit);
 }
 
+/**
+ * Places API (New) returns a different review shape than Business Profile v4,
+ * so it is mapped onto the same payload the frontend already consumes.
+ */
+function reviews_normalize_places(array $response, int $limit): array
+{
+    $reviews = [];
+    foreach (($response['reviews'] ?? []) as $review) {
+        if (!is_array($review)) {
+            continue;
+        }
+
+        $text = trim((string)($review['text']['text'] ?? $review['originalText']['text'] ?? ''));
+        if ($text === '') {
+            continue;
+        }
+
+        $author = is_array($review['authorAttribution'] ?? null) ? $review['authorAttribution'] : [];
+        $name = trim((string)($author['displayName'] ?? '')) ?: 'Google kullanıcısı';
+
+        // Google already localises this string when languageCode=tr is requested.
+        $relative = trim((string)($review['relativePublishTimeDescription'] ?? ''));
+        if ($relative === '') {
+            $relative = reviews_relative_time((string)($review['publishTime'] ?? ''));
+        }
+
+        $reviews[] = [
+            'name' => $name,
+            'initial' => reviews_initial($name),
+            'rating' => reviews_rating_to_number($review['rating'] ?? 0),
+            'text' => $text,
+            'relative_time' => $relative,
+            'profile_photo_url' => (string)($author['photoUri'] ?? ''),
+            'review_id' => basename((string)($review['name'] ?? '')),
+        ];
+
+        if (count($reviews) >= $limit) {
+            break;
+        }
+    }
+
+    return [
+        'success' => true,
+        'source' => 'google_places',
+        'updated_at' => gmdate('c'),
+        'average_rating' => isset($response['rating']) ? round((float)$response['rating'], 1) : null,
+        'total_review_count' => isset($response['userRatingCount']) ? (int)$response['userRatingCount'] : null,
+        'maps_uri' => (string)($response['googleMapsUri'] ?? ''),
+        'reviews' => $reviews,
+    ];
+}
+
+/**
+ * Place Details caps the response at 5 reviews and offers no ordering control.
+ * Business Profile (OAuth) is the only way past that ceiling.
+ */
+function reviews_fetch_places(array $config, int $limit): array
+{
+    foreach (['places_api_key', 'place_id'] as $key) {
+        if (empty($config[$key])) {
+            throw new RuntimeException('Missing Google Places configuration: ' . $key);
+        }
+    }
+
+    $url = 'https://places.googleapis.com/v1/places/'
+        . rawurlencode(trim((string)$config['place_id']))
+        . '?' . http_build_query(['languageCode' => 'tr', 'regionCode' => 'TR']);
+
+    $headers = [
+        'X-Goog-Api-Key: ' . $config['places_api_key'],
+        'X-Goog-FieldMask: rating,userRatingCount,googleMapsUri,reviews',
+        'Accept: application/json',
+    ];
+
+    // The key is locked to an HTTP referrer. Server-side calls send none, so
+    // Google rejects them with API_KEY_HTTP_REFERRER_BLOCKED unless we set it.
+    if (!empty($config['referrer'])) {
+        $headers[] = 'Referer: ' . $config['referrer'];
+    }
+
+    $response = reviews_http_json($url, ['headers' => $headers]);
+
+    return reviews_normalize_places($response, $limit);
+}
+
 $cache = reviews_read_cache($cacheFile);
 if ($cache && isset($cache['updated_at'])) {
     $age = time() - strtotime((string)$cache['updated_at']);
@@ -298,17 +393,27 @@ if ($cache && isset($cache['updated_at'])) {
     }
 }
 
+// Business Profile is preferred when fully configured: it has no 5-review ceiling.
+$useBusinessProfile = !empty($config['refresh_token'])
+    && !empty($config['account_id'])
+    && !empty($config['location_id']);
+
 try {
-    $payload = reviews_fetch_google($config, $limit);
+    $payload = $useBusinessProfile
+        ? reviews_fetch_google($config, $limit)
+        : reviews_fetch_places($config, $limit);
     reviews_write_cache($cacheFile, $payload);
     $payload['cached'] = false;
     $payload['stale'] = false;
     reviews_json($payload);
 } catch (Throwable $e) {
+    // Failure details name the config key or the referrer Google rejected,
+    // so they belong in the server log, not in the visitor's response.
+    error_log('google-reviews: ' . $e->getMessage());
+
     if ($cache) {
         $cache['cached'] = true;
         $cache['stale'] = true;
-        $cache['warning'] = $e->getMessage();
         $cache['reviews'] = array_slice($cache['reviews'] ?? [], 0, $limit);
         reviews_json($cache);
     }
@@ -316,6 +421,5 @@ try {
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
-        'detail' => $e->getMessage(),
     ], 503);
 }

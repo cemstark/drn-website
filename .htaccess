@@ -1,10 +1,3 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-
-  # Keep legacy logo URLs working after consolidating to logo1.
-  RewriteRule ^images/(logo-wide|logo-medium|logo-small|logo-big|drn-logo)\.png$ images/logo1.png [L]
-</IfModule>
-
 <IfModule mod_mime.c>
   AddType image/svg+xml .svg
   AddType image/webp .webp
