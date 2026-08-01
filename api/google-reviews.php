@@ -409,7 +409,23 @@ try {
 } catch (Throwable $e) {
     // Failure details name the config key or the referrer Google rejected,
     // so they belong in the server log, not in the visitor's response.
-    error_log('google-reviews: ' . $e->getMessage());
+    $detail = $e->getMessage();
+    error_log('google-reviews: ' . $detail);
+
+    // A coarse class of failure is safe to expose and is the only way to
+    // diagnose this endpoint without shell access to the host.
+    if (stripos($detail, 'Missing Google') !== false) {
+        $reason = 'config';
+    } elseif (stripos($detail, 'SSL') !== false || stripos($detail, 'resolve') !== false
+        || stripos($detail, 'timed out') !== false || stripos($detail, 'Connection') !== false) {
+        $reason = 'network';
+    } elseif (stripos($detail, 'HTTP 403') !== false) {
+        $reason = 'denied';
+    } elseif (stripos($detail, 'HTTP 4') !== false || stripos($detail, 'HTTP 5') !== false) {
+        $reason = 'api';
+    } else {
+        $reason = 'unknown';
+    }
 
     if ($cache) {
         $cache['cached'] = true;
@@ -421,5 +437,6 @@ try {
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
+        'reason' => $reason,
     ], 503);
 }
