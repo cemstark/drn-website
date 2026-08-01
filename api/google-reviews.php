@@ -434,9 +434,20 @@ try {
         reviews_json($cache);
     }
 
+    // Lengths and booleans only - no key, id or path value is ever echoed.
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
         'reason' => $reason,
+        'diag' => [
+            'cfg_exists' => is_file($localConfig),
+            'cfg_readable' => is_readable($localConfig),
+            'cfg_bytes' => is_file($localConfig) ? filesize($localConfig) : 0,
+            'key_len' => strlen((string)($config['places_api_key'] ?? '')),
+            'place_len' => strlen((string)($config['place_id'] ?? '')),
+            'ref_len' => strlen((string)($config['referrer'] ?? '')),
+            'curl' => function_exists('curl_init'),
+            'php' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+        ],
     ], 503);
 }
