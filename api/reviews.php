@@ -478,9 +478,18 @@ try {
         reviews_json($cache);
     }
 
+    // TEMPORARY: shows which candidate paths exist so the manually uploaded
+    // config can be located. Paths are already public in this repo; no value
+    // is exposed. Remove once the config is found.
+    $looked = [];
+    foreach ($configCandidates as $candidate) {
+        $looked[str_replace($root, '', $candidate)] = is_file($candidate) ? 'var' : 'yok';
+    }
+
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
         'reason' => $reason,
+        'looked_in' => $looked,
     ], 503);
 }
