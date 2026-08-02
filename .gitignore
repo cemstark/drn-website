@@ -1,4 +1,5 @@
 config/google-reviews.php
+api/google-reviews-config.php
 data/google-reviews-cache.json
 .claude/
 

@@ -46,8 +46,12 @@ jobs:
               'max_reviews' => 5,
           ];
           PHP
+          # Second copy beside the endpoint: the config/ directory has not been
+          # surviving the FTP sync on this host, api/ has.
+          cp config/google-reviews.php api/google-reviews-config.php
           if command -v php >/dev/null 2>&1; then
             php -l config/google-reviews.php
+            php -l api/google-reviews-config.php
           fi
 
       - name: FTP Deploy

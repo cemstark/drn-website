@@ -5,8 +5,21 @@ header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: public, max-age=900');
 
 $root = dirname(__DIR__);
-$localConfig = $root . '/config/google-reviews.php';
 $cacheFile = $root . '/data/google-reviews-cache.json';
+
+// Deploy writes the config next to this file as well: on this host the
+// config/ copy does not survive the FTP sync, while api/ does.
+$configCandidates = [
+    $root . '/config/google-reviews.php',
+    __DIR__ . '/google-reviews-config.php',
+];
+$localConfig = $configCandidates[0];
+foreach ($configCandidates as $candidate) {
+    if (is_file($candidate)) {
+        $localConfig = $candidate;
+        break;
+    }
+}
 
 $config = [
     'places_api_key' => getenv('GOOGLE_PLACES_API_KEY') ?: '',
@@ -440,6 +453,9 @@ try {
         'message' => 'Google yorumları alınamadı.',
         'reason' => $reason,
         'diag' => [
+            'cfg_used' => basename(dirname($localConfig)) . '/' . basename($localConfig),
+            'cfg_in_config_dir' => is_file($configCandidates[0]),
+            'cfg_in_api_dir' => is_file($configCandidates[1]),
             'cfg_exists' => is_file($localConfig),
             'cfg_readable' => is_readable($localConfig),
             'cfg_bytes' => is_file($localConfig) ? filesize($localConfig) : 0,
