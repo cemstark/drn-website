@@ -486,6 +486,13 @@ try {
         $looked[str_replace($root, '', $candidate)] = is_file($candidate) ? 'var' : 'yok';
     }
 
+    // TEMPORARY: lists the names actually present, to spot a mistyped or
+    // .txt-suffixed upload. Names only, no contents.
+    $names = @scandir(__DIR__);
+    $looked['_api_dizini'] = is_array($names)
+        ? implode(', ', array_values(array_diff($names, ['.', '..'])))
+        : 'okunamadi';
+
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
