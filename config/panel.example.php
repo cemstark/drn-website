@@ -26,6 +26,12 @@ return [
     // Kilit süresi (saniye).
     'lockout_seconds' => 900,
 
-    // Bu kadar hareketsizlikten sonra oturum düşer (saniye).
-    'idle_seconds' => 7200,
+    // Bu kadar hareketsizlikten sonra oturum düşer (saniye). 1800 = 30 dakika.
+    // Çok kısaltırsanız uzun bir yazı yazarken oturum düşebilir ve form içeriği
+    // kaybolur; çok uzatırsanız açık kalmış bir tarayıcıda panel erişilebilir kalır.
+    'idle_seconds' => 1800,
+
+    // Girişten itibaren mutlak üst sınır (saniye). 14400 = 4 saat. Panel sürekli
+    // kullanılsa bile oturum bu süreden fazla yaşamaz, yeniden parola sorulur.
+    'absolute_seconds' => 14400,
 ];

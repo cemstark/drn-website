@@ -124,8 +124,10 @@ if (panel_config_missing()) {
         if ($lockRemaining > 0) {
             $setupError = 'Çok fazla deneme yapıldı. ' . (int)ceil($lockRemaining / 60)
                 . ' dakika sonra tekrar deneyin.';
-        } elseif (panel_length($password) < 12) {
-            $setupError = 'Parola en az 12 karakter olmalı. En az 16 karakterlik rastgele bir parola önerilir.';
+        } elseif ($password === '') {
+            // Uzunluk/karmaşıklık şartı bilerek yok: parolayı seçmek panel
+            // sahibinin kararı. Yalnızca boş parola kabul edilmiyor.
+            $setupError = 'Parola boş bırakılamaz.';
         } else {
             // Config sunucuya ulaşana kadar bu ekran herkese açık. password_hash
             // bilerek pahalı bir işlem; sayaca bağlanmazsa sınırsız bcrypt
@@ -148,9 +150,10 @@ if (panel_config_missing()) {
   <input type="hidden" name="action" value="setup">
   <div class="field">
     <label for="password">Panel parolası</label>
-    <input type="password" id="password" name="password" required minlength="12"
+    <input type="password" id="password" name="password" required
            autocomplete="new-password" aria-describedby="password-help" autofocus>
-    <p class="help" id="password-help">Bu parola hiçbir yere kaydedilmez; yalnızca hash'i üretilir.</p>
+    <p class="help" id="password-help">İstediğiniz parolayı yazabilirsiniz; uzunluk şartı yok.
+      Parola hiçbir yere kaydedilmez, yalnızca hash'i üretilir.</p>
   </div>
   <button type="submit" class="btn">Hash üret</button>
 </form>
@@ -370,7 +373,8 @@ if ($postTooLarge) {
         $cleanContent = '';
         if (!isset($errors['content'])) {
             try {
-                $cleanContent = panel_sanitize_html($form['content']);
+                // Önce düz yazı paragraflara çevrilir, sonra beyaz listeden geçer.
+                $cleanContent = panel_sanitize_html(panel_autoformat($form['content']));
                 if ($cleanContent === '') {
                     $errors['content'] = 'İçerik temizlendikten sonra boş kaldı.';
                 }
@@ -614,9 +618,11 @@ if ($view === 'new' || $view === 'edit') {
     <textarea id="alan-content" name="content" rows="16" required
               aria-describedby="content-help"<?= panel_invalid($errors, 'content') ?>><?= panel_e($form['content']) ?></textarea>
     <p class="help" id="content-help">
-      HTML yazabilirsiniz. İzinli etiketler: <code>&lt;p&gt; &lt;br&gt; &lt;strong&gt; &lt;em&gt;
-      &lt;ul&gt; &lt;ol&gt; &lt;li&gt; &lt;h4&gt; &lt;a href&gt;</code>.
-      Diğer etiketler kaydedilirken kaldırılır, metinleri korunur.
+      Normal yazar gibi yazın; paragrafları <strong>bir boş satır bırakarak</strong> ayırın,
+      gerisini panel halleder. HTML bilmeniz gerekmiyor.
+      İsterseniz kullanabileceğiniz etiketler: <code>&lt;p&gt; &lt;br&gt; &lt;strong&gt; &lt;em&gt;
+      &lt;ul&gt; &lt;ol&gt; &lt;li&gt; &lt;h4&gt; &lt;a href&gt;</code> —
+      bunlardan birini yazarsanız metniniz olduğu gibi korunur, diğer etiketler kaldırılır.
     </p>
   </div>
 

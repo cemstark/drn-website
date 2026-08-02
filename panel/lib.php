@@ -46,7 +46,13 @@ function panel_config(): array
         'session_name' => 'drnpanel',
         'max_attempts' => 5,
         'lockout_seconds' => 900,
-        'idle_seconds' => 7200,
+        // Hareketsizlik toleransı. Uzun tutulursa açık bırakılmış bir tarayıcıda
+        // panel saatlerce erişilebilir kalır; kısa tutulursa uzun bir yazı
+        // yazarken oturum düşer ve form içeriği kaybolur.
+        'idle_seconds' => 1800,
+        // Girişten itibaren mutlak üst sınır: sürekli kullanımda bile oturum
+        // sonsuza kadar uzamaz.
+        'absolute_seconds' => 14400,
     ];
 
     $file = PANEL_ROOT . '/config/panel.php';
@@ -62,7 +68,8 @@ function panel_config(): array
     $config['__missing__'] = false;
     $config['max_attempts'] = max(1, (int)$config['max_attempts']);
     $config['lockout_seconds'] = max(60, (int)$config['lockout_seconds']);
-    $config['idle_seconds'] = max(300, (int)$config['idle_seconds']);
+    $config['idle_seconds'] = max(60, (int)$config['idle_seconds']);
+    $config['absolute_seconds'] = max((int)$config['idle_seconds'], (int)$config['absolute_seconds']);
 
     return $config;
 }
@@ -122,7 +129,13 @@ function panel_is_authed(): bool
 
     $config = panel_config();
     $lastSeen = (int)($_SESSION['last_seen'] ?? 0);
-    if ($lastSeen > 0 && (time() - $lastSeen) > (int)$config['idle_seconds']) {
+    $loginAt = (int)($_SESSION['login_at'] ?? 0);
+    $now = time();
+
+    $idleDoldu = $lastSeen > 0 && ($now - $lastSeen) > (int)$config['idle_seconds'];
+    $omurDoldu = $loginAt > 0 && ($now - $loginAt) > (int)$config['absolute_seconds'];
+
+    if ($idleDoldu || $omurDoldu) {
         panel_logout();
         // Yalnızca session_start() yetmez: kimlik hâlâ istekteki çerezden
         // geldiği için PHP yeni bir Set-Cookie basmaz, tarayıcı ise logout'un
@@ -144,6 +157,7 @@ function panel_login(): void
     session_regenerate_id(true);
     $_SESSION['auth'] = true;
     $_SESSION['last_seen'] = time();
+    $_SESSION['login_at'] = time();
     unset($_SESSION['csrf']);
 }
 
@@ -563,6 +577,41 @@ function panel_date_display(string $isoDate): string
 /* ------------------------------------------------------------- İçerik temizleme */
 
 /**
+ * Editörün paragrafları elle işaretlemesi gerekmesin diye düz yazıyı HTML'e
+ * çevirir: boş satır yeni paragraf, tek satır sonu <br> olur. libxml boş
+ * satırları kendiliğinden paragrafa çevirmediği için, bu adım olmadan bütün
+ * yazı tek bir <p> içinde birleşip sitede tek blok olarak görünürdü.
+ *
+ * İçerikte blok etiketi varsa yazar HTML yazmış demektir ve metne dokunulmaz.
+ */
+function panel_autoformat(string $content): string
+{
+    if (trim($content) === '') {
+        return '';
+    }
+
+    if (preg_match('#<\s*(p|ul|ol|h4|li)\b#i', $content) === 1) {
+        return $content;
+    }
+
+    $normalized = str_replace(["\r\n", "\r"], "\n", $content);
+    $blocks = preg_split('/\n[ \t]*\n+/', trim($normalized));
+    if (!is_array($blocks)) {
+        return $content;
+    }
+
+    $out = '';
+    foreach ($blocks as $block) {
+        $block = trim($block);
+        if ($block !== '') {
+            $out .= '<p>' . str_replace("\n", '<br>', $block) . '</p>';
+        }
+    }
+
+    return $out === '' ? $content : $out;
+}
+
+/**
  * Yazı içeriği HTML kabul ettiği için beyaz listeyle temizlenir. DOM eklentisi
  * yoksa kayıt reddedilir: zayıf bir regex temizliğiyle XSS riski almaktansa
  * kapalı başarısız olmak tercih edildi.
@@ -627,9 +676,11 @@ function panel_clean_children(DOMNode $node): void
             panel_clean_attributes($child, $name);
             panel_clean_children($child);
 
-            // İçeriği boşalmış bir bağlantı (ör. yalnızca <img> içeren) ekran
-            // okuyucuda adsız bir sekme durağına dönüşür; etiket de kaldırılır.
-            if ($name === 'a' && trim($child->textContent) === '') {
+            // İçeriği boşalmış eleman kaldırılır: adsız bir <a> ekran okuyucuda
+            // boş bir sekme durağına dönüşür, izin verilmeyen bir etiketin
+            // silinmesinden arta kalan boş <p> ise sayfada ölü boşluk bırakır.
+            if (in_array($name, ['a', 'p', 'h4', 'li', 'ul', 'ol'], true)
+                && trim($child->textContent) === '') {
                 $node->removeChild($child);
             }
             continue;
