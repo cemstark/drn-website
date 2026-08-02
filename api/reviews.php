@@ -478,9 +478,13 @@ try {
         reviews_json($cache);
     }
 
+    // Booleans only: tells us whether the deploy-time substitution reached
+    // this server, without revealing any value.
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
         'reason' => $reason,
+        'build' => '__BUILD_SHA__',
+        'injected' => substr($injected['places_api_key'], 0, 2) !== '__',
     ], 503);
 }
