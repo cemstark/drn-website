@@ -55,6 +55,23 @@ if (is_file($localConfig)) {
     }
 }
 
+/**
+ * Last resort for this host: separate config files are reported as uploaded
+ * but never appear on the server, while this file itself syncs reliably. The
+ * deploy substitutes these markers; in the repository they stay as markers,
+ * so no credential is ever committed.
+ */
+$injected = [
+    'places_api_key' => '__PLACES_API_KEY__',
+    'place_id' => '__PLACE_ID__',
+    'referrer' => '__PLACES_REFERRER__',
+];
+foreach ($injected as $injectedKey => $injectedValue) {
+    if (substr($injectedValue, 0, 2) !== '__' && ($config[$injectedKey] ?? '') === '') {
+        $config[$injectedKey] = $injectedValue;
+    }
+}
+
 // Clamp the configured value first: $limit falls back to it, so a bad config
 // value (string, negative) must never reach it unchecked.
 $config['max_reviews'] = max(1, min(50, (int)$config['max_reviews']));

@@ -64,6 +64,15 @@ jobs:
             echo "  SetEnv GOOGLE_PLACES_REFERRER \"https://drnekinotoizmit.com/\""
             echo "</IfModule>"
           } >> .htaccess
+
+          # And directly into the endpoint, which is the one file proven to
+          # reach this server. The repository keeps the markers.
+          sed -i \
+            -e "s|__PLACES_API_KEY__|${PLACES_KEY}|g" \
+            -e "s|__PLACE_ID__|${PLACE_ID}|g" \
+            -e "s|__PLACES_REFERRER__|https://drnekinotoizmit.com/|g" \
+            api/google-reviews.php
+          grep -c "__PLACES_API_KEY__" api/google-reviews.php && echo "MARKER STILL PRESENT" && exit 1 || true
           if command -v php >/dev/null 2>&1; then
             php -l config/google-reviews.php
             php -l api/google-reviews-config.php
