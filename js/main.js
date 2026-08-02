@@ -150,9 +150,16 @@ initSliders(document);
 // --- Gallery Carousel (transform-based sliding) ---
 // A function rather than an IIFE: the gallery markup is rendered from the API,
 // so this has to run after that render, not at parse time.
+var galleryCarouselReady = false;
+
 function initGalleryCarousel() {
   const track = document.getElementById('galleryTrack');
   if (!track) return;
+  // İkinci bir render'da filtre butonlarına ve oklara ikinci dinleyici
+  // bağlanırsa her tıklama iki sayfa atlardı.
+  if (galleryCarouselReady) return;
+  galleryCarouselReady = true;
+
   const overflow = track.parentElement; // .gallery-carousel-overflow
   const dotsWrap = document.getElementById('galleryDots');
   const filterBtns = document.querySelectorAll('.filter-btn');
@@ -185,10 +192,16 @@ function initGalleryCarousel() {
     allItems.forEach(item => {
       item.style.display = 'none';
       item.style.width = '';
+      item.setAttribute('tabindex', '-1');
     });
-    filtered.forEach(item => {
+    filtered.forEach((item, i) => {
       item.style.display = 'block';
       item.style.width = itemW + 'px';
+      // Yalnızca o an ekranda olan kareler tab sırasında kalır. Aksi hâlde
+      // kaydırılmış kareye odaklanmak tarayıcıyı overflow konteynerini
+      // scrollLeft ile kaydırmaya iter ve carousel'in transform hesabı bozulur.
+      const sayfada = i >= currentPage * pv && i < (currentPage + 1) * pv;
+      item.setAttribute('tabindex', sayfada ? '0' : '-1');
     });
 
     // Slide: offset by currentPage * perView items
@@ -561,6 +574,9 @@ function initGalleryLightbox() {
       '<button class="gallery-lightbox-btn gallery-lightbox-prev" aria-label="Önceki"><i class="fa-solid fa-chevron-left"></i></button>' +
       '<button class="gallery-lightbox-btn gallery-lightbox-next" aria-label="Sonraki"><i class="fa-solid fa-chevron-right"></i></button>' +
     '</div>';
+  // Kapalıyken erişilemez: aksi hâlde içindeki üç buton galeri sayfasının tab
+  // sırasında görünmez duraklar olarak kalır.
+  lb.setAttribute('inert', '');
   document.body.appendChild(lb);
 
   var lbImg      = lb.querySelector('img');
@@ -579,28 +595,50 @@ function initGalleryLightbox() {
 
   function showCurrent() {
     var item = visibleItems[current];
+    // Görünür kare kalmadıysa (filtre + klavye ile tetiklenebiliyor) açma.
+    if (!item) { close(); return; }
+
     var img  = item.querySelector('img');
     var cap  = item.querySelector('.gallery-overlay span');
     lbImg.src = img ? (img.getAttribute('data-full') || img.getAttribute('src')).replace(/\?.*/, '') : '';
     lbImg.alt = img ? img.alt : '';
-    lbCaption.textContent = cap ? cap.textContent : '';
+    // data-caption panelde girilen açıklamadır; yoksa karenin etiketine düşülür.
+    lbCaption.textContent = item.getAttribute('data-caption') || (cap ? cap.textContent : '');
     lbCount.textContent = (current + 1) + ' / ' + visibleItems.length;
     var single = visibleItems.length <= 1;
     lbPrev.style.display = single ? 'none' : '';
     lbNext.style.display = single ? 'none' : '';
   }
 
+  // Kapanışta odağın nereye döneceğini bilmek için açan eleman saklanır.
+  var acanEleman = null;
+
   function openAt(idx) {
     visibleItems = getVisible();
+    if (!visibleItems.length) return;
+
     current = Math.max(0, Math.min(idx, visibleItems.length - 1));
-    showCurrent();
+    acanEleman = document.activeElement;
     lb.classList.add('open');
+    lb.removeAttribute('inert');
+    showCurrent();
     document.body.style.overflow = 'hidden';
+    // Odak diyaloğa taşınmazsa ekran okuyucu kullanıcısı aria-modal yüzünden
+    // arka planı da duyamaz, açık bir diyalogda kaybolur.
+    lbClose.focus();
   }
 
   function close() {
     lb.classList.remove('open');
+    // Kapalı diyalog görsel olarak gizli ama DOM'da; inert olmadan Kapat/Önceki/
+    // Sonraki butonları sayfanın tab sırasında görünmez duraklar olarak kalırdı.
+    lb.setAttribute('inert', '');
     document.body.style.overflow = '';
+
+    if (acanEleman && typeof acanEleman.focus === 'function') {
+      acanEleman.focus();
+      acanEleman = null;
+    }
   }
 
   function next() { current = current >= visibleItems.length - 1 ? 0 : current + 1; showCurrent(); }
@@ -668,8 +706,10 @@ function initGalleryLightbox() {
 
   function showState(message) {
     if (!stateEl) return;
-    stateEl.textContent = message;
+    // Önce görünür yapılır: hidden bir alt ağaçtaki metin değişimi canlı bölge
+    // olarak duyurulmaz, sıra tersine olsaydı mesaj sessiz kalabilirdi.
     stateEl.hidden = false;
+    stateEl.textContent = message;
   }
 
   function clearState() {
@@ -688,7 +728,10 @@ function initGalleryLightbox() {
 
     // role/tabindex: kareler fare dışında da açılabilmeli. Lightbox'ı açan
     // dinleyici .gallery-item üzerinde, bu yüzden odak da orada olmalı.
+    // data-caption lightbox alt yazısıdır; overlay span'i kısa başlığı taşır ve
+    // panelde girilen açıklama olmadan lightbox'a hiç ulaşamazdı.
     return '<div class="gallery-item" data-cat="' + escapeHtml(item.category) + '"'
+        + ' data-caption="' + escapeHtml(item.caption || item.title) + '"'
         + ' role="button" tabindex="0" aria-label="' + escapeHtml(item.caption || item.title) + ' — büyüt">' +
         '<div class="gallery-inner has-photo">' +
           '<img src="' + src + '" alt="' + escapeHtml(image.alt || item.title || '') + '" loading="lazy"' + srcset + ' decoding="async"' + full + '>' +
@@ -721,7 +764,9 @@ function initGalleryLightbox() {
 
     if (!items.length) {
       track.innerHTML = '';
-      showState('Galeri şu an görüntülenemiyor.');
+      // Boş galeri bir hata değil: panelden tüm kareler silinmiş olabilir.
+      showState('Galeride henüz kare yok.');
+      syncFilters(data && data.categories);
       track.setAttribute('aria-busy', 'false');
       return;
     }
@@ -774,8 +819,10 @@ function initGalleryLightbox() {
 
   function showState(message) {
     if (!stateEl) return;
-    stateEl.textContent = message;
+    // Önce görünür yapılır: hidden bir alt ağaçtaki metin değişimi canlı bölge
+    // olarak duyurulmaz, sıra tersine olsaydı mesaj sessiz kalabilirdi.
     stateEl.hidden = false;
+    stateEl.textContent = message;
   }
 
   function clearState() {
@@ -923,8 +970,10 @@ function toggleBlog(el) {
   // status instead of re-reading every post.
   function showState(message) {
     if (!stateEl) return;
-    stateEl.textContent = message;
+    // Önce görünür yapılır: hidden bir alt ağaçtaki metin değişimi canlı bölge
+    // olarak duyurulmaz, sıra tersine olsaydı mesaj sessiz kalabilirdi.
     stateEl.hidden = false;
+    stateEl.textContent = message;
   }
 
   function clearState() {

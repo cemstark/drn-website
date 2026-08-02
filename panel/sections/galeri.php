@@ -23,7 +23,7 @@ $form = [
     'baseUpdatedAt' => '',
 ];
 $existingImage = null;
-$view = (string)($_GET['view'] ?? 'list');
+$view = is_string($_GET['view'] ?? '') ? (string)($_GET['view'] ?? 'list') : 'list';
 
 if ($postTooLarge) {
     $errors['image'] = 'Gönderilen dosya sunucunun izin verdiği boyutu aştı, form sunucuya hiç ulaşmadı. '
@@ -146,11 +146,11 @@ if ($postTooLarge) {
 
         $yeniDosyalar = panel_upload_files('image');
         $hasUpload = count($yeniDosyalar) > 0;
-        $removeImage = !empty($_POST['removeImage']);
 
         // Bir galeri karesi görselsiz anlamsız; ayrıca alt metni kontrolü
         // yüklemeden ÖNCE yapılır ki reddedilen kayıt diskte dosya bırakmasın.
-        $sonundaGorselOlacak = $hasUpload || ($existingImage !== null && !$removeImage);
+        // Galeri formunda "görseli kaldır" seçeneği yok: kaldırmak kareyi silmek demek.
+        $sonundaGorselOlacak = $hasUpload || $existingImage !== null;
         if (!$sonundaGorselOlacak) {
             $errors['image'] = 'Galeri karesi görselsiz olamaz.';
         } elseif ($form['imageAlt'] === '') {
@@ -258,7 +258,9 @@ try {
 }
 
 if (($view === 'edit' || $view === 'delete') && (!$isPost || $postTooLarge)) {
-    $hedef = panel_find_record($kayitlar, (string)($_GET['id'] ?? ''));
+    // id dizi gelirse (string) donusumu "Array to string conversion" uyarisi basardi.
+    $istenenId = $_GET['id'] ?? '';
+    $hedef = is_string($istenenId) ? panel_find_record($kayitlar, $istenenId) : null;
 
     if ($hedef === null) {
         $_SESSION['flash'] = 'Kare bulunamadı.';
@@ -421,14 +423,17 @@ if ($storeError !== '') {
         <p class="post-meta">
           <span class="badge"><?= panel_e(PANEL_GALLERY_CATEGORIES[$kayit['category'] ?? ''] ?? $kayit['category'] ?? '') ?></span>
 <?php if (!empty($kayit['caption'])): ?>
-          <span><?= panel_e(mb_substr((string)$kayit['caption'], 0, 40)) ?></span>
+          <span><?= panel_e(panel_plain((string)$kayit['caption'], 40)) ?></span>
 <?php endif; ?>
         </p>
       </div>
       <div class="order-cell">
         <label for="sira-<?= panel_e($kayit['id']) ?>">Sıra</label>
+        <!-- aria-label görünür etiketi ezer: on satırın hepsinde "Sıra" demek
+             yerine ekran okuyucu hangi kayda ait olduğunu söyler. -->
         <input type="number" id="sira-<?= panel_e($kayit['id']) ?>" name="order[<?= panel_e($kayit['id']) ?>]"
-               min="0" max="9999" value="<?= (int)($kayit['order'] ?? 0) ?>">
+               min="0" max="9999" value="<?= (int)($kayit['order'] ?? 0) ?>"
+               aria-label="<?= panel_e($kayit['title'] ?? '') ?> karesi sırası">
       </div>
       <div class="row-actions">
         <a class="btn btn-ghost" href="<?= panel_e($geri) ?>&amp;view=edit&amp;id=<?= panel_e($kayit['id']) ?>">Düzenle</a>

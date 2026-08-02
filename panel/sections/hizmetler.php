@@ -24,7 +24,11 @@ $form = [
     'baseUpdatedAt' => '',
 ];
 $existingImages = [];
-$view = (string)($_GET['view'] ?? 'list');
+// Hata sonrası formu POST'taki hâliyle geri basmak için.
+$formAltlar = [];
+$formSilinecekler = [];
+$formYeniAltlar = [];
+$view = is_string($_GET['view'] ?? '') ? (string)($_GET['view'] ?? 'list') : 'list';
 
 if ($postTooLarge) {
     $errors['newImage'] = 'Gönderilen dosyalar sunucunun izin verdiği boyutu aştı, form sunucuya hiç ulaşmadı. '
@@ -180,6 +184,8 @@ if ($postTooLarge) {
         $altlar = (array)($_POST['existingAlt'] ?? []);
         $silinecekler = (array)($_POST['removeImage'] ?? []);
 
+        // Anahtarlar korunur: hata durumunda form bu indekslerle yeniden basılıyor
+        // ve kaydırılmış bir indeks alt metinlerini yanlış görsele yazardı.
         $tutulan = [];
         $silinenler = [];
         foreach ($mevcut as $i => $img) {
@@ -188,7 +194,7 @@ if ($postTooLarge) {
                 continue;
             }
             $img['alt'] = panel_plain((string)($altlar[$i] ?? ($img['alt'] ?? '')), 160);
-            $tutulan[] = $img;
+            $tutulan[$i] = $img;
         }
 
         $yeniDosyalar = panel_upload_files('newImage');
@@ -218,12 +224,22 @@ if ($postTooLarge) {
             foreach ($yeniDosyalar as $i => $dosya) {
                 try {
                     $img = panel_handle_upload($store, $dosya, panel_slug($form['title']));
+                    // $i slot indeksi; alt metni aynı slottan okunur.
                     $img['alt'] = panel_plain((string)($yeniAltlar[$i] ?? ''), 160);
                     $yuklenenler[] = $img;
                 } catch (Throwable $e) {
                     $errors['newImage'] = $e->getMessage();
                     break;
                 }
+            }
+
+            // İkinci dosya reddedilse bile ilki diske yazılmış olur; kayıt
+            // yapılmayacağı için o dosyaları hiçbir kayıt işaret etmez.
+            if ($errors && $yuklenenler) {
+                foreach ($yuklenenler as $img) {
+                    panel_delete_image($store, $img);
+                }
+                $yuklenenler = [];
             }
         }
 
@@ -298,7 +314,14 @@ if ($postTooLarge) {
             }
         }
 
-        $existingImages = $tutulan;
+        // Form kayıtlı görsellerin TAMAMINI yeniden basar; "kaldır" işaretleri ve
+        // girilen alt metinleri aşağıda POST'tan geri yazılıyor. $tutulan basılsaydı
+        // kaldırılmak istenen görsel listeden düşer, editör onu kaldırılmış sanır
+        // ve bir sonraki kayıtta geri gelirdi.
+        $existingImages = $mevcut;
+        $formAltlar = $altlar;
+        $formSilinecekler = $silinecekler;
+        $formYeniAltlar = $yeniAltlar;
         $view = $isEdit ? 'edit' : 'new';
     }
 }
@@ -318,7 +341,9 @@ try {
 }
 
 if (($view === 'edit' || $view === 'delete') && (!$isPost || $postTooLarge)) {
-    $hedef = panel_find_record($kayitlar, (string)($_GET['id'] ?? ''));
+    // id dizi gelirse (string) donusumu "Array to string conversion" uyarisi basardi.
+    $istenenId = $_GET['id'] ?? '';
+    $hedef = is_string($istenenId) ? panel_find_record($kayitlar, $istenenId) : null;
 
     if ($hedef === null) {
         $_SESSION['flash'] = 'Hizmet bulunamadı.';
@@ -366,7 +391,12 @@ if ($view === 'delete') {
 if ($view === 'new' || $view === 'edit') {
     $isEdit = $view === 'edit';
     panel_head($isEdit ? 'Hizmeti düzenle' : 'Yeni hizmet', 'hizmetler');
-    panel_error_summary($errors);
+    // Tekrarlanan alanların id'si indeks taşıyor; özet ilk satıra/slota gitsin.
+    panel_error_summary($errors, [
+        'existingAlt' => 'alan-existingAlt-0',
+        'newImage' => 'alan-newImage-0',
+        'newAlt' => 'alan-newAlt-0',
+    ]);
     ?>
 <form method="post" enctype="multipart/form-data" class="card">
   <input type="hidden" name="csrf" value="<?= panel_e(panel_csrf_token()) ?>">
@@ -431,15 +461,18 @@ if ($view === 'new' || $view === 'edit') {
 
 <?php if ($existingImages): ?>
     <ul class="image-list">
-<?php foreach ($existingImages as $i => $img): ?>
+<?php foreach ($existingImages as $i => $img):
+      if (!is_array($img)) { continue; }
+      $altDeger = array_key_exists($i, $formAltlar) ? (string)$formAltlar[$i] : (string)($img['alt'] ?? '');
+      $isaretli = !empty($formSilinecekler[$i]); ?>
       <li class="image-row">
-        <img class="thumb" src="../<?= panel_e($img['src']) ?>" alt="" width="96" height="64" loading="lazy">
+        <img class="thumb" src="../<?= panel_e($img['src'] ?? '') ?>" alt="" width="96" height="64" loading="lazy">
         <div class="image-fields">
-          <label for="alan-existingAlt-<?= (int)$i ?>">Alt metni</label>
+          <label for="alan-existingAlt-<?= (int)$i ?>"><?= panel_e($img['src'] ?? 'Görsel') ?> — alt metni</label>
           <input type="text" id="alan-existingAlt-<?= (int)$i ?>" name="existingAlt[<?= (int)$i ?>]"
-                 maxlength="160" value="<?= panel_e($img['alt'] ?? '') ?>"<?= panel_invalid($errors, 'existingAlt') ?>>
+                 maxlength="160" value="<?= panel_e($altDeger) ?>"<?= isset($errors['existingAlt']) && trim($altDeger) === '' ? ' aria-invalid="true"' : '' ?>>
           <p class="check">
-            <input type="checkbox" id="alan-removeImage-<?= (int)$i ?>" name="removeImage[<?= (int)$i ?>]" value="1">
+            <input type="checkbox" id="alan-removeImage-<?= (int)$i ?>" name="removeImage[<?= (int)$i ?>]" value="1"<?= $isaretli ? ' checked' : '' ?>>
             <label for="alan-removeImage-<?= (int)$i ?>">Bu görseli kaldır</label>
           </p>
         </div>
@@ -450,16 +483,25 @@ if ($view === 'new' || $view === 'edit') {
     <p class="help">Bu kartta henüz görsel yok.</p>
 <?php endif; ?>
 
-<?php for ($slot = 0; $slot < PANEL_UPLOAD_SLOTS; $slot++): ?>
+<?php
+    // Kalan kapasite kadar slot: 5 görselli bir kartta dört slot göstermek,
+    // editöre ancak reddedildikten sonra öğreneceği bir seçenek sunardı.
+    $kalanKapasite = max(0, PANEL_MAX_SERVICE_IMAGES - count($existingImages));
+    $slotSayisi = min(PANEL_UPLOAD_SLOTS, $kalanKapasite);
+    for ($slot = 0; $slot < $slotSayisi; $slot++): ?>
     <div class="upload-slot">
       <label for="alan-newImage-<?= $slot ?>">Yeni görsel <?= $slot + 1 ?></label>
-      <input type="file" id="alan-newImage-<?= $slot ?>" name="newImage[]"
+      <input type="file" id="alan-newImage-<?= $slot ?>" name="newImage[<?= $slot ?>]"
              accept="image/jpeg,image/png,image/webp"<?= $slot === 0 ? panel_invalid($errors, 'newImage') : '' ?>>
-      <label for="alan-newAlt-<?= $slot ?>">Alt metni</label>
-      <input type="text" id="alan-newAlt-<?= $slot ?>" name="newAlt[]" maxlength="160"
-             value=""<?= $slot === 0 ? panel_invalid($errors, 'newAlt') : '' ?>>
+      <label for="alan-newAlt-<?= $slot ?>">Yeni görsel <?= $slot + 1 ?> alt metni</label>
+      <input type="text" id="alan-newAlt-<?= $slot ?>" name="newAlt[<?= $slot ?>]" maxlength="160"
+             value="<?= panel_e($formYeniAltlar[$slot] ?? '') ?>"<?= $slot === 0 ? panel_invalid($errors, 'newAlt') : '' ?>>
     </div>
 <?php endfor; ?>
+<?php if ($slotSayisi === 0): ?>
+    <p class="help">Bu kart <?= PANEL_MAX_SERVICE_IMAGES ?> görsele ulaştı. Yeni görsel eklemek için
+       önce mevcutlardan birini kaldırıp kaydedin.</p>
+<?php endif; ?>
     <p class="help">JPG, PNG veya WEBP. En fazla 6 MB, kenarları 200-<?= PANEL_MAX_IMAGE_EDGE ?> piksel.
       Görsel yüklerseniz alt metni zorunludur.</p>
   </fieldset>
@@ -529,8 +571,11 @@ if ($storeError !== '') {
       </div>
       <div class="order-cell">
         <label for="sira-<?= panel_e($kayit['id']) ?>">Sıra</label>
+        <!-- aria-label görünür etiketi ezer: on satırın hepsinde "Sıra" demek
+             yerine ekran okuyucu hangi kayda ait olduğunu söyler. -->
         <input type="number" id="sira-<?= panel_e($kayit['id']) ?>" name="order[<?= panel_e($kayit['id']) ?>]"
-               min="0" max="9999" value="<?= (int)($kayit['order'] ?? 0) ?>">
+               min="0" max="9999" value="<?= (int)($kayit['order'] ?? 0) ?>"
+               aria-label="<?= panel_e($kayit['title'] ?? '') ?> hizmeti sırası">
       </div>
       <div class="row-actions">
         <a class="btn btn-ghost" href="<?= panel_e($geri) ?>&amp;view=edit&amp;id=<?= panel_e($kayit['id']) ?>">Düzenle</a>

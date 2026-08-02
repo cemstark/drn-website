@@ -1972,11 +1972,17 @@ select.form-control {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s;
+  /* visibility, inert'i desteklemeyen tarayıcılarda da kapalı diyaloğun
+     butonlarını tab sırasından çıkarır. Geçişte gecikmeli değişir ki
+     kapanış animasyonu görünsün. */
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0s 0.25s;
 }
 .gallery-lightbox.open {
   opacity: 1;
   pointer-events: all;
+  visibility: visible;
+  transition: opacity 0.25s, visibility 0s;
 }
 .gallery-lightbox-inner {
   position: relative;

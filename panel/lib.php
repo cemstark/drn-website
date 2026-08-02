@@ -898,7 +898,10 @@ function panel_upload_files(string $field): array
             continue;
         }
 
-        $files[] = [
+        // Anahtar slot indeksidir ve KORUNUR. Liste sıkıştırılsaydı, aynı
+        // formdaki alt metni alanları slot sırasında geldiği için ikinci slot
+        // atlandığında metinler bir kayar ve yanlış görsele yazılırdı.
+        $files[$i] = [
             'name' => $raw['name'][$i] ?? '',
             'type' => $raw['type'][$i] ?? '',
             'tmp_name' => $raw['tmp_name'][$i] ?? '',

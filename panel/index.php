@@ -87,7 +87,12 @@ function panel_foot(bool $showDiagnostics = false): void
 <?php
 }
 
-function panel_error_summary(array $errors): void
+/**
+ * $hedefler: hata anahtarı => alan id'si. Tekrarlanan alanlarda (görsel
+ * satırları, yükleme slotları) alan id'si indeks taşıdığı için varsayılan
+ * "alan-<anahtar>" hiçbir yere gitmeyen bir bağlantı üretirdi.
+ */
+function panel_error_summary(array $errors, array $hedefler = []): void
 {
     if (!$errors) {
         return;
@@ -99,7 +104,7 @@ function panel_error_summary(array $errors): void
   <p><strong>Kaydedilemedi.</strong> Aşağıdaki alanları düzeltin:</p>
   <ul>
 <?php foreach ($errors as $field => $message): ?>
-    <li><a href="#alan-<?= panel_e($field) ?>"><?= panel_e($message) ?></a></li>
+    <li><a href="#<?= panel_e($hedefler[$field] ?? ('alan-' . $field)) ?>"><?= panel_e($message) ?></a></li>
 <?php endforeach; ?>
   </ul>
 </div>
