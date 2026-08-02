@@ -49,6 +49,34 @@ body {
 .topbar-actions { display: flex; align-items: center; gap: 8px; }
 .inline { display: inline; margin: 0; }
 
+/* --- Bölüm gezinmesi --- */
+.section-nav { margin: 0 0 20px; }
+.section-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--p-line);
+}
+.section-nav a {
+  display: block;
+  min-height: 44px;
+  padding: 11px 18px;
+  color: var(--p-muted);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+.section-nav a:hover { color: var(--p-text); }
+/* Aktif bölüm yalnızca renkle değil, kalınlaşan alt çizgiyle de ayrılır. */
+.section-nav a[aria-current="page"] {
+  color: var(--p-text);
+  border-bottom-color: var(--p-accent);
+}
+
 /* --- Kart --- */
 .card {
   background: var(--p-surface);

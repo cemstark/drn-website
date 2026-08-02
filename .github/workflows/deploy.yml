@@ -119,9 +119,25 @@ jobs:
             data/blog.json.bak
             data/blog.json.tmp.*
             data/blog.lock
+            data/hizmetler.json
+            data/hizmetler.json.bak
+            data/hizmetler.json.tmp.*
+            data/hizmetler.lock
+            data/galeri.json
+            data/galeri.json.bak
+            data/galeri.json.tmp.*
+            data/galeri.lock
             data/panel-attempts.json
             config/panel.php
             images/blog/uploads/*.webp
             images/blog/uploads/*.jpg
             images/blog/uploads/*.jpeg
             images/blog/uploads/*.png
+            images/hizmetler/uploads/*.webp
+            images/hizmetler/uploads/*.jpg
+            images/hizmetler/uploads/*.jpeg
+            images/hizmetler/uploads/*.png
+            images/galeri/uploads/*.webp
+            images/galeri/uploads/*.jpg
+            images/galeri/uploads/*.jpeg
+            images/galeri/uploads/*.png

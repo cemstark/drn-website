@@ -1,0 +1,6 @@
+# Panelden yüklenen dosyalar yalnızca görseldir; hiçbir koşulda
+# çalıştırılmamalı. Yükleme tarafında tür doğrulaması yapılıyor, bu dosya
+# o doğrulama atlatılsa dahi devreye giren ikinci savunmadır.
+<FilesMatch "\.(?i:php|phtml|phps|phar|cgi|pl|py|sh)$">
+  Require all denied
+</FilesMatch>

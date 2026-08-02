@@ -1,0 +1,4 @@
+# Bu dizindeki dosyalar panel/index.php tarafından require edilir, doğrudan
+# istenmemeli. Her dosyanın başındaki PANEL_BOOT koruması ikinci savunmadır:
+# bu kural desteklenmese bile içerik sızmaz.
+Require all denied
