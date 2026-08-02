@@ -10,11 +10,6 @@ if (!defined('PANEL_BOOT')) {
 
 define('PANEL_ROOT', dirname(__DIR__));
 define('PANEL_DATA_DIR', PANEL_ROOT . '/data');
-define('PANEL_UPLOAD_DIR', PANEL_ROOT . '/images/blog/uploads');
-define('PANEL_UPLOAD_URL', 'images/blog/uploads');
-define('PANEL_LIVE_FILE', PANEL_DATA_DIR . '/blog.json');
-define('PANEL_SEED_FILE', PANEL_DATA_DIR . '/blog.seed.json');
-define('PANEL_LOCK_FILE', PANEL_DATA_DIR . '/blog.lock');
 define('PANEL_ATTEMPTS_FILE', PANEL_DATA_DIR . '/panel-attempts.json');
 
 // Yazı içeriğinde izin verilen etiketler. Listede olmayan etiket kaldırılır,
@@ -31,6 +26,43 @@ const PANEL_MAX_CONTENT_CHARS = 50000;
 // yazımı listeyi kalıcı olarak bozar.
 const PANEL_DATE_YEARS_BACK = 20;
 const PANEL_DATE_YEARS_AHEAD = 2;
+
+// Bir hizmet kartının slider'ında taşınabilecek en fazla görsel.
+const PANEL_MAX_SERVICE_IMAGES = 6;
+// Tek kaydetmede sunulan yeni görsel slotu sayısı.
+const PANEL_UPLOAD_SLOTS = 4;
+const PANEL_MAX_FEATURES = 8;
+
+// Galeri kategorileri: galeri.html'deki filtre butonlarıyla birebir aynı olmalı.
+// Panelden yeni kategori tanımlanmaz, her öğe bunlardan biriyle etiketlenir.
+const PANEL_GALLERY_CATEGORIES = [
+    'bakim' => 'Bakım',
+    'kaporta' => 'Kaporta',
+    'elektrik' => 'Elektrik',
+    'pdr' => 'PDR',
+    'diger' => 'Diğer',
+];
+
+// Hizmet kartı ikonları beyaz liste: serbest metin alınsaydı panele girilen
+// değer doğrudan class özniteliğine yazılırdı.
+const PANEL_SERVICE_ICONS = [
+    'fa-screwdriver-wrench' => 'Anahtar / bakım',
+    'fa-car-side' => 'Araç',
+    'fa-spray-can-sparkles' => 'Boya',
+    'fa-gauge-high' => 'Rot / balans',
+    'fa-oil-can' => 'Yağ',
+    'fa-car-burst' => 'Kaza / hasar',
+    'fa-bolt' => 'Elektrik',
+    'fa-temperature-low' => 'Klima',
+    'fa-gears' => 'Mekanik',
+    'fa-clipboard-check' => 'Ekspertiz',
+    'fa-shield-halved' => 'Güvence',
+    'fa-wrench' => 'Genel tamir',
+    'fa-truck-ramp-box' => 'Çekici',
+    'fa-fire-flame-curved' => 'Boya fırını',
+    'fa-hand-sparkles' => 'Detaylı temizlik',
+    'fa-building' => 'Tesis / ofis',
+];
 
 /* ---------------------------------------------------------------- Yapılandırma */
 
@@ -313,116 +345,163 @@ function panel_attempt_succeeded(): void
 /* ------------------------------------------------------------------ Veri deposu */
 
 /**
- * Okunacak dosyayı ve kaynağını verir. blog.json yalnızca sunucuda oluşur ve
- * deploy'da hariç tutulur. Kaybolduğunda (kota temizliği, hosting hatası)
- * doğrudan seed'e dönmek editöre "yazılarım duruyor" izlenimi verir ve ilk
- * kaydetmede aradaki bütün yazılar kalıcı olarak kaybolurdu; bu yüzden önce
- * yedeğe bakılır ve kaynak çağırana bildirilir.
+ * Üç içerik türü (blog, hizmetler, galeri) aynı depolama mantığını paylaşır:
+ * kilitli oku-değiştir-yaz, live → .bak → seed zinciri, tam yazım doğrulaması,
+ * atomik rename. Aralarındaki tek fark dosya adları, diskteki dizi anahtarı ve
+ * yükleme dizinidir; bu fonksiyon o farkı tek yerde toplar.
+ *
+ * 'key' diskteki dizi anahtarıdır ve DEĞİŞTİRİLEMEZ: data/blog.json'ı
+ * api/blog.php "posts" bekleyerek okuyor. Kod içinde her yerde 'records'
+ * kullanılır, yazarken bu anahtara geri çevrilir — böylece api/blog.php'ye
+ * hiç dokunmadan üç bölüm aynı fonksiyonları paylaşabiliyor.
  */
-function panel_store_file(): array
+function panel_store(string $name): array
 {
-    if (is_file(PANEL_LIVE_FILE)) {
-        return [PANEL_LIVE_FILE, 'live'];
+    $tanimlar = [
+        'blog' => ['Blog', 'Blog verisi', 'posts', 'blog', 'images/blog/uploads'],
+        'hizmetler' => ['Hizmetler', 'Hizmet verisi', 'services', 'hizmetler', 'images/hizmetler/uploads'],
+        'galeri' => ['Galeri', 'Galeri verisi', 'items', 'galeri', 'images/galeri/uploads'],
+    ];
+
+    if (!isset($tanimlar[$name])) {
+        // Bölüm adı URL'den geliyor; beyaz liste dışında hiçbir şey dosya
+        // yoluna dönüşmemeli.
+        throw new RuntimeException('Bilinmeyen bölüm: ' . $name);
     }
 
-    if (is_file(PANEL_LIVE_FILE . '.bak')) {
-        return [PANEL_LIVE_FILE . '.bak', 'backup'];
-    }
+    list($label, $dataLabel, $key, $file, $uploadUrl) = $tanimlar[$name];
 
-    return [PANEL_SEED_FILE, 'seed'];
+    return [
+        'name' => $name,
+        'label' => $label,
+        'dataLabel' => $dataLabel,
+        'key' => $key,
+        'live' => PANEL_DATA_DIR . '/' . $file . '.json',
+        'seed' => PANEL_DATA_DIR . '/' . $file . '.seed.json',
+        'lock' => PANEL_DATA_DIR . '/' . $file . '.lock',
+        'uploadDir' => PANEL_ROOT . '/' . $uploadUrl,
+        'uploadUrl' => $uploadUrl,
+    ];
 }
 
-function panel_store_read(): array
+function panel_store_names(): array
 {
-    list($file, $source) = panel_store_file();
+    return ['blog', 'hizmetler', 'galeri'];
+}
+
+/**
+ * Okunacak dosyayı ve kaynağını verir. Live dosya yalnızca sunucuda oluşur ve
+ * deploy'da hariç tutulur. Kaybolduğunda (kota temizliği, hosting hatası)
+ * doğrudan seed'e dönmek editöre "kayıtlarım duruyor" izlenimi verir ve ilk
+ * kaydetmede aradaki bütün kayıtlar kalıcı olarak kaybolurdu; bu yüzden önce
+ * yedeğe bakılır ve kaynak çağırana bildirilir.
+ */
+function panel_store_file(array $store): array
+{
+    if (is_file($store['live'])) {
+        return [$store['live'], 'live'];
+    }
+
+    if (is_file($store['live'] . '.bak')) {
+        return [$store['live'] . '.bak', 'backup'];
+    }
+
+    return [$store['seed'], 'seed'];
+}
+
+function panel_store_read(array $store): array
+{
+    list($file, $source) = panel_store_file($store);
 
     if (!is_file($file)) {
-        return ['version' => 1, 'posts' => [], 'source' => 'empty'];
+        return ['version' => 1, 'records' => [], 'source' => 'empty'];
     }
 
     $raw = file_get_contents($file);
     $data = is_string($raw) && $raw !== '' ? json_decode($raw, true) : null;
 
-    if (!is_array($data) || !isset($data['posts']) || !is_array($data['posts'])) {
+    if (!is_array($data) || !isset($data[$store['key']]) || !is_array($data[$store['key']])) {
         // Dosya yolu ve ayrıştırıcı mesajı sunucuya ait bilgidir; ekrana değil
         // günlüğe gider (api/reviews.php'deki aynı ayrım).
         error_log('panel: unreadable store at ' . $file . ' (' . json_last_error_msg() . ')');
-        throw new RuntimeException('Blog verisi çözümlenemedi. Ayrıntı sunucu hata günlüğünde.');
+        throw new RuntimeException($store['dataLabel'] . ' çözümlenemedi. Ayrıntı sunucu hata günlüğünde.');
     }
 
     return [
         'version' => (int)($data['version'] ?? 1),
-        'posts' => array_values(array_filter($data['posts'], 'is_array')),
+        'records' => array_values(array_filter($data[$store['key']], 'is_array')),
         'source' => $source,
     ];
 }
 
-function panel_store_write(array $data): void
+function panel_store_write(array $store, array $data): void
 {
-    // Yalnızca bu iki alan diske gider; 'source' okuma tarafının bilgisidir.
+    // Diske yalnızca version + store'un kendi anahtarı gider; 'source' ve
+    // 'records' okuma tarafının iç gösterimidir.
     $json = json_encode(
         [
             'version' => (int)($data['version'] ?? 1),
-            'posts' => array_values(array_filter($data['posts'] ?? [], 'is_array')),
+            $store['key'] => array_values(array_filter($data['records'] ?? [], 'is_array')),
         ],
         JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
     );
 
     // Kodlama hedef dosyaya dokunulmadan ÖNCE başarısız olmalı; yarım yazılmış
-    // bir JSON tüm yazıları kaybettirir.
+    // bir JSON tüm kayıtları kaybettirir.
     if ($json === false) {
-        throw new RuntimeException('Blog verisi JSON olarak kodlanamadı: ' . json_last_error_msg());
+        throw new RuntimeException($store['dataLabel'] . ' JSON olarak kodlanamadı: ' . json_last_error_msg());
     }
 
     // Önce geçici dosya yazılır ve TAM yazıldığı doğrulanır. Disk dolduğunda
     // file_put_contents false değil, yazılan bayt sayısını döndürür; bu kontrol
     // olmadan yarım bir dosya geçerli sayılıp rename ile verinin üzerine geçerdi.
-    $tmp = PANEL_LIVE_FILE . '.tmp.' . bin2hex(random_bytes(4));
+    $tmp = $store['live'] . '.tmp.' . bin2hex(random_bytes(4));
     $written = file_put_contents($tmp, $json);
     if ($written === false || $written !== strlen($json)) {
         @unlink($tmp);
-        throw new RuntimeException('Blog verisi diske tam yazılamadı (disk dolu olabilir).');
+        throw new RuntimeException($store['dataLabel'] . ' diske tam yazılamadı (disk dolu olabilir).');
     }
 
     // Yedek ancak yeni içerik sağlam yazıldıktan sonra alınır. Önce alınsaydı
-    // dolu diskte hem blog.json hem yedeği aynı istekte bozulurdu.
-    if (is_file(PANEL_LIVE_FILE)) {
-        $backup = PANEL_LIVE_FILE . '.bak';
-        if (!@copy(PANEL_LIVE_FILE, $backup)) {
+    // dolu diskte hem dosya hem yedeği aynı istekte bozulurdu.
+    if (is_file($store['live'])) {
+        $backup = $store['live'] . '.bak';
+        if (!@copy($store['live'], $backup)) {
             // Yarım kalmış bir yedek, yedeksizlikten daha tehlikelidir.
             @unlink($backup);
-            error_log('panel: blog.json.bak could not be written');
+            error_log('panel: ' . basename($backup) . ' could not be written');
         }
     }
 
-    if (!@rename($tmp, PANEL_LIVE_FILE)) {
+    if (!@rename($tmp, $store['live'])) {
         // Windows hedef dosya varken rename'i reddedebilir. Bu yol atomik
         // değil, o yüzden gerçekleştiğinde loglanıyor.
-        $inPlace = file_put_contents(PANEL_LIVE_FILE, $json, LOCK_EX);
+        $inPlace = file_put_contents($store['live'], $json, LOCK_EX);
         if ($inPlace === false || $inPlace !== strlen($json)) {
             // Sağlam geçici dosya burada hâlâ duruyor: elle kurtarılabilsin
             // diye bilerek silinmiyor.
             throw new RuntimeException(
-                'Blog verisi kaydedilemedi. Sunucuda ' . basename($tmp) . ' dosyası kurtarma için bırakıldı.'
+                $store['dataLabel'] . ' kaydedilemedi. Sunucuda ' . basename($tmp) . ' dosyası kurtarma için bırakıldı.'
             );
         }
 
         @unlink($tmp);
-        error_log('panel: atomic rename failed, wrote blog.json in place');
+        error_log('panel: atomic rename failed, wrote ' . basename($store['live']) . ' in place');
     }
 }
 
 /**
  * Oku-değiştir-yaz döngüsünün tamamı kilit altında çalışır. Yalnızca yazarken
- * kilitlemek eşzamanlı iki kaydetmede güncelleme kaybına yol açardı.
+ * kilitlemek eşzamanlı iki kaydetmede güncelleme kaybına yol açardı. Kilit
+ * dosyası store başına ayrıdır: galeri kaydı hizmet kaydını bloklamaz.
  */
-function panel_store_update(callable $mutator): array
+function panel_store_update(array $store, callable $mutator): array
 {
     if (!is_dir(PANEL_DATA_DIR) && !mkdir(PANEL_DATA_DIR, 0755, true) && !is_dir(PANEL_DATA_DIR)) {
         throw new RuntimeException('data/ klasörü oluşturulamadı.');
     }
 
-    $lock = fopen(PANEL_LOCK_FILE, 'c');
+    $lock = fopen($store['lock'], 'c');
     if ($lock === false) {
         throw new RuntimeException('Kilit dosyası açılamadı.');
     }
@@ -433,8 +512,8 @@ function panel_store_update(callable $mutator): array
     }
 
     try {
-        $data = $mutator(panel_store_read());
-        panel_store_write($data);
+        $data = $mutator(panel_store_read($store));
+        panel_store_write($store, $data);
         return $data;
     } finally {
         flock($lock, LOCK_UN);
@@ -442,17 +521,18 @@ function panel_store_update(callable $mutator): array
     }
 }
 
-function panel_find_post(array $posts, string $id): ?array
+function panel_find_record(array $records, string $id): ?array
 {
-    foreach ($posts as $post) {
-        if ((string)($post['id'] ?? '') === $id) {
-            return $post;
+    foreach ($records as $record) {
+        if ((string)($record['id'] ?? '') === $id) {
+            return $record;
         }
     }
 
     return null;
 }
 
+/** Blog: tarihe göre yeniden eskiye. */
 function panel_sort_posts(array $posts): array
 {
     usort($posts, function (array $a, array $b): int {
@@ -463,6 +543,19 @@ function panel_sort_posts(array $posts): array
     });
 
     return $posts;
+}
+
+/** Hizmetler ve galeri: elle verilen sıraya göre, eşitlikte eskiden yeniye. */
+function panel_sort_by_order(array $records): array
+{
+    usort($records, function (array $a, array $b): int {
+        $byOrder = (int)($a['order'] ?? 0) <=> (int)($b['order'] ?? 0);
+        return $byOrder !== 0
+            ? $byOrder
+            : strcmp((string)($a['createdAt'] ?? ''), (string)($b['createdAt'] ?? ''));
+    });
+
+    return $records;
 }
 
 /* ------------------------------------------------------------- Metin yardımcıları */
@@ -760,20 +853,56 @@ function panel_memory_allows(int $width, int $height): bool
     return ($bytes - memory_get_usage(true)) > $needed;
 }
 
-function panel_ensure_upload_dir(): void
+function panel_ensure_upload_dir(array $store): void
 {
-    if (!is_dir(PANEL_UPLOAD_DIR) && !mkdir(PANEL_UPLOAD_DIR, 0755, true) && !is_dir(PANEL_UPLOAD_DIR)) {
+    $dir = $store['uploadDir'];
+    if (!is_dir($dir) && !mkdir($dir, 0755, true) && !is_dir($dir)) {
         throw new RuntimeException('Yükleme klasörü oluşturulamadı.');
     }
 
     // Depodaki kopya sunucuya ulaşmadıysa koruma yine de yerinde olsun.
-    $guard = PANEL_UPLOAD_DIR . '/.htaccess';
+    $guard = $dir . '/.htaccess';
     if (!is_file($guard)) {
         @file_put_contents(
             $guard,
             "<FilesMatch \"\\.(?i:php|phtml|phps|phar|cgi|pl|py|sh)$\">\n  Require all denied\n</FilesMatch>\n"
         );
     }
+}
+
+/**
+ * $_FILES[$field] tek dosya için düz bir dizi, çoklu (name="x[]") için sütun
+ * sütun dizilmiş bir dizi verir. Her iki biçimi de tek-dosya dizilerinden oluşan
+ * bir listeye çevirir; böylece çoklu görsel de tek görselle aynı doğrulama
+ * yolundan geçer. Seçilmemiş slotlar (UPLOAD_ERR_NO_FILE) atılır.
+ */
+function panel_upload_files(string $field): array
+{
+    $raw = $_FILES[$field] ?? null;
+    if (!is_array($raw) || !isset($raw['error'])) {
+        return [];
+    }
+
+    if (!is_array($raw['error'])) {
+        return (int)$raw['error'] === UPLOAD_ERR_NO_FILE ? [] : [$raw];
+    }
+
+    $files = [];
+    foreach (array_keys($raw['error']) as $i) {
+        if ((int)$raw['error'][$i] === UPLOAD_ERR_NO_FILE) {
+            continue;
+        }
+
+        $files[] = [
+            'name' => $raw['name'][$i] ?? '',
+            'type' => $raw['type'][$i] ?? '',
+            'tmp_name' => $raw['tmp_name'][$i] ?? '',
+            'error' => $raw['error'][$i],
+            'size' => $raw['size'][$i] ?? 0,
+        ];
+    }
+
+    return $files;
 }
 
 function panel_load_image(string $path, int $type)
@@ -825,10 +954,9 @@ function panel_resize_to_webp($source, int $srcW, int $srcH, int $targetW, strin
  * Yüklenen dosyanın adı ve türü istemciden gelen değerlerle değil, sunucuda
  * üretilen slug ve dosyanın kendi başlığıyla belirlenir.
  */
-function panel_handle_upload(string $slug): array
+function panel_handle_upload(array $store, array $file, string $slug): array
 {
-    $file = $_FILES['image'] ?? null;
-    if (!is_array($file)) {
+    if (!isset($file['error'])) {
         throw new RuntimeException('Görsel alınamadı.');
     }
 
@@ -874,7 +1002,7 @@ function panel_handle_upload(string $slug): array
         );
     }
 
-    panel_ensure_upload_dir();
+    panel_ensure_upload_dir($store);
 
     // Slug yalnızca [a-z0-9-] içerir; ada rastgele son ek eklenerek eski
     // dosyaların üzerine yazılması da engellenir.
@@ -884,18 +1012,18 @@ function panel_handle_upload(string $slug): array
     if (panel_can_make_webp() && panel_memory_allows($width, $height)) {
         $source = panel_load_image($tmp, (int)$info[2]);
         if ($source !== false) {
-            $smallPath = PANEL_UPLOAD_DIR . '/' . $base . '-800.webp';
+            $smallPath = $store['uploadDir'] . '/' . $base . '-800.webp';
             if (panel_resize_to_webp($source, $width, $height, 800, $smallPath)) {
                 $image = [
-                    'src' => PANEL_UPLOAD_URL . '/' . $base . '-800.webp',
+                    'src' => $store['uploadUrl'] . '/' . $base . '-800.webp',
                     'srcLarge' => null,
                     'version' => $version,
                 ];
 
                 if ($width > 800) {
-                    $largePath = PANEL_UPLOAD_DIR . '/' . $base . '-1400.webp';
+                    $largePath = $store['uploadDir'] . '/' . $base . '-1400.webp';
                     if (panel_resize_to_webp($source, $width, $height, 1400, $largePath)) {
-                        $image['srcLarge'] = PANEL_UPLOAD_URL . '/' . $base . '-1400.webp';
+                        $image['srcLarge'] = $store['uploadUrl'] . '/' . $base . '-1400.webp';
                     }
                 }
 
@@ -911,36 +1039,37 @@ function panel_handle_upload(string $slug): array
 
     // GD yoksa (ya da dönüştürme başarısızsa) dosya olduğu gibi saklanır.
     // İkinci boyut üretilemediği için frontend srcset basmaz.
-    $target = PANEL_UPLOAD_DIR . '/' . $base . '.' . $allowed[$info[2]];
+    $target = $store['uploadDir'] . '/' . $base . '.' . $allowed[$info[2]];
     if (!move_uploaded_file($tmp, $target)) {
         throw new RuntimeException('Görsel kaydedilemedi.');
     }
 
     return [
-        'src' => PANEL_UPLOAD_URL . '/' . $base . '.' . $allowed[$info[2]],
+        'src' => $store['uploadUrl'] . '/' . $base . '.' . $allowed[$info[2]],
         'srcLarge' => null,
         'version' => $version,
     ];
 }
 
 /**
- * Yalnızca panelin kendi ürettiği dosyalar silinir; images/blog/ altındaki
- * depo görselleri hiçbir koşulda silinmez.
+ * Yalnızca panelin o bölüm için kendi ürettiği dosyalar silinir. Silme store'un
+ * kendi dizinine kilitli: images/ kökündeki depo görselleri ve başka bir
+ * bölümün yüklemeleri hiçbir koşulda silinemez.
  */
-function panel_delete_image($image): void
+function panel_delete_image(array $store, $image): void
 {
     if (!is_array($image)) {
         return;
     }
 
-    $uploadDir = realpath(PANEL_UPLOAD_DIR);
+    $uploadDir = realpath($store['uploadDir']);
     if ($uploadDir === false) {
         return;
     }
 
     foreach (['src', 'srcLarge'] as $key) {
         $path = trim((string)($image[$key] ?? ''));
-        if ($path === '' || strpos($path, PANEL_UPLOAD_URL . '/') !== 0) {
+        if ($path === '' || strpos($path, $store['uploadUrl'] . '/') !== 0) {
             continue;
         }
 
@@ -957,16 +1086,21 @@ function panel_delete_image($image): void
 
 function panel_diagnostics(): array
 {
-    $uploadWritable = is_dir(PANEL_UPLOAD_DIR)
-        ? is_writable(PANEL_UPLOAD_DIR)
-        : is_writable(dirname(PANEL_UPLOAD_DIR));
-
-    return [
+    $rapor = [
         'PHP' => PHP_VERSION,
         'GD' => function_exists('imagecreatetruecolor') ? 'var' : 'yok',
         'webp' => function_exists('imagewebp') ? 'var' : 'yok',
         'DOM' => class_exists('DOMDocument') ? 'var' : 'yok',
         'data/ yazılabilir' => is_writable(PANEL_DATA_DIR) ? 'evet' : 'hayır',
-        'images/blog/uploads yazılabilir' => $uploadWritable ? 'evet' : 'hayır',
     ];
+
+    // Dizin henüz oluşmamış olabilir; o zaman üst dizinin yazılabilirliği
+    // oluşturulup oluşturulamayacağını söyler.
+    foreach (panel_store_names() as $name) {
+        $dir = panel_store($name)['uploadDir'];
+        $yazilabilir = is_dir($dir) ? is_writable($dir) : is_writable(dirname($dir));
+        $rapor[basename(dirname($dir)) . '/uploads yazılabilir'] = $yazilabilir ? 'evet' : 'hayır';
+    }
+
+    return $rapor;
 }

@@ -226,6 +226,10 @@ if (!panel_is_authed()) {
 
 /* ------------------------------------------------- Buradan sonrası girişli alan */
 
+// Bu dosya bugün yalnızca blog bölümünü sunuyor; depo tanımı tek yerden alınır
+// ki store'a bağlı çağrılar sabitlere değil bu kayda dayansın.
+$blogStore = panel_store('blog');
+
 $errors = [];
 $form = [
     'id' => '',
@@ -268,16 +272,16 @@ if ($postTooLarge) {
         $removed = null;
 
         try {
-            panel_store_update(function (array $data) use ($id, &$removed): array {
+            panel_store_update($blogStore, function (array $data) use ($id, &$removed): array {
                 $kept = [];
-                foreach ($data['posts'] as $post) {
+                foreach ($data['records'] as $post) {
                     if ((string)($post['id'] ?? '') === $id) {
                         $removed = $post;
                         continue;
                     }
                     $kept[] = $post;
                 }
-                $data['posts'] = $kept;
+                $data['records'] = $kept;
                 return $data;
             });
 
@@ -285,7 +289,7 @@ if ($postTooLarge) {
                 $_SESSION['flash'] = 'Yazı bulunamadı.';
             } else {
                 // Görseller ancak kayıt gerçekten silindikten sonra atılır.
-                panel_delete_image($removed['image'] ?? null);
+                panel_delete_image($blogStore, $removed['image'] ?? null);
                 $_SESSION['flash'] = 'Yazı silindi.';
             }
         } catch (Throwable $e) {
@@ -313,7 +317,7 @@ if ($postTooLarge) {
 
         if ($isEdit) {
             try {
-                $current = panel_find_post(panel_store_read()['posts'], $form['id']);
+                $current = panel_find_record(panel_store_read($blogStore)['records'], $form['id']);
             } catch (Throwable $e) {
                 error_log('panel save (read): ' . $e->getMessage());
                 $errors['title'] = 'Blog verisi okunamadı: ' . $e->getMessage();
@@ -403,7 +407,7 @@ if ($postTooLarge) {
 
         if (!$errors && $hasUpload) {
             try {
-                $image = panel_handle_upload(panel_slug($form['title']));
+                $image = panel_handle_upload($blogStore, $_FILES['image'], panel_slug($form['title']));
                 $imageToDelete = $existingImage;
             } catch (Throwable $e) {
                 $errors['image'] = $e->getMessage();
@@ -440,9 +444,9 @@ if ($postTooLarge) {
             $baseUpdatedAt = (string)($_POST['baseUpdatedAt'] ?? '');
 
             try {
-                panel_store_update(function (array $data) use ($record, $isEdit, $baseUpdatedAt): array {
+                panel_store_update($blogStore, function (array $data) use ($record, $isEdit, $baseUpdatedAt): array {
                     if ($isEdit) {
-                        foreach ($data['posts'] as $index => $post) {
+                        foreach ($data['records'] as $index => $post) {
                             if ((string)($post['id'] ?? '') === $record['id']) {
                                 // Form açıldıktan sonra aynı yazı başka bir yerden
                                 // kaydedildiyse buradaki yazma onu sessizce silerdi.
@@ -455,7 +459,7 @@ if ($postTooLarge) {
 
                                 // createdAt kilit altındaki kayıttan alınır.
                                 $record['createdAt'] = (string)($post['createdAt'] ?? $record['createdAt']);
-                                $data['posts'][$index] = $record;
+                                $data['records'][$index] = $record;
                                 return $data;
                             }
                         }
@@ -466,14 +470,14 @@ if ($postTooLarge) {
                     // Kimlik çakışması pratikte imkânsız ama kontrol ucuz.
                     do {
                         $record['id'] = bin2hex(random_bytes(6));
-                    } while (panel_find_post($data['posts'], $record['id']) !== null);
+                    } while (panel_find_record($data['records'], $record['id']) !== null);
 
-                    $data['posts'][] = $record;
+                    $data['records'][] = $record;
                     return $data;
                 });
 
                 if ($imageToDelete !== null) {
-                    panel_delete_image($imageToDelete);
+                    panel_delete_image($blogStore, $imageToDelete);
                 }
 
                 $_SESSION['flash'] = $isEdit ? 'Yazı güncellendi.' : 'Yazı eklendi.';
@@ -483,7 +487,7 @@ if ($postTooLarge) {
                 error_log('panel save: ' . $e->getMessage());
                 // Kayıt yazılamadıysa bu isteğin yüklediği görsel sahipsiz kalır.
                 if ($hasUpload && is_array($image)) {
-                    panel_delete_image($image);
+                    panel_delete_image($blogStore, $image);
                 }
                 $errors['title'] = 'Kaydedilemedi: ' . $e->getMessage();
             }
@@ -497,8 +501,8 @@ if ($postTooLarge) {
 /* -------------------------------------------------------------------- Görünümler */
 
 try {
-    $store = panel_store_read();
-    $posts = panel_sort_posts($store['posts']);
+    $store = panel_store_read($blogStore);
+    $posts = panel_sort_posts($store['records']);
     $storeSource = (string)($store['source'] ?? 'live');
     $storeError = '';
 } catch (Throwable $e) {
@@ -521,7 +525,7 @@ sort($categories);
 // yüklenir. Tek istisna $postTooLarge: orada $_POST hiç gelmediği için formda
 // gösterilecek tek doğru içerik kayıtlı hâlin kendisidir.
 if (($view === 'edit' || $view === 'delete') && (!$isPost || $postTooLarge)) {
-    $target = panel_find_post($posts, (string)($_GET['id'] ?? ''));
+    $target = panel_find_record($posts, (string)($_GET['id'] ?? ''));
 
     if ($target === null) {
         $_SESSION['flash'] = 'Yazı bulunamadı.';
