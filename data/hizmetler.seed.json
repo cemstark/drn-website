@@ -18,7 +18,7 @@
             "images": [
                 {
                     "src": "images/drn-bakim2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-bakim2-1400.webp",
                     "alt": "Bakım",
                     "version": "20260424"
                 }
@@ -43,13 +43,13 @@
             "images": [
                 {
                     "src": "images/drn-on-cephe-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-on-cephe-1400.webp",
                     "alt": "Ön Cephe",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-on-cephe-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-on-cephe-1400.webp",
                     "alt": "Dış Cephe",
                     "version": "20260424"
                 }
@@ -74,19 +74,19 @@
             "images": [
                 {
                     "src": "images/drn-boya-firini2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-boya-firini2-1400.webp",
                     "alt": "Boya Fırını İç",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-boya-firini3-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-boya-firini3-1400.webp",
                     "alt": "SAICO Boya Fırını Açık",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-boya-firini4-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-boya-firini4-1400.webp",
                     "alt": "SAICO Boya Fırını",
                     "version": "20260424"
                 }
@@ -111,25 +111,25 @@
             "images": [
                 {
                     "src": "images/drn-ekipman2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ekipman2-1400.webp",
                     "alt": "PDR Ekipmanları",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ekipman1-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ekipman1-1400.webp",
                     "alt": "PDR Ekipmanı 2",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ekipman3-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ekipman3-1400.webp",
                     "alt": "PDR Ekipmanı 3",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ekipman4-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ekipman4-1400.webp",
                     "alt": "PDR Ekipmanı 4",
                     "version": "20260424"
                 }
@@ -154,19 +154,19 @@
             "images": [
                 {
                     "src": "images/drn-atolye2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-atolye2-1400.webp",
                     "alt": "Aktif Atölye",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-atolye-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-atolye-1400.webp",
                     "alt": "Atölye",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-atolye3-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-atolye3-1400.webp",
                     "alt": "Atölye 3",
                     "version": "20260424"
                 }
@@ -191,13 +191,13 @@
             "images": [
                 {
                     "src": "images/drn-rot-balans1-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-rot-balans1-1400.webp",
                     "alt": "Rot - Balance",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-rot-balans2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-rot-balans2-1400.webp",
                     "alt": "Rot - Balance 2",
                     "version": "20260424"
                 }
@@ -222,7 +222,7 @@
             "images": [
                 {
                     "src": "images/drn-ekspertiz2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ekspertiz2-1400.webp",
                     "alt": "Ekspertiz",
                     "version": "20260424"
                 }
@@ -247,31 +247,31 @@
             "images": [
                 {
                     "src": "images/drn-customer-space2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-customer-space2-1400.webp",
                     "alt": "Ofis",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ofis1-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ofis1-1400.webp",
                     "alt": "Bekleme Salonu",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ofis2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ofis2-1400.webp",
                     "alt": "Müzik Sistemi",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ofis3-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ofis3-1400.webp",
                     "alt": "Plak Koleksiyonu",
                     "version": "20260424"
                 },
                 {
                     "src": "images/drn-ofis4-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-ofis4-1400.webp",
                     "alt": "Ofis Genel",
                     "version": "20260424"
                 }
@@ -296,7 +296,7 @@
             "images": [
                 {
                     "src": "images/drn-mekanik2-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-mekanik2-1400.webp",
                     "alt": "Mekanik",
                     "version": "20260424"
                 }
@@ -321,7 +321,7 @@
             "images": [
                 {
                     "src": "images/drn-kaporta-onarim-800.webp",
-                    "srcLarge": null,
+                    "srcLarge": "images/drn-kaporta-onarim-1400.webp",
                     "alt": "Kaporta Onarım",
                     "version": "20260424"
                 }

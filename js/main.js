@@ -256,10 +256,6 @@ function initGalleryCarousel() {
   render(false);
 }
 
-// Geçici: galeri markup'ı hâlâ statik. Galeri render bloğu geldiğinde bu çağrı
-// kaldırılıp render sonrasına taşınacak.
-initGalleryCarousel();
-
 // --- Form Submission ---
 document.querySelectorAll('form[data-form] [type="submit"]').forEach(btn => {
   btn.dataset.original = btn.innerHTML;
@@ -612,10 +608,21 @@ function initGalleryLightbox() {
 
   // Open on gallery item click
   items.forEach(function(item) {
-    item.addEventListener('click', function() {
+    function ac() {
       visibleItems = getVisible();
       var idx = visibleItems.indexOf(item);
       if (idx >= 0) openAt(idx);
+    }
+
+    item.addEventListener('click', ac);
+
+    // Kareler role="button" tabindex="0" taşıyor; klavye kullanıcısı da
+    // açabilmeli. Space sayfayı kaydırmasın diye varsayılan engelleniyor.
+    item.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        ac();
+      }
     });
   });
 
@@ -646,9 +653,107 @@ function initGalleryLightbox() {
   }, { passive: true });
 }
 
-// Geçici: galeri markup'ı hâlâ statik. Galeri render bloğu geldiğinde bu çağrı
-// kaldırılıp carousel'den SONRA çağrılacak (görünürlüğü carousel belirliyor).
-initGalleryLightbox();
+// --- Galeri Listesi ---
+(function() {
+  var track = document.getElementById('galleryTrack');
+  if (!track) return;
+
+  var stateEl = document.getElementById('galleryState');
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[ch];
+    });
+  }
+
+  function showState(message) {
+    if (!stateEl) return;
+    stateEl.textContent = message;
+    stateEl.hidden = false;
+  }
+
+  function clearState() {
+    if (!stateEl) return;
+    stateEl.textContent = '';
+    stateEl.hidden = true;
+  }
+
+  function itemHtml(item) {
+    var image = item.image || {};
+    var src = escapeHtml(image.src);
+    var srcset = image.srcLarge
+      ? ' srcset="' + src + ' 800w, ' + escapeHtml(image.srcLarge) + ' 1400w" sizes="(max-width: 640px) 82vw, 300px"'
+      : '';
+    var full = image.srcLarge ? ' data-full="' + escapeHtml(image.srcLarge) + '"' : '';
+
+    // role/tabindex: kareler fare dışında da açılabilmeli. Lightbox'ı açan
+    // dinleyici .gallery-item üzerinde, bu yüzden odak da orada olmalı.
+    return '<div class="gallery-item" data-cat="' + escapeHtml(item.category) + '"'
+        + ' role="button" tabindex="0" aria-label="' + escapeHtml(item.caption || item.title) + ' — büyüt">' +
+        '<div class="gallery-inner has-photo">' +
+          '<img src="' + src + '" alt="' + escapeHtml(image.alt || item.title || '') + '" loading="lazy"' + srcset + ' decoding="async"' + full + '>' +
+        '</div>' +
+        '<div class="gallery-overlay">' +
+          '<i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i>' +
+          '<span>' + escapeHtml(item.title) + '</span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // Sayımı sıfır olan filtre hiçbir şey göstermez; butonu bırakmak boş bir
+  // galeriye tıklatmak olurdu. "Tümü" her zaman kalır.
+  function syncFilters(categories) {
+    if (!Array.isArray(categories)) return;
+
+    var sayim = {};
+    categories.forEach(function(c) { sayim[c.key] = c.count; });
+
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      var filter = btn.dataset.filter;
+      if (filter && filter !== 'all') {
+        btn.hidden = !sayim[filter];
+      }
+    });
+  }
+
+  function render(data) {
+    var items = (data && Array.isArray(data.items)) ? data.items : [];
+
+    if (!items.length) {
+      track.innerHTML = '';
+      showState('Galeri şu an görüntülenemiyor.');
+      track.setAttribute('aria-busy', 'false');
+      return;
+    }
+
+    track.innerHTML = items.map(itemHtml).join('');
+    clearState();
+    syncFilters(data.categories);
+
+    // Sıra önemli: carousel öğelerin display değerini yazar, lightbox
+    // görünürlüğü ondan okur.
+    initGalleryCarousel();
+    initGalleryLightbox();
+
+    track.setAttribute('aria-busy', 'false');
+  }
+
+  track.setAttribute('aria-busy', 'true');
+  showState('Galeri yükleniyor…');
+
+  fetch('api/galeri.php', { cache: 'no-store' })
+    .then(function(response) { return response.ok ? response.json() : Promise.reject(response); })
+    .then(function(data) {
+      if (data && data.success === false) return Promise.reject(data);
+      render(data);
+    })
+    .catch(function(err) {
+      console.warn('Galeri yüklenemedi:', err);
+      track.innerHTML = '';
+      showState('Galeri şu an yüklenemedi. Lütfen sayfayı yenileyin.');
+      track.setAttribute('aria-busy', 'false');
+    });
+})();
 
 // --- Hizmetler Listesi ---
 // index.html özet kartı, hizmetler.html detay kartı basar; ikisi de aynı ucu
