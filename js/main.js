@@ -135,10 +135,22 @@ function initImgSlider(el) {
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   }, { passive: true });
 }
-document.querySelectorAll('[data-slider]').forEach(initImgSlider);
+// Callable so dynamically rendered cards can be wired up too. The flag stops a
+// second listener being attached if a root is passed twice.
+function initSliders(root) {
+  (root || document).querySelectorAll('[data-slider]').forEach(function(el) {
+    if (el.dataset.sliderReady === '1') return;
+    el.dataset.sliderReady = '1';
+    initImgSlider(el);
+  });
+}
+
+initSliders(document);
 
 // --- Gallery Carousel (transform-based sliding) ---
-(function() {
+// A function rather than an IIFE: the gallery markup is rendered from the API,
+// so this has to run after that render, not at parse time.
+function initGalleryCarousel() {
   const track = document.getElementById('galleryTrack');
   if (!track) return;
   const overflow = track.parentElement; // .gallery-carousel-overflow
@@ -242,7 +254,11 @@ document.querySelectorAll('[data-slider]').forEach(initImgSlider);
   });
 
   render(false);
-})();
+}
+
+// Geçici: galeri markup'ı hâlâ statik. Galeri render bloğu geldiğinde bu çağrı
+// kaldırılıp render sonrasına taşınacak.
+initGalleryCarousel();
 
 // --- Form Submission ---
 document.querySelectorAll('form[data-form] [type="submit"]').forEach(btn => {
@@ -523,9 +539,17 @@ document.querySelectorAll('.img-carousel').forEach(function(carousel) {
 });
 
 // --- Gallery Lightbox ---
-(function() {
+// Guard against a second lightbox being appended to the body: the gallery can
+// be rendered from the API, and this must not build its DOM twice.
+var galleryLightboxReady = false;
+
+function initGalleryLightbox() {
+  if (galleryLightboxReady) return;
+
   var items = Array.from(document.querySelectorAll('.gallery-item'));
   if (!items.length) return;
+
+  galleryLightboxReady = true;
 
   // Build lightbox DOM
   var lb = document.createElement('div');
@@ -620,7 +644,11 @@ document.querySelectorAll('.img-carousel').forEach(function(carousel) {
     var diff = touchStartX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
   }, { passive: true });
-})();
+}
+
+// Geçici: galeri markup'ı hâlâ statik. Galeri render bloğu geldiğinde bu çağrı
+// kaldırılıp carousel'den SONRA çağrılacak (görünürlüğü carousel belirliyor).
+initGalleryLightbox();
 
 // --- Blog Toggle ---
 function toggleBlog(el) {
