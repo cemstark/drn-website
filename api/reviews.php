@@ -478,29 +478,9 @@ try {
         reviews_json($cache);
     }
 
-    // TEMPORARY: shows which candidate paths exist so the manually uploaded
-    // config can be located. Paths are already public in this repo; no value
-    // is exposed. Remove once the config is found.
-    $looked = [];
-    foreach ($configCandidates as $candidate) {
-        $looked[str_replace($root, '', $candidate)] = is_file($candidate) ? 'var' : 'yok';
-    }
-
-    // TEMPORARY: lists the names actually present, to spot a mistyped or
-    // .txt-suffixed upload. Names only, no contents.
-    $names = @scandir(__DIR__);
-    $looked['_api_dizini'] = is_array($names)
-        ? implode(', ', array_values(array_diff($names, ['.', '..'])))
-        : 'okunamadi';
-    // TEMPORARY: the absolute path so the file can be uploaded to the right
-    // place from the hosting panel.
-    $looked['_tam_yol'] = __DIR__;
-    $looked['_yazilabilir'] = is_writable(__DIR__) ? 'evet' : 'hayir';
-
     reviews_json([
         'success' => false,
         'message' => 'Google yorumları alınamadı.',
         'reason' => $reason,
-        'looked_in' => $looked,
     ], 503);
 }
