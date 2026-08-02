@@ -1111,6 +1111,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* 18. Blog */
 .blog-layout { display: grid; grid-template-columns: 1fr 310px; gap: 40px; align-items: start; }
+/* Durum bölgesi ile listeyi tek grid hücresinde tutar. */
+.blog-main { min-width: 0; }
 .blog-list { display: flex; flex-direction: column; gap: 28px; }
 .blog-card {
   display: grid;
@@ -1180,7 +1182,9 @@ h1, h2, h3, h4, h5, h6 {
 .blog-detail p:last-child { margin-bottom: 0; }
 .blog-detail strong { color: var(--black); }
 .read-more {
-  color: var(--red);
+  /* Marka sarısı (--red) beyaz üzerinde 1,65:1 kalıyor ve bu bir kontrol:
+     metin koyu, ok ikonu marka renginde. Renk değişkeni değiştirilmedi. */
+  color: var(--gray-dark);
   font-family: 'Montserrat', sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
@@ -1190,8 +1194,17 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   gap: 6px;
   transition: var(--transition);
+  /* Klavyeyle erişilebilmesi için <button>; tarayıcı varsayılanları burada
+     temizleniyor ki ayrı bir kural yukarıdaki tipografiyi ezmesin. */
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
 }
-.read-more:hover { gap: 10px; }
+.read-more i { color: var(--red); }
+.read-more:hover { gap: 10px; color: var(--black); }
+.blog-state { padding: 28px; text-align: center; color: var(--gray); font-size: 0.9rem; }
+.blog-card--noimg { grid-template-columns: 1fr; }
 .sidebar-widget { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; margin-bottom: 24px; }
 .sidebar-widget h4 {
   font-size: 0.82rem;

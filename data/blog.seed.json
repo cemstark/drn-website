@@ -1,0 +1,77 @@
+{
+    "version": 1,
+    "posts": [
+        {
+            "id": "a1f4c9d2e70b",
+            "slug": "motor-yagi-ne-zaman-degistirilmeli",
+            "title": "Motor Yağı Ne Zaman Değiştirilmeli Doğru Bilinen Yanlışlar",
+            "category": "Bakım",
+            "date": "2025-01-15",
+            "readingMinutes": 4,
+            "excerpt": "Pek çok sürücü motor yağını her 5.000 km'de bir değiştirmesi gerektiğini düşünür. Ancak modern motorlar ve sentetik yağlarla bu mesafe çok daha uzayabilir. Peki gerçek ne",
+            "content": "<p>Eskiden mineral bazlı motor yağları kullanılıyordu ve bu yağlar gerçekten de 5.000 km gibi kısa sürelerde özelliğini yitiriyordu. Günümüzde tam sentetik ve yarı sentetik motor yağları, normal kullanım şartlarında <strong>10.000 – 15.000 km</strong> arasında güvenle kullanılabilir.</p><p>Dikkat etmeniz gereken istisnalar: Aracınızı sadece kısa mesafelerde (motor tam ısınmadan dur-kalk yaparak) kullanıyorsanız veya çok tozlu ortamlarda bulunuyorsanız, kilometre dolmadan da yağ kalitesinde bozulmalar yaşanabilir.</p><p><strong>DRNEKİN OTO tavsiyesi:</strong> Senede bir kez kilometre dolmasa dahi yağın vizkozite değerlerinin kontrol edilmesini öneriyoruz.</p>",
+            "image": {
+                "src": "images/blog/motor-yagi-bakimi-800.webp",
+                "srcLarge": "images/blog/motor-yagi-bakimi-1400.webp",
+                "alt": "Motor yağı bakımında servis kontrolü",
+                "version": "20260424"
+            },
+            "createdAt": "2025-01-15T09:00:00+00:00",
+            "updatedAt": "2025-01-15T09:00:00+00:00"
+        },
+        {
+            "id": "b83e5a1c60d7",
+            "slug": "kis-lastigi-takmanin-en-dogru-zamani",
+            "title": "Kış Lastiği Takmanın En Doğru Zamanı ve Dikkat Edilmesi Gerekenler",
+            "category": "Güvenlik",
+            "date": "2024-12-28",
+            "readingMinutes": 5,
+            "excerpt": "Kış lastikleri sadece kar için değil; 7°C'nin altındaki hava koşullarında standart lastiklere göre çok daha iyi fren performansı sunar.",
+            "content": "<p>Yaz lastiklerinin kauçuk yapısı sıcak havalarda performans göstermek üzere tasarlanmıştır. <strong>+7°C'nin altına</strong> düştüğünde bu kauçuk sertleşir, yola tutunamaz ve fren mesafesini iki katına çıkarabilir.</p><p>Kış lastikleri ise içeriğindeki yüksek silika oranı sayesinde eksi soğuklarda dahi yumuşak kalabilme özelliğine sahiptir. Lamelli yapıları kar ve buzda üstün tutuş sağlar.</p><p><strong>Tavsiye:</strong> Hava sıcaklığı düzenli olarak 7°C'nin altına düştüğünde kış lastiğine geçin. Lastiklerinizin diş derinliği en az 4 mm olmalıdır.</p>",
+            "image": {
+                "src": "images/blog/kis-lastigi-800.webp",
+                "srcLarge": "images/blog/kis-lastigi-1400.webp",
+                "alt": "Kış lastiği değişimi ve yol güvenliği",
+                "version": "20260424"
+            },
+            "createdAt": "2024-12-28T09:00:00+00:00",
+            "updatedAt": "2024-12-28T09:00:00+00:00"
+        },
+        {
+            "id": "c27b90fa4e83",
+            "slug": "fren-sistemi-bakimini-ertelemeyin",
+            "title": "Fren Sistemi Bakımını Neden Ertelememelisiniz",
+            "category": "Tamir",
+            "date": "2024-12-10",
+            "readingMinutes": 3,
+            "excerpt": "Fren sesi, titreşim veya uzayan fren mesafesi ciddi uyarı işaretleridir. Fren sistemi ihmalinin nasıl büyük kazalara yol açabileceğini anlattık.",
+            "content": "<p>Fren sistemlerinden gelen sesler genellikle balatalarınızın inceldiğinin en belirgin sinyalidir. Birçok balatada, kalınlık azaldığında diske sürtünüp ses çıkaran bir metal ikaz sacı bulunur.</p><p>Sesi görmezden gelirseniz balata tamamen biter ve kaliper metali fren diskini çizmeye başlar. Küçük bir balata değişimi ile çözülebilecek durum, <strong>disk değişimi</strong> ve büyük masrafları beraberinde getirir.</p><p><strong>Belirtiler:</strong> Fren pedalında titreşim, ciyaklama sesi, uzayan fren mesafesi, pedalın tabana gitmesi. Bunlardan birini fark ettiğinizde vakit kaybetmeden servise gelin.</p>",
+            "image": {
+                "src": "images/blog/fren-bakimi-800.webp",
+                "srcLarge": "images/blog/fren-bakimi-1400.webp",
+                "alt": "Fren sistemi disk ve balata bakımı",
+                "version": "20260424"
+            },
+            "createdAt": "2024-12-10T09:00:00+00:00",
+            "updatedAt": "2024-12-10T09:00:00+00:00"
+        },
+        {
+            "id": "d5061e8b2fa9",
+            "slug": "arac-klima-bakimi-neden-her-yil",
+            "title": "Araç Klima Bakımı Neden Her Yıl Yapılmalıdır",
+            "category": "Bakım",
+            "date": "2024-11-25",
+            "readingMinutes": 4,
+            "excerpt": "Klima sistemi yalnızca sizi serinletmekle kalmaz; kabin havasını filtreler ve sürüş konforunu artırır. Yıllık bakım neden bu kadar önemli",
+            "content": "<p>Klima açıldıktan 5 dakika sonra hala yeterli soğutma hissedilmiyorsa veya kötü kokular geliyorsa sisteme müdahale vakti gelmiştir.</p><p>Eksik gaz, kompresörün gereksiz yere zorlanmasına ve yanmasına neden olabilir. <strong>Polen filtresinin</strong> kirliliği de içeri basılan hava miktarını ciddi oranda düşürür ve alerjik reaksiyonlara yol açabilir.</p><p><strong>Servisimizde:</strong> Klima gaz ölçümü cihazlarla yapılıp, gerekli dezenfeksiyon ve polen filtresi değişimi ile %100 randıman sağlanmaktadır. Yılda bir bakım yeterlidir.</p>",
+            "image": {
+                "src": "images/blog/klima-bakimi-800.webp",
+                "srcLarge": "images/blog/klima-bakimi-1400.webp",
+                "alt": "Araç klima kontrol paneli ve havalandırma",
+                "version": "20260424"
+            },
+            "createdAt": "2024-11-25T09:00:00+00:00",
+            "updatedAt": "2024-11-25T09:00:00+00:00"
+        }
+    ]
+}

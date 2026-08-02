@@ -1,0 +1,5 @@
+# lib.php bir kütüphanedir, doğrudan istenmemeli. Dosyanın kendi içinde de
+# PANEL_BOOT koruması var: bu kural desteklenmese bile içerik sızmaz.
+<Files "lib.php">
+  Require all denied
+</Files>

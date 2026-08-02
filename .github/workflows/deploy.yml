@@ -92,10 +92,22 @@ jobs:
           # Was true: every deploy wiped the server first, which deleted
           # config/google-reviews.php (git-ignored, lives only on the server)
           # and broke the reviews endpoint until it was re-uploaded by hand.
+          # Turning it back on would now also destroy data/blog.json (every
+          # post written through the panel), config/panel.php (the panel
+          # password) and everything under images/blog/uploads/.
           dangerous-clean-slate: false
           # This host has timed out on the control socket twice; the default
           # 30s is not enough for it.
           timeout: 120000
+          # Everything after "drnekin logo" is what the blog panel writes on the
+          # server. Those files are git-ignored, so they are not in the runner
+          # tree anyway; listing them is the second line of defence if
+          # clean-slate is ever switched back on. Full paths, not a directory
+          # pattern: a directory pattern failed to protect the server config
+          # once already. The uploads directory is matched by file type rather
+          # than as a whole, because images/blog/uploads/.htaccess IS tracked
+          # and must keep being deployed - it is what stops PHP from running in
+          # that directory.
           exclude: |
             **/.git*
             **/.git*/**
@@ -103,3 +115,13 @@ jobs:
             .github/**
             data/google-reviews-cache.json
             drnekin logo/**
+            data/blog.json
+            data/blog.json.bak
+            data/blog.json.tmp.*
+            data/blog.lock
+            data/panel-attempts.json
+            config/panel.php
+            images/blog/uploads/*.webp
+            images/blog/uploads/*.jpg
+            images/blog/uploads/*.jpeg
+            images/blog/uploads/*.png

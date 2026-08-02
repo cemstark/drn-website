@@ -6,6 +6,20 @@ config/google-reviews.php
 data/google-reviews-cache.json
 .claude/
 
+# Blog paneli: hepsi yalnızca sunucuda oluşur. deploy.yml'de de exclude
+# edildiler, yoksa bir deploy panelden girilen yazıları geri alırdı.
+config/panel.php
+data/blog.json
+data/blog.json.bak
+data/blog.json.tmp.*
+data/blog.lock
+data/panel-attempts.json
+
+# Panelden yüklenen görseller sunucuda kalır; koruma dosyası depoda tutulur
+# ki klasör ilk deploy'da .htaccess'iyle birlikte oluşsun.
+images/blog/uploads/*
+!images/blog/uploads/.htaccess
+
 # Logo source kit: only the exported files under images/ are deployed.
 drnekin logo/
 

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=27">
+  <link rel="stylesheet" href="css/style.css?v=28">
 
   <link rel="icon" href="favicon.ico?v=20260802" sizes="16x16">
   <link rel="icon" href="images/favicon.svg?v=20260802" type="image/svg+xml">
@@ -125,117 +125,30 @@
       <div class="blog-layout">
 
         <!-- Sol: Yazılar -->
-        <div class="blog-list">
-
-          <div class="blog-card reveal">
-            <div class="blog-card-img">
-              <img src="images/blog/motor-yagi-bakimi-800.webp?v=20260424" alt="Motor yağı bakımında servis kontrolü" loading="lazy" srcset="images/blog/motor-yagi-bakimi-800.webp?v=20260424 800w, images/blog/motor-yagi-bakimi-1400.webp?v=20260424 1400w" sizes="(max-width: 900px) 100vw, 240px" decoding="async" data-full="images/blog/motor-yagi-bakimi-1400.webp?v=20260424">
-              <span class="blog-cat">Bakım</span>
-            </div>
-            <div class="blog-card-body">
-              <div class="blog-meta">
-                <span><i class="fa-regular fa-calendar"></i> 15 Ocak 2025</span>
-                <span><i class="fa-regular fa-clock"></i> 4 dk okuma</span>
-              </div>
-              <h3>Motor Yağı Ne Zaman Değiştirilmeli Doğru Bilinen Yanlışlar</h3>
-              <p>Pek çok sürücü motor yağını her 5.000 km'de bir değiştirmesi gerektiğini düşünür. Ancak modern motorlar ve sentetik yağlarla bu mesafe çok daha uzayabilir. Peki gerçek ne</p>
-              <div class="blog-detail" style="display:none;">
-                <p>Eskiden mineral bazlı motor yağları kullanılıyordu ve bu yağlar gerçekten de 5.000 km gibi kısa sürelerde özelliğini yitiriyordu. Günümüzde tam sentetik ve yarı sentetik motor yağları, normal kullanım şartlarında <strong>10.000 – 15.000 km</strong> arasında güvenle kullanılabilir.</p>
-                <p>Dikkat etmeniz gereken istisnalar: Aracınızı sadece kısa mesafelerde (motor tam ısınmadan dur-kalk yaparak) kullanıyorsanız veya çok tozlu ortamlarda bulunuyorsanız, kilometre dolmadan da yağ kalitesinde bozulmalar yaşanabilir.</p>
-                <p><strong>DRNEKİN OTO tavsiyesi:</strong> Senede bir kez kilometre dolmasa dahi yağın vizkozite değerlerinin kontrol edilmesini öneriyoruz.</p>
-              </div>
-              <div class="blog-card-footer">
-                <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
-              </div>
-            </div>
+        <!-- Yazılar api/blog.php'den gelir; panelden kaydedilen içerik burada görünür.
+             Listenin kendisi canlı bölge DEĞİL: aria-live burada olsaydı ekran
+             okuyucu her yüklemede bütün yazıları araya girerek okurdu. Yalnızca
+             kısa durum mesajı duyurulur. -->
+        <div class="blog-main">
+          <!-- Durum bölgesi listenin DIŞINDA: innerHTML ile yeniden yazılan bir
+               role="status" elemanını bazı ekran okuyucular "yeni" sayıp
+               duyurmuyor. Metnini ve aria-busy'yi JS yazar; JS kapalıyken
+               boş kalır ve yalnızca aşağıdaki noscript görünür. -->
+          <p class="blog-state" id="blogState" role="status" hidden></p>
+          <div class="blog-list" id="blogList">
+            <noscript>
+              <p class="blog-state">Blog yazılarını görebilmek için tarayıcınızda JavaScript'in açık olması gerekir. Sorularınız için <a href="iletisim.html">bize ulaşın</a>.</p>
+            </noscript>
           </div>
-
-          <div class="blog-card reveal">
-            <div class="blog-card-img">
-              <img src="images/blog/kis-lastigi-800.webp?v=20260424" alt="Kış lastiği değişimi ve yol güvenliği" loading="lazy" srcset="images/blog/kis-lastigi-800.webp?v=20260424 800w, images/blog/kis-lastigi-1400.webp?v=20260424 1400w" sizes="(max-width: 900px) 100vw, 240px" decoding="async" data-full="images/blog/kis-lastigi-1400.webp?v=20260424">
-              <span class="blog-cat">Güvenlik</span>
-            </div>
-            <div class="blog-card-body">
-              <div class="blog-meta">
-                <span><i class="fa-regular fa-calendar"></i> 28 Aralık 2024</span>
-                <span><i class="fa-regular fa-clock"></i> 5 dk okuma</span>
-              </div>
-              <h3>Kış Lastiği Takmanın En Doğru Zamanı ve Dikkat Edilmesi Gerekenler</h3>
-              <p>Kış lastikleri sadece kar için değil; 7°C'nin altındaki hava koşullarında standart lastiklere göre çok daha iyi fren performansı sunar.</p>
-              <div class="blog-detail" style="display:none;">
-                <p>Yaz lastiklerinin kauçuk yapısı sıcak havalarda performans göstermek üzere tasarlanmıştır. <strong>+7°C'nin altına</strong> düştüğünde bu kauçuk sertleşir, yola tutunamaz ve fren mesafesini iki katına çıkarabilir.</p>
-                <p>Kış lastikleri ise içeriğindeki yüksek silika oranı sayesinde eksi soğuklarda dahi yumuşak kalabilme özelliğine sahiptir. Lamelli yapıları kar ve buzda üstün tutuş sağlar.</p>
-                <p><strong>Tavsiye:</strong> Hava sıcaklığı düzenli olarak 7°C'nin altına düştüğünde kış lastiğine geçin. Lastiklerinizin diş derinliği en az 4 mm olmalıdır.</p>
-              </div>
-              <div class="blog-card-footer">
-                <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="blog-card reveal">
-            <div class="blog-card-img">
-              <img src="images/blog/fren-bakimi-800.webp?v=20260424" alt="Fren sistemi disk ve balata bakımı" loading="lazy" srcset="images/blog/fren-bakimi-800.webp?v=20260424 800w, images/blog/fren-bakimi-1400.webp?v=20260424 1400w" sizes="(max-width: 900px) 100vw, 240px" decoding="async" data-full="images/blog/fren-bakimi-1400.webp?v=20260424">
-              <span class="blog-cat">Tamir</span>
-            </div>
-            <div class="blog-card-body">
-              <div class="blog-meta">
-                <span><i class="fa-regular fa-calendar"></i> 10 Aralık 2024</span>
-                <span><i class="fa-regular fa-clock"></i> 3 dk okuma</span>
-              </div>
-              <h3>Fren Sistemi Bakımını Neden Ertelememelisiniz</h3>
-              <p>Fren sesi, titreşim veya uzayan fren mesafesi ciddi uyarı işaretleridir. Fren sistemi ihmalinin nasıl büyük kazalara yol açabileceğini anlattık.</p>
-              <div class="blog-detail" style="display:none;">
-                <p>Fren sistemlerinden gelen sesler genellikle balatalarınızın inceldiğinin en belirgin sinyalidir. Birçok balatada, kalınlık azaldığında diske sürtünüp ses çıkaran bir metal ikaz sacı bulunur.</p>
-                <p>Sesi görmezden gelirseniz balata tamamen biter ve kaliper metali fren diskini çizmeye başlar. Küçük bir balata değişimi ile çözülebilecek durum, <strong>disk değişimi</strong> ve büyük masrafları beraberinde getirir.</p>
-                <p><strong>Belirtiler:</strong> Fren pedalında titreşim, ciyaklama sesi, uzayan fren mesafesi, pedalın tabana gitmesi. Bunlardan birini fark ettiğinizde vakit kaybetmeden servise gelin.</p>
-              </div>
-              <div class="blog-card-footer">
-                <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="blog-card reveal">
-            <div class="blog-card-img">
-              <img src="images/blog/klima-bakimi-800.webp?v=20260424" alt="Araç klima kontrol paneli ve havalandırma" loading="lazy" srcset="images/blog/klima-bakimi-800.webp?v=20260424 800w, images/blog/klima-bakimi-1400.webp?v=20260424 1400w" sizes="(max-width: 900px) 100vw, 240px" decoding="async" data-full="images/blog/klima-bakimi-1400.webp?v=20260424">
-              <span class="blog-cat">Bakım</span>
-            </div>
-            <div class="blog-card-body">
-              <div class="blog-meta">
-                <span><i class="fa-regular fa-calendar"></i> 25 Kasım 2024</span>
-                <span><i class="fa-regular fa-clock"></i> 4 dk okuma</span>
-              </div>
-              <h3>Araç Klima Bakımı Neden Her Yıl Yapılmalıdır</h3>
-              <p>Klima sistemi yalnızca sizi serinletmekle kalmaz; kabin havasını filtreler ve sürüş konforunu artırır. Yıllık bakım neden bu kadar önemli</p>
-              <div class="blog-detail" style="display:none;">
-                <p>Klima açıldıktan 5 dakika sonra hala yeterli soğutma hissedilmiyorsa veya kötü kokular geliyorsa sisteme müdahale vakti gelmiştir.</p>
-                <p>Eksik gaz, kompresörün gereksiz yere zorlanmasına ve yanmasına neden olabilir. <strong>Polen filtresinin</strong> kirliliği de içeri basılan hava miktarını ciddi oranda düşürür ve alerjik reaksiyonlara yol açabilir.</p>
-                <p><strong>Servisimizde:</strong> Klima gaz ölçümü cihazlarla yapılıp, gerekli dezenfeksiyon ve polen filtresi değişimi ile %100 randıman sağlanmaktadır. Yılda bir bakım yeterlidir.</p>
-              </div>
-              <div class="blog-card-footer">
-                <span class="read-more" onclick="toggleBlog(this)">Devamını Oku <i class="fa-solid fa-arrow-right"></i></span>
-                <span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>
-              </div>
-            </div>
-          </div>
-
         </div>
 
         <!-- Sağ: Sidebar -->
         <div class="blog-sidebar reveal">
           <div class="sidebar-widget">
             <h4>Kategoriler</h4>
-            <ul>
-              <li class="cat-item"><a href="#">Araç Bakımı</a><span class="cat-count">8</span></li>
-              <li class="cat-item"><a href="#">Motor &amp; Teknik</a><span class="cat-count">5</span></li>
-              <li class="cat-item"><a href="#">Güvenlik</a><span class="cat-count">4</span></li>
-              <li class="cat-item"><a href="#">Lastik</a><span class="cat-count">3</span></li>
-              <li class="cat-item"><a href="#">Kaporta &amp; Boya</a><span class="cat-count">2</span></li>
-              <li class="cat-item"><a href="#">Elektrik</a><span class="cat-count">2</span></li>
+            <!-- Sayılar yazı listesinden hesaplanır: sabit sayılar yazı eklendikçe yanlışlaşıyordu. -->
+            <ul id="blogCats">
+              <li class="cat-item"><span>Yükleniyor…</span></li>
             </ul>
           </div>
           <div class="sidebar-widget">
@@ -332,7 +245,7 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=15"></script>
+  <script src="js/main.js?v=16"></script>
 </body>
 </html>
 

@@ -628,10 +628,149 @@ function toggleBlog(el) {
   if (!detail) return;
   var isOpen = detail.style.display !== 'none';
   detail.style.display = isOpen ? 'none' : 'block';
+  el.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
   el.innerHTML = isOpen
     ? 'Devamını Oku <i class="fa-solid fa-arrow-right"></i>'
     : 'Yazıyı Kapat <i class="fa-solid fa-arrow-up"></i>';
 }
+
+// --- Blog List ---
+(function() {
+  var list = document.getElementById('blogList');
+  if (!list) return;
+
+  var catsList = document.getElementById('blogCats');
+  var stateEl = document.getElementById('blogState');
+
+  // The reviews block has its own copy inside its IIFE; reaching into a
+  // working block to share it would be a bigger change than these five lines.
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[ch];
+    });
+  }
+
+  // Only this element is a live region, so a screen reader announces the short
+  // status instead of re-reading every post.
+  function showState(message) {
+    if (!stateEl) return;
+    stateEl.textContent = message;
+    stateEl.hidden = false;
+  }
+
+  function clearState() {
+    if (!stateEl) return;
+    stateEl.textContent = '';
+    stateEl.hidden = true;
+  }
+
+  function hideCategories() {
+    if (!catsList) return;
+    var widget = catsList.closest('.sidebar-widget');
+    if (widget) widget.hidden = true;
+  }
+
+  function imageHtml(post) {
+    var image = post.image;
+    if (!image || !image.src) return '';
+    var src = escapeHtml(image.src);
+    // srcset is dropped when the server could not produce a second size,
+    // otherwise the browser would be told 1400w exists when it does not.
+    var srcset = image.srcLarge
+      ? ' srcset="' + src + ' 800w, ' + escapeHtml(image.srcLarge) + ' 1400w" sizes="(max-width: 900px) 100vw, 240px"'
+      : '';
+
+    return '<div class="blog-card-img">' +
+        '<img src="' + src + '" alt="' + escapeHtml(image.alt || post.title || '') + '" loading="lazy" decoding="async"' + srcset + '>' +
+        (post.category ? '<span class="blog-cat">' + escapeHtml(post.category) + '</span>' : '') +
+      '</div>';
+  }
+
+  function cardHtml(post) {
+    var hasImage = !!(post.image && post.image.src);
+    var dateHtml = post.date
+      ? '<time datetime="' + escapeHtml(post.date) + '">' + escapeHtml(post.dateText || post.date) + '</time>'
+      : escapeHtml(post.dateText || '');
+
+    var meta = '<span><i class="fa-regular fa-calendar"></i> ' + dateHtml + '</span>' +
+      '<span><i class="fa-regular fa-clock"></i> ' + escapeHtml(post.readingMinutes || 1) + ' dk okuma</span>';
+    // The category badge lives on the image; without one it would be lost.
+    if (!hasImage && post.category) {
+      meta += '<span><i class="fa-regular fa-folder"></i> ' + escapeHtml(post.category) + '</span>';
+    }
+
+    var detail = post.content
+      ? '<div class="blog-detail" style="display:none;">' + post.content + '</div>' +
+        '<div class="blog-card-footer">' +
+          '<button type="button" class="read-more" onclick="toggleBlog(this)" aria-expanded="false">Devamını Oku <i class="fa-solid fa-arrow-right"></i></button>' +
+          '<span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>' +
+        '</div>'
+      : '<div class="blog-card-footer">' +
+          '<span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>' +
+        '</div>';
+
+    return '<div class="blog-card reveal' + (hasImage ? '' : ' blog-card--noimg') + '">' +
+        imageHtml(post) +
+        '<div class="blog-card-body">' +
+          '<div class="blog-meta">' + meta + '</div>' +
+          '<h3>' + escapeHtml(post.title || '') + '</h3>' +
+          '<p>' + escapeHtml(post.excerpt || '') + '</p>' +
+          detail +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderCategories(categories) {
+    if (!catsList) return;
+    if (!Array.isArray(categories) || !categories.length) {
+      hideCategories();
+      return;
+    }
+
+    catsList.innerHTML = categories.map(function(cat) {
+      return '<li class="cat-item"><span>' + escapeHtml(cat.name) + '</span>' +
+        '<span class="cat-count">' + escapeHtml(cat.count) + '</span></li>';
+    }).join('');
+  }
+
+  function render(data) {
+    var posts = (data && Array.isArray(data.posts)) ? data.posts : [];
+
+    if (!posts.length) {
+      list.innerHTML = '';
+      showState('Henüz yazı yayınlanmadı.');
+    } else {
+      list.innerHTML = posts.map(cardHtml).join('');
+      clearState();
+      // Without this the cards keep .reveal's opacity:0 and stay invisible.
+      list.querySelectorAll('.blog-card').forEach(function(card) {
+        revealObserver.observe(card);
+      });
+    }
+
+    renderCategories(data && data.categories);
+    list.setAttribute('aria-busy', 'false');
+  }
+
+  // Yükleniyor durumu buradan yazılır; HTML'de sabit dursaydı JS kapalı
+  // tarayıcıda sonsuza kadar "yükleniyor" gösterirdi.
+  list.setAttribute('aria-busy', 'true');
+  showState('Yazılar yükleniyor…');
+
+  fetch('api/blog.php', { cache: 'no-store' })
+    .then(function(response) { return response.ok ? response.json() : Promise.reject(response); })
+    .then(function(data) {
+      if (data && data.success === false) return Promise.reject(data);
+      render(data);
+    })
+    .catch(function(err) {
+      console.warn('Blog yazıları yüklenemedi:', err);
+      list.innerHTML = '';
+      showState('Yazılar şu an yüklenemedi. Lütfen sayfayı yenileyin.');
+      list.setAttribute('aria-busy', 'false');
+      hideCategories();
+    });
+})();
 
 // --- Smooth Active Nav Link ---
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
