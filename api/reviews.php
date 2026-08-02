@@ -492,6 +492,10 @@ try {
     $looked['_api_dizini'] = is_array($names)
         ? implode(', ', array_values(array_diff($names, ['.', '..'])))
         : 'okunamadi';
+    // TEMPORARY: the absolute path so the file can be uploaded to the right
+    // place from the hosting panel.
+    $looked['_tam_yol'] = __DIR__;
+    $looked['_yazilabilir'] = is_writable(__DIR__) ? 'evet' : 'hayir';
 
     reviews_json([
         'success' => false,
