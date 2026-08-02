@@ -50,6 +50,20 @@ jobs:
           # Second copy beside the endpoint: the config/ directory has not been
           # surviving the FTP sync on this host, api/ has.
           cp config/google-reviews.php api/google-reviews-config.php
+
+          # Neither generated PHP file has actually landed on this host - the
+          # transfer is reported but the file is absent afterwards. .htaccess
+          # is a tracked file and does sync, so the credentials also go there
+          # as environment variables. Wrapped in IfModule so an unsupported
+          # SetEnv cannot 500 the whole site.
+          {
+            echo ""
+            echo "<IfModule mod_env.c>"
+            echo "  SetEnv GOOGLE_PLACES_API_KEY \"${PLACES_KEY}\""
+            echo "  SetEnv GOOGLE_PLACE_ID \"${PLACE_ID}\""
+            echo "  SetEnv GOOGLE_PLACES_REFERRER \"https://drnekinotoizmit.com/\""
+            echo "</IfModule>"
+          } >> .htaccess
           if command -v php >/dev/null 2>&1; then
             php -l config/google-reviews.php
             php -l api/google-reviews-config.php

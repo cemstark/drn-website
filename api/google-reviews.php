@@ -21,10 +21,24 @@ foreach ($configCandidates as $candidate) {
     }
 }
 
+/**
+ * getenv() misses values set through SetEnv under PHP-FPM/LiteSpeed, where
+ * they arrive in $_SERVER instead, so both are checked.
+ */
+function reviews_env(string $key): string
+{
+    $value = getenv($key);
+    if ($value === false || $value === '') {
+        $value = $_SERVER[$key] ?? $_ENV[$key] ?? '';
+    }
+
+    return trim((string)$value);
+}
+
 $config = [
-    'places_api_key' => getenv('GOOGLE_PLACES_API_KEY') ?: '',
-    'place_id' => getenv('GOOGLE_PLACE_ID') ?: '',
-    'referrer' => getenv('GOOGLE_PLACES_REFERRER') ?: '',
+    'places_api_key' => reviews_env('GOOGLE_PLACES_API_KEY'),
+    'place_id' => reviews_env('GOOGLE_PLACE_ID'),
+    'referrer' => reviews_env('GOOGLE_PLACES_REFERRER'),
     'client_id' => getenv('GOOGLE_REVIEWS_CLIENT_ID') ?: '',
     'client_secret' => getenv('GOOGLE_REVIEWS_CLIENT_SECRET') ?: '',
     'refresh_token' => getenv('GOOGLE_REVIEWS_REFRESH_TOKEN') ?: '',
