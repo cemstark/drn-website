@@ -34,7 +34,7 @@ function panel_head(string $title, string $activeSection = '', string $newLabel 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title><?= panel_e($title) ?> | DRN_EKİN OTO Panel</title>
-<link rel="stylesheet" href="panel.css?v=2">
+<link rel="stylesheet" href="panel.css?v=3">
 </head>
 <body>
 <div class="wrap">
