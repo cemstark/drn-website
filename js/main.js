@@ -703,10 +703,10 @@ function toggleBlog(el) {
       ? '<div class="blog-detail" style="display:none;">' + post.content + '</div>' +
         '<div class="blog-card-footer">' +
           '<button type="button" class="read-more" onclick="toggleBlog(this)" aria-expanded="false">Devamını Oku <i class="fa-solid fa-arrow-right"></i></button>' +
-          '<span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>' +
+          '<span style="font-size:0.78rem; color:var(--gray-light);">DRN_EKİN OTO</span>' +
         '</div>'
       : '<div class="blog-card-footer">' +
-          '<span style="font-size:0.78rem; color:var(--gray-light);">DRNEKİN OTO</span>' +
+          '<span style="font-size:0.78rem; color:var(--gray-light);">DRN_EKİN OTO</span>' +
         '</div>';
 
     return '<div class="blog-card reveal' + (hasImage ? '' : ' blog-card--noimg') + '">' +

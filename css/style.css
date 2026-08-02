@@ -1,5 +1,5 @@
 /* =============================================
-   DRNEKİN OTO SERVİS - Ana Stil Dosyası
+   DRN_EKİN OTO SERVİS HİZMETLERİ - Ana Stil Dosyası
    ============================================= */
 
 /* [hidden] must beat component display rules (flex/grid) further down. */
@@ -261,8 +261,8 @@ h1, h2, h3, h4, h5, h6 {
 .logo-img {
   max-height: 52px;
   width: auto;
-  /* Emblem is square; locking the ratio stops it stretching before decode. */
-  aspect-ratio: 1 / 1;
+  /* Yatay kilit (720x137); oran sabitlenmezse görsel çözülmeden önce esner. */
+  aspect-ratio: 720 / 137;
   object-fit: contain;
   display: block;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -274,10 +274,10 @@ h1, h2, h3, h4, h5, h6 {
 .footer-logo-img {
   max-height: 64px;
   width: auto;
-  aspect-ratio: 1 / 1;
+  /* Ana kilit (640x158): alt satırlı, amblemden geniş. */
+  aspect-ratio: 640 / 158;
   object-fit: contain;
   display: block;
-  /* Now a flex item inside .footer-text-logo, which owns the spacing. */
   margin-bottom: 0;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
 }
@@ -316,82 +316,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-/* ---- Text Logo ---- */
-.text-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  line-height: 1;
-  user-select: none;
-  transition: var(--transition);
-}
-.navbar-logo:hover .text-logo { opacity: 0.88; }
+/* ---- Marka kilidi ----
+   Marka yazısı artık logo görselinin parçası (araç çizimli "OTO" HTML metniyle
+   üretilemiyor), bu yüzden eski .text-logo / .tl-brand / .tl-sep / .tl-oto
+   kuralları kaldırıldı. */
 
-/* Sized to roughly match the width the previous wide logo image occupied,
-   so the nav links keep their room. */
-.tl-brand {
-  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  line-height: 1;
-}
-
-.tl-sep {
-  display: block;
-  width: 2px;
-  height: 18px;
-  background: var(--red);
-  flex-shrink: 0;
-  border-radius: 2px;
-}
-
-.tl-oto {
-  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 2px;
-  white-space: nowrap;
-  line-height: 1;
-}
-
-/* Footer text logo */
+/* Footer marka kilidi — tek görsel taşır. */
 .footer-text-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  line-height: 1;
   margin-bottom: 20px;
   user-select: none;
-}
-.footer-text-logo .tl-brand {
-  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 2px;
-  white-space: nowrap;
-  line-height: 1;
-}
-.footer-text-logo .tl-sep {
-  display: block;
-  width: 2px;
-  height: 22px;
-  background: var(--red);
-  flex-shrink: 0;
-  border-radius: 2px;
-}
-.footer-text-logo .tl-oto {
-  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 5px;
-  white-space: nowrap;
-  line-height: 1;
 }
 .nav-links { display: flex; align-items: center; gap: 4px; }
 .nav-links a {
@@ -1616,6 +1551,11 @@ select.form-control {
 @media (max-width: 1024px) {
   .navbar .container { height: var(--tn-height); }
 
+  /* Yatay kilit sabit genişlikte (52px yükseklik ≈ 274px). Eskiden metin
+     logonun "OTO SERVİS" parçası bu genişlikte gizleniyordu; artık yazı
+     görselin içinde olduğu için yerine yükseklik düşürülüyor. */
+  .logo-img { max-height: 44px; }
+
   .nav-links a {
     font-size: var(--tn-link-font);
     padding: var(--tn-link-pad-y) var(--tn-link-pad-x);
@@ -1671,12 +1611,10 @@ select.form-control {
   .navbar { top: 34px; }
   .navbar .container { height: 54px; padding: 0 16px; }
 
-  /* Logo küçültme — navbar'da hamburger'e yer kalması için "OTO SERVİS"
-     bölümü düşürülür, marka adı ve amblem kalır. */
-  .tl-brand, .tl-oto { font-size: 1rem; letter-spacing: 0.5px; }
-  .tl-sep { height: 15px; }
-  .navbar-logo .tl-sep,
-  .navbar-logo .tl-oto { display: none; }
+  /* Navbar 54px'e iniyor; logo onun içinde kalmalı. Kademe yukarıdaki
+     1024px kuralından (44px) küçük olmalı, aksi halde dar ekranda logo
+     büyürdü. */
+  .logo-img { max-height: 40px; }
   .navbar-logo { gap: 9px; }
 
   /* Hamburger */
@@ -1754,7 +1692,6 @@ select.form-control {
   .hero-container { padding: 36px 16px 36px; }
   .hero h1 { font-size: clamp(1.9rem, 7vw, 2.4rem); margin-bottom: 16px; }
   .hero-subtitle { font-size: 0.95rem; margin-bottom: 28px; }
-  .logo-img { max-height: 42px; }
   .hero-logo {
     width: min(100%, 200px);
   }
@@ -1859,10 +1796,6 @@ select.form-control {
   .footer-bottom { flex-direction: column; text-align: center; gap: 6px; }
   /* Emblem + wordmark sit on one nowrap line, so both shrink on narrow screens. */
   .footer-logo-img { max-height: 48px; }
-  .footer-text-logo { gap: 8px; }
-  .footer-text-logo .tl-brand { font-size: 1.1rem; letter-spacing: 1px; }
-  .footer-text-logo .tl-oto { font-size: 1.1rem; letter-spacing: 2px; }
-  .footer-text-logo .tl-sep { height: 16px; }
 
   /* About */
   .about-content h2 { font-size: 1.6rem; }
@@ -1886,8 +1819,8 @@ select.form-control {
    MOBILE XS (400px)
    ===================== */
 @media (max-width: 400px) {
-  .tl-brand, .tl-oto { font-size: 1.35rem; letter-spacing: 1px; }
-  .tl-sep { height: 20px; }
+  /* En dar ekranda logo hamburger'i sıkıştırmasın. */
+  .logo-img { max-height: 38px; }
   .hero h1 { font-size: 1.75rem; }
   .section-title { font-size: 1.4rem; }
   .services-grid { grid-template-columns: 1fr 1fr; gap: 8px; }

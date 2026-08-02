@@ -29,7 +29,7 @@ function panel_head(string $title, bool $showNav = false): void
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title><?= panel_e($title) ?> | DRNEKİN OTO Panel</title>
+<title><?= panel_e($title) ?> | DRN_EKİN OTO Panel</title>
 <link rel="stylesheet" href="panel.css?v=1">
 </head>
 <body>
@@ -163,7 +163,9 @@ if (panel_config_missing()) {
      <code>public_html/config/</code> altına yükleyin. Dosya <code>.gitignore</code>'dadır, depoya girmez.</p>
   <label class="sr-only" for="generated">Üretilen config dosyası</label>
   <textarea id="generated" class="code" rows="12" readonly><?= panel_e(
-    "<?php\nreturn [\n    'password_hash' => '" . $generated . "',\n    'session_name' => 'drnpanel',\n    'max_attempts' => 5,\n    'lockout_seconds' => 900,\n    'idle_seconds' => 7200,\n];\n"
+    "<?php\nreturn [\n    'password_hash' => '" . $generated . "',\n"
+    . "    'session_name' => 'drnpanel',\n    'max_attempts' => 5,\n    'lockout_seconds' => 900,\n"
+    . "    'idle_seconds' => 1800,\n    'absolute_seconds' => 14400,\n];\n"
   ) ?></textarea>
   <p class="help">Dosyayı yükledikten sonra bu sayfayı yenileyin; giriş ekranı gelecek.</p>
 </div>
