@@ -4,6 +4,11 @@
 RedirectMatch 404 ^/(config|data)/
 RedirectMatch 404 ^/api/google-reviews-config\.php$
 
+# Second, independent guard: RedirectMatch needs mod_alias, this does not.
+<Files "google-reviews-config.php">
+  Require all denied
+</Files>
+
 <IfModule mod_mime.c>
   AddType image/svg+xml .svg
   AddType image/webp .webp

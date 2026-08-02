@@ -1,5 +1,8 @@
 config/google-reviews.php
-api/google-reviews-config.php
+# NOTE: api/google-reviews-config.php is deliberately NOT ignored. The FTP
+# sync skips ignored paths, which is why the generated config never reached
+# the server. It is created only on the runner, never on a dev machine, so
+# nothing local can be committed by accident.
 data/google-reviews-cache.json
 .claude/
 
