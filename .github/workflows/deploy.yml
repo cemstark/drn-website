@@ -71,7 +71,6 @@ jobs:
             -e "s|__PLACES_API_KEY__|${PLACES_KEY}|g" \
             -e "s|__PLACE_ID__|${PLACE_ID}|g" \
             -e "s|__PLACES_REFERRER__|https://drnekinotoizmit.com/|g" \
-            -e "s|__BUILD_SHA__|${GITHUB_SHA:0:7}|g" \
             api/reviews.php
           grep -c "__PLACES_API_KEY__" api/reviews.php && echo "MARKER STILL PRESENT" && exit 1 || true
           if command -v php >/dev/null 2>&1; then
@@ -94,6 +93,9 @@ jobs:
           # config/google-reviews.php (git-ignored, lives only on the server)
           # and broke the reviews endpoint until it was re-uploaded by hand.
           dangerous-clean-slate: false
+          # This host has timed out on the control socket twice; the default
+          # 30s is not enough for it.
+          timeout: 120000
           exclude: |
             **/.git*
             **/.git*/**
