@@ -44,22 +44,27 @@ const PANEL_GALLERY_CATEGORIES = [
 ];
 
 // Hizmet kartı ikonları beyaz liste: serbest metin alınsaydı panele girilen
-// değer doğrudan class özniteliğine yazılırdı.
+// değer doğrudan class özniteliğine yazılırdı. İlk dört blok bugün sitede
+// kullanılan ikonlardır; listeden çıkarılırsa o kartlar ikonsuz kalır.
 const PANEL_SERVICE_ICONS = [
     'fa-screwdriver-wrench' => 'Anahtar / bakım',
-    'fa-car-side' => 'Araç',
-    'fa-spray-can-sparkles' => 'Boya',
-    'fa-gauge-high' => 'Rot / balans',
-    'fa-oil-can' => 'Yağ',
     'fa-car-burst' => 'Kaza / hasar',
-    'fa-bolt' => 'Elektrik',
-    'fa-temperature-low' => 'Klima',
+    'fa-fire-flame-curved' => 'Boya fırını',
+    'fa-bolt' => 'Elektrik / PDR',
+    'fa-compress' => 'Atölye / alan',
+    'fa-rotate' => 'Rot / balans',
+    'fa-magnifying-glass-chart' => 'Ekspertiz',
+    'fa-spray-can-sparkles' => 'Boya / temizlik',
     'fa-gears' => 'Mekanik',
-    'fa-clipboard-check' => 'Ekspertiz',
+    'fa-car-on' => 'Kaporta onarım',
+    'fa-car-side' => 'Araç',
+    'fa-gauge-high' => 'Gösterge',
+    'fa-oil-can' => 'Yağ',
+    'fa-temperature-low' => 'Klima',
+    'fa-clipboard-check' => 'Kontrol listesi',
     'fa-shield-halved' => 'Güvence',
     'fa-wrench' => 'Genel tamir',
     'fa-truck-ramp-box' => 'Çekici',
-    'fa-fire-flame-curved' => 'Boya fırını',
     'fa-hand-sparkles' => 'Detaylı temizlik',
     'fa-building' => 'Tesis / ofis',
 ];

@@ -1,0 +1,333 @@
+{
+    "version": 1,
+    "services": [
+        {
+            "id": "5cffb1db070a",
+            "slug": "bakim",
+            "title": "Bakım",
+            "icon": "fa-screwdriver-wrench",
+            "summary": "Geniş atölyemizde birden fazla aracı aynı anda bakıma alarak bekleme sürenizi en aza indiriyoruz.",
+            "description": "Geniş ve aktif atölyemizde birden fazla aracı aynı anda bakıma alıyoruz. Motor yağı değişiminden genel araç kontrolüne kadar tüm periyodik bakım işlemleriniz güvenle tamamlanır.",
+            "features": [
+                "Motor yağı ve filtre değişimi",
+                "Hava filtresi ve karbonlu bakım",
+                "Periyodik bakım paketi",
+                "Genel araç kontrolü"
+            ],
+            "order": 10,
+            "images": [
+                {
+                    "src": "images/drn-bakim2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Bakım",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "5fe4264735a1",
+            "slug": "on-cephe",
+            "title": "Ön Cephe",
+            "icon": "fa-car-burst",
+            "summary": "D130 Karayolu üzerindeki modern tesisimizde, araç kabul ve misafir karşılama alanımız.",
+            "description": "D130 Karayolu üzerindeki modern tesisimizde, araç giriş işlemlerinizin yapıldığı geniş ön cephemiz. Tesisimiz her türlü ihtiyacınıza cevap verebilecek alana sahiptir.",
+            "features": [
+                "Geniş Araç Girişi",
+                "Misafir Karşılama Alanı",
+                "Kolay Ulaşım (D130 Üzeri)",
+                "Açık Otopark"
+            ],
+            "order": 20,
+            "images": [
+                {
+                    "src": "images/drn-on-cephe-800.webp",
+                    "srcLarge": null,
+                    "alt": "Ön Cephe",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-on-cephe-800.webp",
+                    "srcLarge": null,
+                    "alt": "Dış Cephe",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "3cb740292f5a",
+            "slug": "boya-firini",
+            "title": "Boya Fırını",
+            "icon": "fa-fire-flame-curved",
+            "summary": "SAICO profesyonel boya fırınımızda fabrikasyon kalitesinde, renk eşleştirmeli boya hizmeti sunuyoruz.",
+            "description": "SAICO profesyonel boya fırınımız fabrika standartlarında mükemmel sonuç verir. Tam renk eşleştirme ve UV dayanımlı boyalarla aracınız ilk günkü parlaklığına kavuşur.",
+            "features": [
+                "Fırın boya uygulaması",
+                "Renk eşleştirme ve harmanlama",
+                "Parça ve tam araç boyama",
+                "1 yıl boya garantisi"
+            ],
+            "order": 30,
+            "images": [
+                {
+                    "src": "images/drn-boya-firini2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Boya Fırını İç",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-boya-firini3-800.webp",
+                    "srcLarge": null,
+                    "alt": "SAICO Boya Fırını Açık",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-boya-firini4-800.webp",
+                    "srcLarge": null,
+                    "alt": "SAICO Boya Fırını",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "00e36edeee2b",
+            "slug": "pdr-paintless-dent-repair-ekipmanlari",
+            "title": "PDR (Paintless Dent Repair) Ekipmanları",
+            "icon": "fa-bolt",
+            "summary": "Boyasız göçük düzeltme işlemlerini kusursuz gerçekleştirmek için kullandığımız profesyonel takım ünitelerimiz.",
+            "description": "Profesyonel boyasız göçük düzeltme (PDR) işlemlerini kusursuz ve en hızlı şekilde gerçekleştirmek için kullandığımız özel takım ve aydınlatma ekipmanlarımız.",
+            "features": [
+                "Hassas PDR Aydınlatmaları",
+                "Profesyonel Çubuk Setleri",
+                "Boya Zararı Vermeyen Uçlar",
+                "Vakumlu Çektirme Sistemleri"
+            ],
+            "order": 40,
+            "images": [
+                {
+                    "src": "images/drn-ekipman2-800.webp",
+                    "srcLarge": null,
+                    "alt": "PDR Ekipmanları",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ekipman1-800.webp",
+                    "srcLarge": null,
+                    "alt": "PDR Ekipmanı 2",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ekipman3-800.webp",
+                    "srcLarge": null,
+                    "alt": "PDR Ekipmanı 3",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ekipman4-800.webp",
+                    "srcLarge": null,
+                    "alt": "PDR Ekipmanı 4",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "dc262adfbc19",
+            "slug": "aktif-atolye",
+            "title": "Aktif Atölye",
+            "icon": "fa-compress",
+            "summary": "Kapasiteli atölyemizde PDR çalışmaları hızla yürütülür; orijinal boyanız korunarak aracınız kısa sürede hazır olur.",
+            "description": "Geniş atölyemizde dolu hasarı, küçük çarpma ve göçükler boyasız göçük düzeltme tekniğiyle giderilir. Orijinal boyanız korunurken aracınız kısa sürede hazır olur.",
+            "features": [
+                "Dolu ve doluç hasarı onarımı",
+                "Küçük ve orta göçük düzeltme",
+                "Orijinal boya korunur",
+                "Araç değer kaybını önler"
+            ],
+            "order": 50,
+            "images": [
+                {
+                    "src": "images/drn-atolye2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Aktif Atölye",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-atolye-800.webp",
+                    "srcLarge": null,
+                    "alt": "Atölye",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-atolye3-800.webp",
+                    "srcLarge": null,
+                    "alt": "Atölye 3",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "d8fecb0bb04a",
+            "slug": "rot-balance",
+            "title": "Rot – Balance",
+            "icon": "fa-rotate",
+            "summary": "Araç kaldırıcımız üzerinde yapılan rot ve balans ayarıyla titreşim ve direksiyon kaçması sorunları kökten çözülür.",
+            "description": "Araç kaldırıcımız sayesinde alt şasi, rot ve balans kontrollerini eksiksiz yapıyoruz. Titreşim, düzensiz lastik aşınması ve direksiyon kaçması sorunlarına kalıcı çözüm sunuyoruz.",
+            "features": [
+                "Balans (denge) ayarı",
+                "Rot ve rotil ayarı",
+                "Direksiyon hizalama",
+                "Süspansiyon kontrolü"
+            ],
+            "order": 60,
+            "images": [
+                {
+                    "src": "images/drn-rot-balans1-800.webp",
+                    "srcLarge": null,
+                    "alt": "Rot - Balance",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-rot-balans2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Rot - Balance 2",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "3846f8929c5b",
+            "slug": "ekspertiz-takimlari",
+            "title": "Ekspertiz Takımları",
+            "icon": "fa-magnifying-glass-chart",
+            "summary": "Geniş alet parkurumuzla aracın her parçası titizlikle incelenir; boya ölçümünden şasi kontrolüne kapsamlı rapor alın.",
+            "description": "Geniş alet parkurumuz ve ölçüm cihazlarımızla aracın her parçasını titizlikle inceliyoruz. İkinci el alımdan sigorta hasarına, boya ölçümünden şasi kontrolüne kapsamlı ekspertiz raporu alın.",
+            "features": [
+                "Boya kalınlık ölçümü",
+                "Şasi ve kaporta kontrolü",
+                "Elektronik sistem taraması",
+                "Sigorta hasar tespiti"
+            ],
+            "order": 70,
+            "images": [
+                {
+                    "src": "images/drn-ekspertiz2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Ekspertiz",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "68d5ceb79802",
+            "slug": "ofis",
+            "title": "Ofis",
+            "icon": "fa-spray-can-sparkles",
+            "summary": "Aracınızın işlemleri sürerken misafirimiz olabileceğiniz şık ve rahat bekleme alanımız.",
+            "description": "Aracınızın işlemleri sürerken veya ekspertiz raporunuzu beklerken misafirimiz olabileceğiniz şık ve rahat bekleme ofisimiz. Çayınızı yudumlarken aracınız emin ellerde.",
+            "features": [
+                "Konforlu Bekleme Alanı",
+                "İkramlar ve Çay/Kahve",
+                "Danışma ve Ön Bilgi",
+                "Sigorta Süreç Yönetimi"
+            ],
+            "order": 80,
+            "images": [
+                {
+                    "src": "images/drn-customer-space2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Ofis",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ofis1-800.webp",
+                    "srcLarge": null,
+                    "alt": "Bekleme Salonu",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ofis2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Müzik Sistemi",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ofis3-800.webp",
+                    "srcLarge": null,
+                    "alt": "Plak Koleksiyonu",
+                    "version": "20260424"
+                },
+                {
+                    "src": "images/drn-ofis4-800.webp",
+                    "srcLarge": null,
+                    "alt": "Ofis Genel",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "0b684cf69c15",
+            "slug": "mekanik",
+            "title": "Mekanik",
+            "icon": "fa-gears",
+            "summary": "Tam donanımlı atölyemizde motor, şanzıman ve fren arızaları modern teşhis cihazlarımızla hızlıca tespit edilip giderilir.",
+            "description": "Tam donanımlı ve geniş atölyemizde aracınızın tüm mekanik sistemleri modern teşhis cihazlarıyla incelenir. Motordan fren sistemine her arızayı hızla tespit edip gideriyoruz.",
+            "features": [
+                "Elektronik arıza tespit (OBD)",
+                "Triger, kayış ve zincir seti",
+                "Fren sistemi bakımı",
+                "Motor ve şanzıman revizyonu"
+            ],
+            "order": 90,
+            "images": [
+                {
+                    "src": "images/drn-mekanik2-800.webp",
+                    "srcLarge": null,
+                    "alt": "Mekanik",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        },
+        {
+            "id": "affda48ac6d8",
+            "slug": "kaporta-onarim",
+            "title": "Kaporta Onarım",
+            "icon": "fa-car-on",
+            "summary": "Çarpma ve kaza hasarlarından kaynaklanan kaporta deformasyonlarını orijinal şekline kavuşturuyoruz.",
+            "description": "Çarpma ve kaza hasarlarından kaynaklanan kaporta deformasyonlarını orijinal şekline kavuşturuyoruz. Uzman ekibimiz her türlü hasar onarımını titizlikle gerçekleştirir.",
+            "features": [
+                "Çarpma hasarı onarımı",
+                "Panel düzeltme ve şekillendirme",
+                "Kaporta parça değişimi",
+                "1 yıl onarım garantisi"
+            ],
+            "order": 100,
+            "images": [
+                {
+                    "src": "images/drn-kaporta-onarim-800.webp",
+                    "srcLarge": null,
+                    "alt": "Kaporta Onarım",
+                    "version": "20260424"
+                }
+            ],
+            "createdAt": "2026-08-03T00:00:00+00:00",
+            "updatedAt": "2026-08-03T00:00:00+00:00"
+        }
+    ]
+}
