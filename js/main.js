@@ -453,7 +453,7 @@ document.querySelectorAll('form[data-form]').forEach(form => {
       });
   }
 
-  fetch('api/google-reviews.php?limit=5', { cache: 'no-store' })
+  fetch('api/reviews.php?limit=5', { cache: 'no-store' })
     .then(response => response.ok ? response.json() : Promise.reject(response))
     .then(data => {
       if (renderReviews(data)) { revealReviews(); initCarousel(); }

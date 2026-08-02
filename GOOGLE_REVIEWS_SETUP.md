@@ -1,6 +1,6 @@
-# Google Reviews Backend Setup
+﻿# Google Reviews Backend Setup
 
-This site loads Google reviews through `api/google-reviews.php`. The browser never receives Google OAuth secrets.
+This site loads Google reviews through `api/reviews.php`. The browser never receives Google OAuth secrets.
 
 ## Required Google Values
 
@@ -67,7 +67,7 @@ Default cache time is 6 hours. If Google is temporarily unavailable, the endpoin
 `js/main.js` requests:
 
 ```text
-api/google-reviews.php?limit=8
+api/reviews.php?limit=8
 ```
 
 If the API is configured and working, the homepage review cards are replaced with live Google Business Profile reviews. If not, the existing static fallback reviews remain visible.
