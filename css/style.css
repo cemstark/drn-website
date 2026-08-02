@@ -1139,6 +1139,8 @@ h1, h2, h3, h4, h5, h6 {
 .read-more i { color: var(--red); }
 .read-more:hover { gap: 10px; color: var(--black); }
 .blog-state { padding: 28px; text-align: center; color: var(--gray); font-size: 0.9rem; }
+/* Hizmetler ve galeri bölümlerinin durum mesajı (yükleniyor / boş / hata). */
+.state-note { padding: 28px; text-align: center; color: var(--gray); font-size: 0.9rem; }
 .blog-card--noimg { grid-template-columns: 1fr; }
 .sidebar-widget { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; margin-bottom: 24px; }
 .sidebar-widget h4 {

@@ -650,6 +650,142 @@ function initGalleryLightbox() {
 // kaldırılıp carousel'den SONRA çağrılacak (görünürlüğü carousel belirliyor).
 initGalleryLightbox();
 
+// --- Hizmetler Listesi ---
+// index.html özet kartı, hizmetler.html detay kartı basar; ikisi de aynı ucu
+// okur, fark yalnızca konteynerin data-variant değeridir.
+(function() {
+  var grid = document.getElementById('servicesGrid');
+  if (!grid) return;
+
+  var stateEl = document.getElementById('servicesState');
+  var variant = grid.getAttribute('data-variant') === 'detail' ? 'detail' : 'summary';
+  var SIZES = '(max-width: 900px) 100vw, 360px';
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[ch];
+    });
+  }
+
+  function showState(message) {
+    if (!stateEl) return;
+    stateEl.textContent = message;
+    stateEl.hidden = false;
+  }
+
+  function clearState() {
+    if (!stateEl) return;
+    stateEl.textContent = '';
+    stateEl.hidden = true;
+  }
+
+  // İkon adı sunucuda beyaz listeden geçiyor; burada ikinci bir biçim kontrolü
+  // var, çünkü bu değer doğrudan class özniteliğine giriyor.
+  function iconClass(icon) {
+    return /^fa-[a-z0-9-]+$/.test(String(icon || '')) ? String(icon) : '';
+  }
+
+  function imageTag(image, cls) {
+    var src = escapeHtml(image.src);
+    // srcset yalnızca ikinci boyut gerçekten varsa basılır; yoksa tarayıcıya
+    // olmayan bir 1400w kaynağı vaat edilmiş olurdu.
+    var srcset = image.srcLarge
+      ? ' srcset="' + src + ' 800w, ' + escapeHtml(image.srcLarge) + ' 1400w" sizes="' + SIZES + '"'
+      : '';
+    var full = image.srcLarge ? ' data-full="' + escapeHtml(image.srcLarge) + '"' : '';
+
+    return '<img src="' + src + '" alt="' + escapeHtml(image.alt || '') + '" class="' + cls + '"'
+      + ' loading="lazy"' + srcset + ' decoding="async"' + full + '>';
+  }
+
+  // Tek görselde slider markup'ı hiç basılmaz: initImgSlider zaten tek slide'da
+  // devreye girmiyor ve butonlarla noktalar ölü kalıntı olarak görünürdü.
+  function mediaHtml(images) {
+    if (!images.length) return '';
+
+    if (images.length === 1) {
+      return '<div class="service-detail-img-wrap">' + imageTag(images[0], 'service-detail-img') + '</div>';
+    }
+
+    return '<div class="img-slider" data-slider>' +
+        '<div class="img-slider-track">' +
+          images.map(function(im) { return imageTag(im, 'img-slider-slide'); }).join('') +
+        '</div>' +
+        '<button class="img-slider-btn img-slider-prev" aria-label="Önceki"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>' +
+        '<button class="img-slider-btn img-slider-next" aria-label="Sonraki"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>' +
+        '<div class="img-slider-dots"></div>' +
+      '</div>';
+  }
+
+  function summaryCard(service, index) {
+    return '<div class="service-detail-card reveal reveal-d' + ((index % 3) + 1) + '">' +
+        mediaHtml(service.images || []) +
+        '<div class="service-detail-body">' +
+          '<div class="card-brand" style="font-size:0.75rem; color:#888; letter-spacing:1px; margin-bottom:8px; font-weight:600;">DRN_EKİN OTO</div>' +
+          '<h3 style="margin-bottom:12px; color:#1a1a2e; font-size:1.25rem;">' + escapeHtml(service.title) + '</h3>' +
+          '<p style="font-size:0.95rem; color:#555; margin-bottom:20px;">' + escapeHtml(service.summary) + '</p>' +
+          '<a href="hizmetler.html" class="btn-detail" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:#e63946; font-weight:600; font-size:0.9rem; border-top:1px solid #eee; padding-top:12px;">Detaylı İncele <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function detailCard(service, index) {
+    var icon = iconClass(service.icon);
+    var header = '<div class="service-detail-header">' +
+        (icon ? '<div class="service-detail-icon"><i class="fa-solid ' + icon + '" aria-hidden="true"></i></div>' : '') +
+        '<h3>' + escapeHtml(service.title) + '</h3>' +
+      '</div>';
+
+    var features = (service.features || []).length
+      ? '<ul class="service-feature-list">' + service.features.map(function(f) {
+          return '<li class="service-feature-item"><i class="fa-solid fa-check" aria-hidden="true"></i> ' + escapeHtml(f) + '</li>';
+        }).join('') + '</ul>'
+      : '';
+
+    return '<div class="service-detail-card reveal reveal-d' + ((index % 3) + 1) + '">' +
+        mediaHtml(service.images || []) +
+        header +
+        '<div class="service-detail-body"><p>' + escapeHtml(service.description) + '</p>' + features + '</div>' +
+      '</div>';
+  }
+
+  function render(data) {
+    var services = (data && Array.isArray(data.services)) ? data.services : [];
+
+    if (!services.length) {
+      grid.innerHTML = '';
+      showState('Hizmetler şu an görüntülenemiyor.');
+    } else {
+      var card = variant === 'detail' ? detailCard : summaryCard;
+      grid.innerHTML = services.map(card).join('');
+      clearState();
+      initSliders(grid);
+      // Bu olmadan kartlar .reveal'in opacity:0 değerinde kalır ve görünmez.
+      grid.querySelectorAll('.service-detail-card').forEach(function(el) {
+        revealObserver.observe(el);
+      });
+    }
+
+    grid.setAttribute('aria-busy', 'false');
+  }
+
+  grid.setAttribute('aria-busy', 'true');
+  showState('Hizmetler yükleniyor…');
+
+  fetch('api/hizmetler.php', { cache: 'no-store' })
+    .then(function(response) { return response.ok ? response.json() : Promise.reject(response); })
+    .then(function(data) {
+      if (data && data.success === false) return Promise.reject(data);
+      render(data);
+    })
+    .catch(function(err) {
+      console.warn('Hizmetler yüklenemedi:', err);
+      grid.innerHTML = '';
+      showState('Hizmetler şu an yüklenemedi. Lütfen sayfayı yenileyin.');
+      grid.setAttribute('aria-busy', 'false');
+    });
+})();
+
 // --- Blog Toggle ---
 function toggleBlog(el) {
   var detail = el.closest('.blog-card-body').querySelector('.blog-detail');
